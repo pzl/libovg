@@ -10,7 +10,8 @@ TARGET=lib$(NAME).so.$(VERSION)
 SRCDIR = src
 OBJDIR = build
 
-CC ?= gcc
+PLATFORM=$(shell uname -m)
+CC = gcc
 CFLAGS += -Wall -Wextra
 CFLAGS += -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wcast-align
 CFLAGS += -Wstrict-prototypes -Wwrite-strings -ftrapv
@@ -18,11 +19,19 @@ CFLAGS += -Wstrict-prototypes -Wwrite-strings -ftrapv
 CFLAGS += -fPIC
 #CFLAGS += -march=native
 #CFLAGS += -pthread
-SFLAGS = -std=c99 -pedantic
+#SFLAGS = -std=gnu99 -pedantic
 LDFLAGS += -shared -Wl,-soname,$(SONAME)
 INCLUDES = -I.
-LIBS =
-SRCS = $(wildcard $(SRCDIR)/*.c)
+LIBS = -lEGL -lGLESv2
+ifeq ($(PLATFORM), armv6l)
+	SRCS = $(wildcard $(SRCDIR)/*_pi.c)
+	INCLUDES += -I/opt/vc/include -I/opt/vc/include/interface/vcos/pthreads
+	LDFLAGS += -L/opt/vc/lib
+	LIBS += -lbcm_host
+else
+	SRCS = $(wildcard $(SRCDIR)/*_x11.c)
+	LIBS += -lX11
+endif
 OBJS=$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 HEAD=$(wildcard $(SRCDIR)/*.h) $(NAME).h
 STARGET = lib$(NAME).a
@@ -48,10 +57,10 @@ shared: $(TARGET)
 $(OBJS): Makefile
 
 $(TARGET): $(OBJS) $(HEAD)
-	$(CC) $(CFLAGS) $(SFLAGS) $(LDFLAGS) -o $(TARGET) $(OBJS)
+	$(CC) $(CFLAGS) $(SFLAGS) $(INCLUDES) $(LDFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
 
 $(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) $(SFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(SFLAGS) $(INCLUDES) -c -o $@ $< $(LDFLAGS) $(LIBS)
 
 $(STARGET): $(OBJS) $(HEAD)
 	ar rcs $(STARGET) $(OBJS)
