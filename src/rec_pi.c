@@ -21,8 +21,15 @@ static void gfx_update(void){
 	eglSwapBuffers(eglDisplay, eglSurface);
 }
 
+static void gfx_clear(void){
+	VGfloat bg[4] = {1.0f,0.5f,0.1f,1};
 
-static void init_surface(void){
+	//some sort of setup
+	vgSetfv(VG_CLEAR_COLOR, 4, bg);
+	vgClear(0,0,displayW,displayH);
+}
+
+static void init_surface(int x, int y, int w, int h){
 	static EGL_DISPMANX_WINDOW_T window;
 	DISPMANX_DISPLAY_HANDLE_T dispman_display;
 	DISPMANX_UPDATE_HANDLE_T dispman_update;
@@ -30,10 +37,10 @@ static void init_surface(void){
 	VC_RECT_T src;
 	EGLBoolean result;
 
-	dest.x = 0;
-	dest.y = 0;
-	dest.width = displayW;
-	dest.height = displayH;
+	dest.x = x;
+	dest.y = y;
+	dest.width = w;
+	dest.height = h;
 
 	src.x = 0;
 	src.y = 0;
@@ -46,7 +53,6 @@ static void init_surface(void){
 	window.element = vc_dispmanx_element_add(dispman_update, dispman_display, 0 /*layer */ , &dest, 0 /*src */ ,
 						  &src, DISPMANX_PROTECTION_NONE, 0 /*alpha */ , 0 /*clamp */ ,
 						  0 /*transform */ );
-
 	window.width = displayW;
 	window.height = displayH;
 	vc_dispmanx_update_submit_sync(dispman_update);
@@ -145,7 +151,7 @@ void dl_init(void){
 					    &displayH);
 	assert(success >= 0);
 
-	init_surface();
+	init_surface(0,0,displayW,displayH);
 
 	// set up screen ratio
 	glViewport(0, 0, (GLsizei) displayW, (GLsizei) displayH);
@@ -155,6 +161,8 @@ void dl_init(void){
 
 	float ratio = (float)displayW / (float)displayH;
 	glFrustumf(-ratio, ratio, -1.0f, 1.0f, 1.0f, 10.0f);
+
+	gfx_clear();
 
 }
 
@@ -172,11 +180,6 @@ void dl_cleanup(void){
 }
 
 void dl_rect(int x, int y, int w, int h){
-	VGfloat bg[4] = {255,255,255,1};
-
-	//some sort of setup
-	vgSetfv(VG_CLEAR_COLOR, 4, bg);
-	vgClear(0,0,w,h);
 	vgLoadIdentity();
 
 	//fill, stroke colors
