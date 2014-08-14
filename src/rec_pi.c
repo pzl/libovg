@@ -1,12 +1,10 @@
-//#include <stdio.h>
+#include <stdio.h>
 #include <VG/openvg.h>
 #include <VG/vgu.h>
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <bcm_host.h>
 #include "drawlib.h"
-
-#include <assert.h>
 
 static EGLConfig eglConfig;
 static EGLDisplay eglDisplay;
@@ -24,7 +22,7 @@ static void gfx_update(void){
 static void gfx_clear(void){
 	VGfloat bg[4] = {1.0f,0.5f,0.1f,1};
 
-	//some sort of setup
+	//set clear color and clear the screen
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);
 	vgClear(0,0,displayW,displayH);
 }
@@ -35,7 +33,6 @@ static void init_surface(int x, int y, int w, int h){
 	DISPMANX_UPDATE_HANDLE_T dispman_update;
 	VC_RECT_T dest;
 	VC_RECT_T src;
-	EGLBoolean result;
 
 	dest.x = x;
 	dest.y = y;
@@ -57,17 +54,17 @@ static void init_surface(int x, int y, int w, int h){
 	window.height = displayH;
 	vc_dispmanx_update_submit_sync(dispman_update);
 
-	eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, &window, NULL);
-	assert(eglSurface != EGL_NO_SURFACE);
+	if ((eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, &window, NULL)) == EGL_NO_SURFACE){
+		fprintf(stderr, "DRAWLIB: Error Creating EGL window surface\n");
+	}
 
 	// preserve the buffers on swap
-	result = eglSurfaceAttrib(eglDisplay, eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
-	assert(EGL_FALSE != result);
-
-	// connect the context to the surface
-	result = eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext);
-	assert(EGL_FALSE != result);
-
+	if (eglSurfaceAttrib(eglDisplay, eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED) == EGL_FALSE){
+		fprintf(stderr, "DRAWLIB: Error setting EGL Surface attributes\n");
+	}
+	if (eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext) == EGL_FALSE){
+		fprintf(stderr, "DRAWLIB: Error setting current surface\n");
+	}
 }
 
 
@@ -75,7 +72,6 @@ static void init_surface(int x, int y, int w, int h){
 void dl_init(void){
 	bcm_host_init();
 	int32_t success = 0;
-	EGLBoolean result;
 	EGLint num_config;
 
 	static const EGLint attribute_list[] = {
@@ -87,29 +83,26 @@ void dl_init(void){
 		EGL_NONE
 	};
 
-	// get an EGL display connection
-	eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-	assert(eglDisplay != EGL_NO_DISPLAY);
-
-	// initialize the EGL display connection
-	result = eglInitialize(eglDisplay, NULL, NULL);
-	assert(EGL_FALSE != result);
-
-	// bind OpenVG API
+	if ((eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY)) == EGL_NO_DISPLAY){
+		fprintf(stderr, "DRAWLIB: Error: Could not get EGL Display\n");
+	}
+	if (eglInitialize(eglDisplay, NULL, NULL) == EGL_FALSE){
+		fprintf(stderr, "DRAWLIB: Error initializing EGL display\n");
+	}
 	eglBindAPI(EGL_OPENVG_API);
 
-	// get an appropriate EGL frame buffer configuration
-	result = eglChooseConfig(eglDisplay, attribute_list, &eglConfig, 1, &num_config);
-	assert(EGL_FALSE != result);
-
-	// create an EGL rendering context
-	eglContext = eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT, NULL);
-	assert(eglContext != EGL_NO_CONTEXT);
+	if (eglChooseConfig(eglDisplay, attribute_list, &eglConfig, 1, &num_config) == EGL_FALSE){
+		fprintf(stderr, "DRAWLIB: Error setting EGL buffer configuration\n");
+	}
+	if ((eglContext = eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT, NULL)) == EGL_NO_CONTEXT){
+		fprintf(stderr, "DRAWLIB: Error creating EGL Content\n");
+	}
 
 	// create an EGL window surface
-	success = graphics_get_display_size(0 /* LCD */ , &displayW,
-					    &displayH);
-	assert(success >= 0);
+	success = graphics_get_display_size(0/*LCD*/, &displayW,&displayH);
+	if (success < 0){
+		fprintf(stderr, "DRAWLIB: Error getting display size\n");
+	}
 
 	init_surface(0,0,displayW,displayH);
 
@@ -127,7 +120,7 @@ void dl_init(void){
 }
 
 void dl_cleanup(void){
-	//eglDestroySurface(eglDisplay, eglSurface);
+	eglDestroySurface(eglDisplay, eglSurface);
 	
 	//clear screen
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -136,7 +129,6 @@ void dl_cleanup(void){
 	eglMakeCurrent(eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 	eglDestroyContext(eglDisplay, eglContext);
 	eglTerminate(eglDisplay);
-
 }
 
 void dl_rect(int x, int y, int w, int h){
