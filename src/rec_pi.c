@@ -44,8 +44,8 @@ static void init_surface(int x, int y, int w, int h){
 
 	src.x = 0;
 	src.y = 0;
-	src.width = displayW << 16;
-	src.height = displayH << 16;
+	src.width = w << 16; //setting these to displayW/H with smaller w/h leads to squishing
+	src.height = h << 16;
 
 	dispman_display = vc_dispmanx_display_open(0 /* LCD */ );
 	dispman_update = vc_dispmanx_update_start(0);
@@ -67,46 +67,6 @@ static void init_surface(int x, int y, int w, int h){
 	// connect the context to the surface
 	result = eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext);
 	assert(EGL_FALSE != result);
-
-	/*
-	VC_RECT_T dest;
-	VC_RECT_T src;
-	DISPMANX_DISPLAY_HANDLE_T dispmanDisplay;
-	DISPMANX_UPDATE_HANDLE_T dispmanUpdate;
-
-	EGL_DISPMANX_WINDOW_T dispmanWindow;
-	EGLBoolean eglResult;
-
-	dest.x=x;
-	dest.y=displayH - y - h;
-	dest.width=w;
-	dest.height=h;
-
-	src.x=0;
-	src.y=0;
-	src.width = w << 16;
-	src.height = h << 16;
-
-	dispmanDisplay = vc_dispmanx_display_open(0);
-	dispmanUpdate = vc_dispmanx_update_start(0);
-
-	dispmanWindow.element = vc_dispmanx_element_add(dispmanUpdate, dispmanDisplay, 0,
-													&dest, 0, &src, DISPMANX_PROTECTION_NONE,
-													0, 0, 0);
-	dispmanWindow.width = w;
-	dispmanWindow.height = h;
-	vc_dispmanx_update_submit_sync(dispmanUpdate);
-
-	eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, &dispmanWindow, NULL);
-	assert(eglSurface != EGL_NO_SURFACE);
-
-	eglResult = eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext);
-	assert(EGL_FALSE != eglResult);
-
-	eglSurfaceAttrib(eglDisplay, eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
-
-	gfx_update();
-	*/
 
 }
 
