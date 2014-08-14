@@ -13,8 +13,8 @@ OBJDIR = build
 PLATFORM=$(shell uname -m)
 CC = gcc
 CFLAGS += -Wall -Wextra
-CFLAGS += -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wcast-align
-CFLAGS += -Wstrict-prototypes -Wwrite-strings -ftrapv
+CFLAGS += -Wfloat-equal -Wshadow -Wpointer-arith -Wcast-align
+CFLAGS += -Wwrite-strings -ftrapv
 #CFLAGS += -fsanitize=address
 CFLAGS += -fPIC
 #CFLAGS += -march=native
@@ -25,7 +25,7 @@ INCLUDES = -I.
 LIBS = -lEGL -lGLESv2
 ifeq ($(PLATFORM), armv6l)
 	SRCS = $(wildcard $(SRCDIR)/*_pi.c)
-	INCLUDES += -I/opt/vc/include -I/opt/vc/include/interface/vcos/pthreads
+	INCLUDES += -I/opt/vc/include -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux
 	LDFLAGS += -L/opt/vc/lib
 	LIBS += -lbcm_host
 else
