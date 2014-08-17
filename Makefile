@@ -22,15 +22,14 @@ CFLAGS += -fPIC
 #SFLAGS = -std=gnu99 -pedantic
 LDFLAGS += -shared -Wl,-soname,$(SONAME)
 INCLUDES = -I.
-LIBS = -lEGL -lGLESv2
 ifeq ($(PLATFORM), armv6l)
 	SRCS = $(wildcard $(SRCDIR)/*_pi.c)
 	INCLUDES += -I/opt/vc/include -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux
 	LDFLAGS += -L/opt/vc/lib
-	LIBS += -lbcm_host
+	LIBS += -lbcm_host -lEGL -lGLESv2
 else
 	SRCS = $(wildcard $(SRCDIR)/*_x11.c)
-	LIBS += -lX11
+	LIBS += -lX11 -lGL -lGLU -lOpenVG
 endif
 OBJS=$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 HEAD=$(wildcard $(SRCDIR)/*.h) $(NAME).h

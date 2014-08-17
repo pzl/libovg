@@ -15,11 +15,11 @@ static uint32_t displayH;
 static uint32_t displayW;
 
 
-static void gfx_update(void){
+void dl_draw(void){
 	eglSwapBuffers(eglDisplay, eglSurface);
 }
 
-static void gfx_clear(void){
+void dl_clear(void){
 	VGfloat bg[4] = {1.0f,0.5f,0.1f,1};
 
 	//set clear color and clear the screen
@@ -59,9 +59,11 @@ static void init_surface(int x, int y, int w, int h){
 	}
 
 	// preserve the buffers on swap
+	/*
 	if (eglSurfaceAttrib(eglDisplay, eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED) == EGL_FALSE){
 		fprintf(stderr, "DRAWLIB: Error setting EGL Surface attributes\n");
 	}
+	*/
 	if (eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext) == EGL_FALSE){
 		fprintf(stderr, "DRAWLIB: Error setting current surface\n");
 	}
@@ -115,7 +117,7 @@ void dl_init(void){
 	float ratio = (float)displayW / (float)displayH;
 	glFrustumf(-ratio, ratio, -1.0f, 1.0f, 1.0f, 10.0f);
 
-	gfx_clear();
+	dl_clear();
 
 }
 
@@ -157,6 +159,6 @@ void dl_rect(int x, int y, int w, int h){
 	vgDrawPath(p, VG_FILL_PATH | VG_STROKE_PATH);
 	vgDestroyPath(p);
 
-	gfx_update();
+	dl_draw();
 
 }
