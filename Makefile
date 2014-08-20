@@ -56,6 +56,9 @@ shared: $(TARGET)
 
 $(OBJS): Makefile
 
+dummy := $(shell test -d $(OBJDIR) || mkdir -p $(OBJDIR))
+
+
 $(TARGET): $(OBJS) $(HEAD)
 	$(CC) $(CFLAGS) $(SFLAGS) $(INCLUDES) $(LDFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
 
