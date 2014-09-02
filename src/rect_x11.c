@@ -55,6 +55,8 @@ void dl_init(void){
 	xattr.override_redirect=0;
 	XChangeWindowAttributes(x_display, win, CWOverrideRedirect, &xattr);
 
+	XStoreName(x_display, win, "pi-unnamed");
+
 	XMapWindow(x_display, win);
 
 	glc = glXCreateContext(x_display, vi, NULL, GL_TRUE);
