@@ -28,6 +28,7 @@ void dl_init(void){
 	GLXContext glc;
 	XSetWindowAttributes swa,xattr;
 	XWindowAttributes gwa;
+	XClassHint *classHint;
 	XVisualInfo *vi;
 	GLint att[] = {
 		GLX_RGBA,
@@ -56,6 +57,14 @@ void dl_init(void){
 	XChangeWindowAttributes(x_display, win, CWOverrideRedirect, &xattr);
 
 	XStoreName(x_display, win, "pi-unnamed");
+
+	classHint = XAllocClassHint();
+	if (classHint){
+		classHint->res_name = "blue";
+		classHint->res_class = "red";
+	}
+	XSetClassHint(x_display, win, classHint);
+	XFree(classHint);
 
 	XMapWindow(x_display, win);
 
