@@ -52,7 +52,7 @@ void dl_init(void){
 	                    CopyFromParent, CWEventMask,
 	                    &swa);
 
-	xattr.override_redirect=1;
+	xattr.override_redirect=0;
 	XChangeWindowAttributes(x_display, win, CWOverrideRedirect, &xattr);
 
 	XMapWindow(x_display, win);
