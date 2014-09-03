@@ -23,6 +23,22 @@ void dl_clear(void){
 	vgClear(0,0,displayW,displayH);
 }
 
+void dl_start(void){
+	while (1){
+		XEvent e;
+		XNextEvent(x_display, &e);
+		if (e.type == Expose){
+			dl_draw();
+		} else if (e.type == ConfigureNotify){
+			XConfigureEvent xce = e.xconfigure;
+			if (xce.width != displayW ||
+			    xce.height != displayH){
+				dl_draw();
+			}
+		}
+	}
+}
+
 void dl_init(void){
 	Window root;
 	GLXContext glc;
