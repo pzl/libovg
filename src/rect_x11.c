@@ -52,6 +52,8 @@ void dl_init(void){
 		GLX_DOUBLEBUFFER, None 
 	};
 
+	//XInitThreads();
+
 	if ((x_display = XOpenDisplay(NULL)) == NULL){
 		fprintf(stderr, "Error opening X Display\n");
 		return;
