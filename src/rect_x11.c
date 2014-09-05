@@ -52,6 +52,9 @@ void dl_init(void){
 		GLX_DOUBLEBUFFER, None 
 	};
 
+	char instance[] = "blue",
+		 className[] = "red";
+
 	XInitThreads();
 
 	if ((x_display = XOpenDisplay(NULL)) == NULL){
@@ -78,8 +81,8 @@ void dl_init(void){
 
 	classHint = XAllocClassHint();
 	if (classHint){
-		classHint->res_name = "blue";
-		classHint->res_class = "red";
+		classHint->res_name = instance;
+		classHint->res_class = className;
 	}
 	XSetClassHint(x_display, win, classHint);
 	XFree(classHint);
