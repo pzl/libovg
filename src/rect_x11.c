@@ -109,3 +109,14 @@ void dl_init(void){
 void dl_cleanup(void){
 	
 }
+
+
+void dl_wininfo(int *x, int *y, int *w, int *h){
+	XWindowAttributes gwa;
+	XGetWindowAttributes(x_display, win, &gwa);
+
+	*x = gwa.x;
+	*y = gwa.y;
+	*w = gwa.width;
+	*h = gwa.height;
+}
