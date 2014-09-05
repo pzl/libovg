@@ -20,6 +20,10 @@ void dl_draw(void){
 }
 
 void dl_clear(void){
+	VGfloat bg[] = BG_COLOR;
+
+	//set clear color and clear the screen
+	vgSetfv(VG_CLEAR_COLOR, 4, bg);
 	vgClear(0,0,displayW,displayH);
 }
 
@@ -51,6 +55,7 @@ void dl_init(void){
 		GLX_DEPTH_SIZE, 24,
 		GLX_DOUBLEBUFFER, None 
 	};
+	VGfloat bg[] = BG_COLOR;
 
 	char instance[] = "blue",
 		 className[] = "red";
@@ -100,7 +105,7 @@ void dl_init(void){
     	return;
     }
 
-	VGfloat bg[4] = {1.0f,0.5f,0.1f,1};
+    //set background color
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);
 
     dl_clear();

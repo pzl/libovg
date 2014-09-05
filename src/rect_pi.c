@@ -20,7 +20,7 @@ void dl_draw(void){
 }
 
 void dl_clear(void){
-	VGfloat bg[4] = {1.0f,0.5f,0.1f,1};
+	VGfloat bg[] = BG_COLOR;
 
 	//set clear color and clear the screen
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);

@@ -6,8 +6,8 @@ void dl_rect(int x, int y, int w, int h){
 	VGPaint p;
 
 	//set up colors
-	VGfloat fill[4] = {1.0f, 0.2f, 0.2f, 1.0f};
-	VGfloat stroke[4] = { 0.1f, 0.5f, 1.0f, 1.0f };
+	VGfloat fill[4] = {0.71f, 0.90f, 0.65f, 0.3f};
+	VGfloat stroke[4] = { 0.33f, 0.33f, 0.33f, 1.0f };
 	VGPaint fillPaint = vgCreatePaint();
 	VGPaint strokePaint = vgCreatePaint();
 
