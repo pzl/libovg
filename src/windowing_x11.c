@@ -21,10 +21,14 @@ void dl_draw(void){
 
 void dl_clear(void){
 	VGfloat bg[] = BG_COLOR;
+	int x,y,w,h;
+
+	dl_wininfo(&x,&y,&w,&h);
+	vgResizeSurfaceSH(w,h);
 
 	//set clear color and clear the screen
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);
-	vgClear(0,0,displayW,displayH);
+	vgClear(0,0,w,h);
 }
 
 void dl_resize(void (*callback)(void)){
