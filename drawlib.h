@@ -10,6 +10,6 @@ void dl_rect(int x, int y, int w, int h);
 void dl_text(int x, int y, char *s, int pointsize);
 void dl_draw(void);
 void dl_clear(void);
-void dl_start(void);
+void dl_resize(void (*callback)(void));
 
 #endif

@@ -27,17 +27,17 @@ void dl_clear(void){
 	vgClear(0,0,displayW,displayH);
 }
 
-void dl_start(void){
+void dl_resize(void (*callback)(void)){
 	while (1){
 		XEvent e;
 		XNextEvent(x_display, &e);
 		if (e.type == Expose){
-			dl_draw();
+			callback();
 		} else if (e.type == ConfigureNotify){
 			XConfigureEvent xce = e.xconfigure;
 			if (xce.width != displayW ||
 			    xce.height != displayH){
-				dl_draw();
+				callback();
 			}
 		}
 	}
