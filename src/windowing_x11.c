@@ -31,22 +31,6 @@ void dl_clear(void){
 	vgClear(0,0,w,h);
 }
 
-void dl_resize(void (*callback)(void)){
-	while (1){
-		XEvent e;
-		XNextEvent(x_display, &e);
-		if (e.type == Expose){
-			callback();
-		} else if (e.type == ConfigureNotify){
-			XConfigureEvent xce = e.xconfigure;
-			if (xce.width != displayW ||
-			    xce.height != displayH){
-				callback();
-			}
-		}
-	}
-}
-
 void dl_init(void){
 	Window root;
 	GLXContext glc;
