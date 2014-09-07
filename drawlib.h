@@ -5,6 +5,8 @@
 
 void dl_init(void);
 void dl_wininfo(int *x, int *y, int *w, int *h);
+void dl_setFill(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+void dl_setStroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 void dl_cleanup(void);
 void dl_rect(int x, int y, int w, int h);
 void dl_text(int x, int y, char *s, int pointsize);
