@@ -1,5 +1,10 @@
+#ifndef PI
 #include <vg/openvg.h>
 #include <vg/vgu.h>
+#else
+#include <VG/openvg.h>
+#include <VG/vgu.h>
+#endif
 #include "drawlib.h"
 
 void dl_rect(int x, int y, int w, int h){

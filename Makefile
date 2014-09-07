@@ -24,6 +24,7 @@ LDFLAGS += -shared -Wl,-soname,$(SONAME)
 INCLUDES = -I.
 SRCS = $(filter-out %_pi.c %_x11.c,$(wildcard $(SRCDIR)/*.c))
 ifeq ($(PLATFORM), armv6l)
+	CFLAGS += -DPI
 	SRCS += $(wildcard $(SRCDIR)/*_pi.c)
 	INCLUDES += -I/opt/vc/include -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux
 	LDFLAGS += -L/opt/vc/lib
