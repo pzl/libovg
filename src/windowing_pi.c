@@ -132,3 +132,10 @@ void dl_cleanup(void){
 	eglDestroyContext(eglDisplay, eglContext);
 	eglTerminate(eglDisplay);
 }
+
+void dl_wininfo(int *x, int *y, int *w, int *h){
+	*x=0;
+	*y=0;
+	*w=displayW;
+	*h=displayH;
+}
