@@ -34,3 +34,15 @@ void dl_round_rect(int x, int y, int w, int h, int r){
 	vgDrawPath(p, VG_FILL_PATH | VG_STROKE_PATH);
 	vgDestroyPath(p);
 }
+
+void dl_circle(int cx, int cy, int r){
+	dl_ellipse(cx,cy,r*2,r*2);
+}
+
+void dl_ellipse(int cx, int cy, int w, int h){
+	VGPaint p;
+	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
+	vguEllipse(p,cx,cy,w,h);
+	vgDrawPath(p, VG_FILL_PATH | VG_STROKE_PATH);
+	vgDestroyPath(p);
+}
