@@ -5,12 +5,20 @@
 
 void dl_init(void);
 void dl_wininfo(int *x, int *y, int *w, int *h);
-void dl_setFill(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-void dl_setStroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 void dl_cleanup(void);
-void dl_rect(int x, int y, int w, int h);
-void dl_text(int x, int y, char *s, int pointsize);
 void dl_draw(void);
 void dl_clear(void);
+
+
+void dl_setFill(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+void dl_setStroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+
+void dl_line(int x0,int y0,int x1,int y1);
+void dl_rect(int x, int y, int w, int h);
+void dl_round_rect(int x, int y, int w, int h, int r);
+//void dl_circle();
+//void dl_ellipse();
+//void dl_arc();
+void dl_text(int x, int y, char *s, int pointsize);
 
 #endif
