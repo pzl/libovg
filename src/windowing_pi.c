@@ -15,11 +15,11 @@ static uint32_t displayH;
 static uint32_t displayW;
 
 
-void dl_draw(void){
+void ovg_draw(void){
 	eglSwapBuffers(eglDisplay, eglSurface);
 }
 
-void dl_clear(void){
+void ovg_clear(void){
 	VGfloat bg[] = BG_COLOR;
 
 	//set clear color and clear the screen
@@ -71,7 +71,7 @@ static void init_surface(int x, int y, int w, int h){
 
 
 
-void dl_init(void){
+void ovg_init(void){
 	bcm_host_init();
 	int32_t success = 0;
 	EGLint num_config;
@@ -117,11 +117,11 @@ void dl_init(void){
 	float ratio = (float)displayW / (float)displayH;
 	glFrustumf(-ratio, ratio, -1.0f, 1.0f, 1.0f, 10.0f);
 
-	dl_clear();
+	ovg_clear();
 
 }
 
-void dl_cleanup(void){
+void ovg_cleanup(void){
 	eglDestroySurface(eglDisplay, eglSurface);
 	
 	//clear screen
@@ -133,7 +133,7 @@ void dl_cleanup(void){
 	eglTerminate(eglDisplay);
 }
 
-void dl_wininfo(int *x, int *y, int *w, int *h){
+void ovg_wininfo(int *x, int *y, int *w, int *h){
 	*x=0;
 	*y=0;
 	*w=displayW;

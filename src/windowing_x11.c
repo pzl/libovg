@@ -15,15 +15,15 @@ Window win;
 int displayW = 1366,
 	displayH = 768;
 
-void dl_draw(void){
+void ovg_draw(void){
 	glXSwapBuffers(x_display, win);
 }
 
-void dl_clear(void){
+void ovg_clear(void){
 	VGfloat bg[] = BG_COLOR;
 	int x,y,w,h;
 
-	dl_wininfo(&x,&y,&w,&h);
+	ovg_wininfo(&x,&y,&w,&h);
 	vgResizeSurfaceSH(w,h);
 
 	//set clear color and clear the screen
@@ -31,7 +31,7 @@ void dl_clear(void){
 	vgClear(0,0,w,h);
 }
 
-void dl_init(void){
+void ovg_init(void){
 	Window root;
 	GLXContext glc;
 	XSetWindowAttributes swa,xattr;
@@ -96,15 +96,15 @@ void dl_init(void){
     //set background color
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);
 
-    dl_clear();
+    ovg_clear();
 }
 
-void dl_cleanup(void){
+void ovg_cleanup(void){
 	
 }
 
 
-void dl_wininfo(int *x, int *y, int *w, int *h){
+void ovg_wininfo(int *x, int *y, int *w, int *h){
 	XWindowAttributes gwa;
 	XGetWindowAttributes(x_display, win, &gwa);
 

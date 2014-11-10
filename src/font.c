@@ -72,7 +72,7 @@ void unloadfont(VGPath * glyphs, int n) {
 // Text renders a string of text at a specified location, size, using the specified font glyphs
 // derived from http://web.archive.org/web/20070808195131/http://developer.hybrid.fi/font2openvg/renderFont.cpp.txt
 /*void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {*/
-void dl_text(int x, int y, char *s, int pointsize){
+void ovg_text(int x, int y, char *s, int pointsize){
 	VGfloat size = (VGfloat) pointsize,
 			xx = (VGfloat) x,
 			yy = (VGfloat) y,

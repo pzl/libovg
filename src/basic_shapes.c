@@ -7,7 +7,7 @@
 #endif
 #include "ovg.h"
 
-void dl_rect(int x, int y, int w, int h){
+void ovg_rect(int x, int y, int w, int h){
 	VGPaint p;
 
 	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
@@ -18,7 +18,7 @@ void dl_rect(int x, int y, int w, int h){
 
 }
 
-void dl_line(int x0, int y0, int x1, int y1){
+void ovg_line(int x0, int y0, int x1, int y1){
 	VGPaint p;
 	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 	vguLine(p, x0,y0,x1,y1);
@@ -27,7 +27,7 @@ void dl_line(int x0, int y0, int x1, int y1){
 	vgDestroyPath(p);
 }
 
-void dl_round_rect(int x, int y, int w, int h, int r){
+void ovg_round_rect(int x, int y, int w, int h, int r){
 	VGPaint p;
 	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 	vguRoundRect(p,x,y,w,h,r,r);
@@ -35,11 +35,11 @@ void dl_round_rect(int x, int y, int w, int h, int r){
 	vgDestroyPath(p);
 }
 
-void dl_circle(int cx, int cy, int r){
-	dl_ellipse(cx,cy,r*2,r*2);
+void ovg_circle(int cx, int cy, int r){
+	ovg_ellipse(cx,cy,r*2,r*2);
 }
 
-void dl_ellipse(int cx, int cy, int w, int h){
+void ovg_ellipse(int cx, int cy, int w, int h){
 	VGPaint p;
 	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 	vguEllipse(p,cx,cy,w,h);
