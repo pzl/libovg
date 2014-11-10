@@ -6,7 +6,7 @@
 #include <VG/vgu.h>
 #endif
 #include <string.h>
-#include "drawlib.h"
+#include "ovg.h"
 #include "font.h"
 #include "fonts/LiberationMono.inc"
 

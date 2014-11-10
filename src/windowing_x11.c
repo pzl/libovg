@@ -6,7 +6,7 @@
 #include <GL/glu.h>
 #include <GL/glx.h>
 #include <X11/Xlib.h>
-#include "drawlib.h"
+#include "ovg.h"
 
 #include <unistd.h>
 

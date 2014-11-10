@@ -5,7 +5,7 @@
 #include <VG/openvg.h>
 #include <VG/vgu.h>
 #endif
-#include "drawlib.h"
+#include "ovg.h"
 
 void dl_setFill(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
 	VGfloat fill[4] = {r/255.0f, g/255.0f, b/255.0f, a/255.0f};

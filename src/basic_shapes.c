@@ -5,7 +5,7 @@
 #include <VG/openvg.h>
 #include <VG/vgu.h>
 #endif
-#include "drawlib.h"
+#include "ovg.h"
 
 void dl_rect(int x, int y, int w, int h){
 	VGPaint p;

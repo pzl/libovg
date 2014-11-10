@@ -1,5 +1,5 @@
-#ifndef DRAWLIB_H
-#define DRAWLIB_H
+#ifndef _LOVG_H
+#define _LOVG_H
 
 #define BG_COLOR { 0.94f, 1.0f, 0.92f, 1.0f }
 

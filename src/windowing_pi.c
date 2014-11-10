@@ -4,7 +4,7 @@
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <bcm_host.h>
-#include "drawlib.h"
+#include "ovg.h"
 
 static EGLConfig eglConfig;
 static EGLDisplay eglDisplay;
@@ -55,17 +55,17 @@ static void init_surface(int x, int y, int w, int h){
 	vc_dispmanx_update_submit_sync(dispman_update);
 
 	if ((eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, &window, NULL)) == EGL_NO_SURFACE){
-		fprintf(stderr, "DRAWLIB: Error Creating EGL window surface\n");
+		fprintf(stderr, "LibOVG: Error Creating EGL window surface\n");
 	}
 
 	// preserve the buffers on swap
 	/*
 	if (eglSurfaceAttrib(eglDisplay, eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED) == EGL_FALSE){
-		fprintf(stderr, "DRAWLIB: Error setting EGL Surface attributes\n");
+		fprintf(stderr, "LibOVG: Error setting EGL Surface attributes\n");
 	}
 	*/
 	if (eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext) == EGL_FALSE){
-		fprintf(stderr, "DRAWLIB: Error setting current surface\n");
+		fprintf(stderr, "LibOVG: Error setting current surface\n");
 	}
 }
 
@@ -86,24 +86,24 @@ void dl_init(void){
 	};
 
 	if ((eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY)) == EGL_NO_DISPLAY){
-		fprintf(stderr, "DRAWLIB: Error: Could not get EGL Display\n");
+		fprintf(stderr, "LibOVG: Error: Could not get EGL Display\n");
 	}
 	if (eglInitialize(eglDisplay, NULL, NULL) == EGL_FALSE){
-		fprintf(stderr, "DRAWLIB: Error initializing EGL display\n");
+		fprintf(stderr, "LibOVG: Error initializing EGL display\n");
 	}
 	eglBindAPI(EGL_OPENVG_API);
 
 	if (eglChooseConfig(eglDisplay, attribute_list, &eglConfig, 1, &num_config) == EGL_FALSE){
-		fprintf(stderr, "DRAWLIB: Error setting EGL buffer configuration\n");
+		fprintf(stderr, "LibOVG: Error setting EGL buffer configuration\n");
 	}
 	if ((eglContext = eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT, NULL)) == EGL_NO_CONTEXT){
-		fprintf(stderr, "DRAWLIB: Error creating EGL Content\n");
+		fprintf(stderr, "LibOVG: Error creating EGL Content\n");
 	}
 
 	// create an EGL window surface
 	success = graphics_get_display_size(0/*LCD*/, &displayW,&displayH);
 	if (success < 0){
-		fprintf(stderr, "DRAWLIB: Error getting display size\n");
+		fprintf(stderr, "LibOVG: Error getting display size\n");
 	}
 
 	init_surface(0,0,displayW,displayH);

@@ -1,0 +1,10 @@
+*.swp
+
+*.o
+*.a
+*.so*
+a.out
+*.dylib
+*.dll
+
+build

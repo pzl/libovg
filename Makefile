@@ -1,6 +1,6 @@
 MAJOR_VERSION=0
 VERSION=$(MAJOR_VERSION).0.1
-NAME=drawlib
+NAME=ovg
 
 
 TBASE=lib$(NAME).so
