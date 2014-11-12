@@ -24,3 +24,11 @@ void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char
 	vgSetParameterfv(strokePaint, VG_PAINT_COLOR, 4, stroke);
 	vgSetPaint(strokePaint, VG_STROKE_PATH);
 }
+
+void ovg_clear_rect(int x, int y, int w, int h){
+	VGfloat bg[] = BG_COLOR;
+
+	//set clear color and clear the screen
+	vgSetfv(VG_CLEAR_COLOR, 4, bg);
+	vgClear(x,y,w,h);
+}

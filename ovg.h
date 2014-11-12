@@ -8,6 +8,8 @@ void ovg_wininfo(int *x, int *y, int *w, int *h);
 void ovg_cleanup(void);
 void ovg_draw(void);
 void ovg_clear(void);
+void ovg_clear_rect(int x, int y, int w, int h);
+
 
 void ovg_fill(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
