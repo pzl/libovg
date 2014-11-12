@@ -14,6 +14,7 @@ void ovg_clear_rect(int x, int y, int w, int h);
 void ovg_fill(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
+void ovg_stroke_width(float w);
 
 void ovg_line(int x0,int y0,int x1,int y1);
 void ovg_polyline(int *x, int *y, int n);

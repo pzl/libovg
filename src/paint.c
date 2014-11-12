@@ -25,3 +25,9 @@ void ovg_clear_rect(int x, int y, int w, int h){
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);
 	vgClear(x,y,w,h);
 }
+
+void ovg_stroke_width(float w) {
+	vgSetf(VG_STROKE_LINE_WIDTH, w);
+}
+
+
