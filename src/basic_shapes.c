@@ -69,6 +69,14 @@ void ovg_polygon(int *x, int *y, int n) {
 	vgDestroyPath(p);
 }
 
+void ovg_arc(int x, int y, int w, int h, int sa, int ea){
+	VGPath p;
+	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
+	vguArc(p, x, y, w, h, sa, ea, VGU_ARC_OPEN);
+	vgDrawPath(p, VG_STROKE_PATH | VG_FILL_PATH);
+	vgDestroyPath(p);
+}
+
 
 static void _zip(int *x, int *y, int n, VGfloat *result){
 	while (n--){

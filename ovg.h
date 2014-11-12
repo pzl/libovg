@@ -20,7 +20,7 @@ void ovg_rect(int x, int y, int w, int h);
 void ovg_round_rect(int x, int y, int w, int h, int r);
 void ovg_circle(int cx, int cy, int r);
 void ovg_ellipse(int cx, int cy, int w, int h);
-//void ovg_arc();
+void ovg_arc(int x, int y, int w, int h, int star_angle, int angle_travel);
 void ovg_text(int x, int y, char *s, int pointsize);
 
 #endif
