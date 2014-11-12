@@ -14,6 +14,8 @@ void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char
 
 
 void ovg_line(int x0,int y0,int x1,int y1);
+void ovg_polyline(int *x, int *y, int n);
+void ovg_polygon(int *x, int *y, int n);
 void ovg_rect(int x, int y, int w, int h);
 void ovg_round_rect(int x, int y, int w, int h, int r);
 void ovg_circle(int cx, int cy, int r);

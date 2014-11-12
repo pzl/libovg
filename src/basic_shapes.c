@@ -7,6 +7,8 @@
 #endif
 #include "ovg.h"
 
+static void _zip(int *, int *, int n, VGfloat *result);
+
 void ovg_rect(int x, int y, int w, int h){
 	VGPath p;
 
@@ -40,9 +42,37 @@ void ovg_circle(int cx, int cy, int r){
 }
 
 void ovg_ellipse(int cx, int cy, int w, int h){
-	VGPaint p;
+	VGPath p;
 	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 	vguEllipse(p,cx,cy,w,h);
 	vgDrawPath(p, VG_FILL_PATH | VG_STROKE_PATH);
 	vgDestroyPath(p);
+}
+
+void ovg_polyline(int *x, int *y, int n) {
+	VGPath p;
+	VGfloat points[n*2];
+	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
+	_zip(x,y,n,points);
+	vguPolygon(p,points,n, VG_TRUE);
+	vgDrawPath(p, VG_STROKE_PATH);
+	vgDestroyPath(p);
+}
+
+void ovg_polygon(int *x, int *y, int n) {
+	VGPath p;
+	VGfloat points[n*2];
+	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
+	_zip(x,y,n,points);
+	vguPolygon(p,points,n, VG_TRUE);
+	vgDrawPath(p, VG_FILL_PATH | VG_STROKE_PATH);
+	vgDestroyPath(p);
+}
+
+
+static void _zip(int *x, int *y, int n, VGfloat *result){
+	while (n--){
+		*result++ = *x++;
+		*result++ = *y++;
+	}
 }
