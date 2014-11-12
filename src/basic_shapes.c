@@ -48,7 +48,7 @@ void ovg_polyline(int *x, int *y, int n) {
 	VGfloat points[n*2];
 	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 	_zip(x,y,n,points);
-	vguPolygon(p,points,n, VG_TRUE);
+	vguPolygon(p,points,n, VG_FALSE);
 	vgDrawPath(p, VG_STROKE_PATH);
 	vgDestroyPath(p);
 }
