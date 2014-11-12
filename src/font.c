@@ -79,16 +79,6 @@ void ovg_text(int x, int y, char *s, int pointsize){
 			mm[9];
 	int i;
 
-
-
-	//set up colors
-	VGfloat fill[4] = {0.0f, 0.0f, 0.0f, 0.8f};
-	VGPaint fillPaint = vgCreatePaint();
-	vgSetParameterfv(fillPaint, VG_PAINT_COLOR, 4, fill);
-	vgSetPaint(fillPaint, VG_FILL_PATH);
-
-
-
 	Fontinfo f = loadfont(LiberationMono_glyphPoints,
 				LiberationMono_glyphPointIndices,
 				LiberationMono_glyphInstructions,
@@ -114,8 +104,6 @@ void ovg_text(int x, int y, char *s, int pointsize){
 		xx += size * f.GlyphAdvances[glyph] / 65536.0f;
 	}
 	vgLoadMatrix(mm);
-
-	vgDestroyPaint(fillPaint);
 
 	unloadfont(f.Glyphs, f.Count);
 }
