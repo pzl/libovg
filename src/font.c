@@ -1,12 +1,5 @@
-#ifndef PI
-#include <vg/openvg.h>
-#include <vg/vgu.h>
-#else
-#include <VG/openvg.h>
-#include <VG/vgu.h>
-#endif
+#include "common.h"
 #include <string.h>
-#include "ovg.h"
 #include "font.h"
 #include "fonts/LiberationMono.inc"
 

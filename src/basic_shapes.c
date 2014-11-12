@@ -1,11 +1,5 @@
-#ifndef PI
-#include <vg/openvg.h>
-#include <vg/vgu.h>
-#else
-#include <VG/openvg.h>
-#include <VG/vgu.h>
-#endif
-#include "ovg.h"
+#include "common.h"
+
 
 static void _zip(int *, int *, int n, VGfloat *result);
 
