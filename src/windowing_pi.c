@@ -20,12 +20,9 @@ void ovg_draw(void){
 }
 
 void ovg_clear(void){
-	VGfloat bg[] = BG_COLOR;
-
-	//set clear color and clear the screen
-	vgSetfv(VG_CLEAR_COLOR, 4, bg);
-	vgClear(0,0,displayW,displayH);
+	ovg_clear_rect(0,0,displayW,displayH);
 }
+
 
 static void init_surface(int x, int y, int w, int h){
 	static EGL_DISPMANX_WINDOW_T window;

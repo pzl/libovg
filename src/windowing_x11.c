@@ -20,16 +20,16 @@ void ovg_draw(void){
 }
 
 void ovg_clear(void){
-	VGfloat bg[] = BG_COLOR;
 	int x,y,w,h;
 
+	//get screen dimensions
 	ovg_wininfo(&x,&y,&w,&h);
-	vgResizeSurfaceSH(w,h);
+	vgResizeSurfaceSH(w,h); //why am i doing this again?
 
-	//set clear color and clear the screen
-	vgSetfv(VG_CLEAR_COLOR, 4, bg);
-	vgClear(0,0,w,h);
+	ovg_clear_rect(0,0,w,h);
 }
+
+
 
 void ovg_init(void){
 	Window root;
