@@ -9,9 +9,9 @@ void ovg_cleanup(void);
 void ovg_draw(void);
 void ovg_clear(void);
 
+void ovg_fill(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
-void ovg_setFill(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-void ovg_setStroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
 void ovg_line(int x0,int y0,int x1,int y1);
 void ovg_rect(int x, int y, int w, int h);

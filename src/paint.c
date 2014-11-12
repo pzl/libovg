@@ -7,7 +7,7 @@
 #endif
 #include "ovg.h"
 
-void ovg_setFill(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
+void ovg_fill(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
 	VGfloat fill[4] = {r/255.0f, g/255.0f, b/255.0f, a/255.0f};
 	VGPaint fillPaint = vgCreatePaint();
 
@@ -16,7 +16,7 @@ void ovg_setFill(unsigned char r, unsigned char g, unsigned char b, unsigned cha
 	vgSetPaint(fillPaint, VG_FILL_PATH);
 }
 
-void ovg_setStroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
+void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
 	VGfloat stroke[4] = {r/255.0f, g/255.0f, b/255.0f, a/255.0f};
 	VGPaint strokePaint = vgCreatePaint();
 
