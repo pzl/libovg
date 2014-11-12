@@ -30,4 +30,10 @@ void ovg_stroke_width(float w) {
 	vgSetf(VG_STROKE_LINE_WIDTH, w);
 }
 
+void ovg_stroke_cap(CapStyle c){
+	vgSeti(VG_STROKE_CAP_STYLE, c);
+}
 
+void ovg_stroke_join(JoinStyle j){
+	vgSeti(VG_STROKE_JOIN_STYLE,j);
+}
