@@ -25,4 +25,11 @@ void ovg_ellipse(int cx, int cy, int w, int h);
 void ovg_arc(int x, int y, int w, int h, int star_angle, int angle_travel);
 void ovg_text(int x, int y, char *s, int pointsize);
 
+
+void ovg_translate(int x, int y);
+void ovg_rotate(int r);
+void ovg_scale(float x, float y);
+void ovg_shear(int x, int y);
+
+
 #endif
