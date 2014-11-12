@@ -19,7 +19,7 @@ CFLAGS += -Wwrite-strings -ftrapv
 CFLAGS += -fPIC
 #CFLAGS += -march=native
 #CFLAGS += -pthread
-#SFLAGS = -std=gnu99 -pedantic
+SFLAGS = -std=gnu99 -pedantic
 LDFLAGS += -shared -Wl,-soname,$(SONAME)
 INCLUDES = -I.
 SRCS = $(filter-out %_pi.c %_x11.c,$(wildcard $(SRCDIR)/*.c))
