@@ -75,6 +75,21 @@ int main(int argc, char **argv) {
     ovg_draw();
 
 
+    //dashed lines
+    int dash[4] = {5,10,15,20};
+    ovg_stroke_width(3);
+    //normal dash, repeated twice
+    ovg_dash(dash,4);
+    ovg_line(330,200,420,200);
+    //above that, offset the position
+    ovg_dash_phase(10);
+    ovg_line(330,210,420,210);
+    ovg_dash_phase(0);
+
+    ovg_stroke_width(1);
+    ovg_dash(NULL,0);
+
+
     //gradients!
     float grad_pts[2] = {0,1};
     unsigned char colors[8] = {
