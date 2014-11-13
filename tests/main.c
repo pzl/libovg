@@ -84,10 +84,13 @@ int main(int argc, char **argv) {
     //above that, offset the position
     ovg_dash_phase(10);
     ovg_line(330,210,420,210);
+
+    //reset phase
     ovg_dash_phase(0);
+    ovg_line(330,220,420,220);
 
     ovg_stroke_width(1);
-    ovg_dash(NULL,0);
+    ovg_dash(NULL,0); //this is how to turn off dashing
 
 
     //gradients!
