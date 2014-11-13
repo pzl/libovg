@@ -75,6 +75,39 @@ int main(int argc, char **argv) {
     ovg_draw();
 
 
+    //gradients!
+    float grad_pts[2] = {0,1};
+    unsigned char colors[8] = {
+        255,100,100,255,
+        20 ,80 ,255,255
+    };
+    //linear
+    ovg_translate(20,300);
+    ovg_gradient_linear(2,GRADIENT_PAD,0,0,200,200,grad_pts,colors);
+    ovg_rect(0,0,100,100);
+    ovg_translate(-20,-300);
+
+    ovg_translate(140,300);
+    ovg_gradient_linear(2,GRADIENT_PAD,50,50,100,100,grad_pts,colors);
+    ovg_rect(0,0,100,100);
+    ovg_translate(-140,-300);
+
+    //normal radial
+    ovg_translate(260,300);
+    ovg_gradient_radial(2,GRADIENT_PAD,50,50,50,50,50,grad_pts,colors);
+    ovg_rect(0,0,100,100);
+    ovg_translate(-260,-300);
+    ovg_draw();
+
+    //off-center focal point
+    ovg_translate(380,300);
+    ovg_gradient_radial(2,GRADIENT_PAD,50,50,50,7,50,grad_pts,colors);
+    ovg_rect(0,0,100,100);
+    ovg_translate(-380,-300);
+    ovg_draw();
+
+    ovg_fill(128,128,255,255);
+
 
     //very crappy star to test poly* 
     int pt_x[10] = {370,350,320,345,340,370,400,395,420,390},

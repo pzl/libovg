@@ -13,6 +13,12 @@ typedef enum {
   JOIN_BEVEL                               = 0x1802
 } JoinStyle;
 
+typedef enum {
+	GRADIENT_PAD							= 0x1C00,
+	GRADIENT_REPEAT							= 0x1C01,
+	GRADIENT_REFLECT						= 0x1C02
+} GradRule;
+
 #define BG_COLOR { 0.94f, 1.0f, 0.92f, 1.0f }
 
 /*****************************
@@ -38,6 +44,16 @@ void ovg_stroke_join(JoinStyle);
 void ovg_stroke_miter(float limit);
 void ovg_dash(int *pattern, int n);
 void ovg_dash_phase(int phase);
+
+//float locations should be 0..1, with 4 uchars per point
+void ovg_gradient_linear(int nstops, GradRule,
+                         int startx, int starty,
+                         int endx, int endy,
+                         float *points, unsigned char *colors);
+void ovg_gradient_radial(int nstops, GradRule,
+                         int centerx, int centery,
+                         int focalx, int focaly, int radius,
+                         float *points, unsigned char *colors);
 
 
 /***************************
