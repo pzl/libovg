@@ -84,7 +84,10 @@ uninstall:
 	$(RM) "$(LIBDIR)/$(SONAME)"
 	$(RM) "$(INCDIR)/$(NAME).h"
 
+test:
+	$(CC) -o test tests/*.c -lovg
+
 clean:
 	$(RM) $(OBJS) $(TARGET) $(STARGET)
 
-.PHONY: all debug clean install uninstall
+.PHONY: all debug clean install uninstall test
