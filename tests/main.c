@@ -177,6 +177,20 @@ int main(int argc, char **argv) {
     ovg_clear_rect(600,0,200,50);
 
 
+    int sketch_star_x[6] = {5,25,45,0,50,5},
+        sketch_star_y[6] = {0,35,0 ,25,25,0};
+
+    ovg_fill_rule(FILL_RULE_ALL);
+    ovg_translate(670,60);
+    ovg_polygon(sketch_star_x,sketch_star_y,5);
+    ovg_translate(-670,-60);
+
+    ovg_fill_rule(FILL_RULE_ALTERNATE);
+    ovg_translate(670,10);
+    ovg_polygon(sketch_star_x,sketch_star_y,5);
+    ovg_translate(-670,-10);
+
+
     //transformation tests
     //should be a small diamond above the other shapes
     ovg_translate(500,200);

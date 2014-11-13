@@ -20,6 +20,11 @@ typedef enum {
 } JoinStyle;
 
 typedef enum {
+	FILL_RULE_ALTERNATE						= 0x1900,
+	FILL_RULE_ALL							= 0x1901
+} FillRule;
+
+typedef enum {
 	GRADIENT_PAD							= 0x1C00,
 	GRADIENT_REPEAT							= 0x1C01,
 	GRADIENT_REFLECT						= 0x1C02
@@ -61,6 +66,7 @@ void ovg_gradient_radial(int nstops, GradRule,
                          int centerx, int centery,
                          int focalx, int focaly, int radius,
                          float *points, unsigned char *colors);
+void ovg_fill_rule(FillRule);
 
 
 /***************************

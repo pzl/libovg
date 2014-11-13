@@ -33,6 +33,10 @@ void ovg_dash(int *pattern, int n){
 	}
 }
 
+void ovg_fill_rule(FillRule rule){
+	vgSeti(VG_FILL_RULE, rule);
+}
+
 void ovg_clear_rect(int x, int y, int w, int h){
 	VGfloat bg[] = BG_COLOR;
 
