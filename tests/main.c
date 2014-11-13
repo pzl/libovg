@@ -85,27 +85,56 @@ int main(int argc, char **argv) {
     ovg_translate(20,300);
     ovg_gradient_linear(2,GRADIENT_PAD,0,0,200,200,grad_pts,colors);
     ovg_rect(0,0,100,100);
-    ovg_translate(-20,-300);
-
-    ovg_translate(140,300);
+    //linear, tighter
+    ovg_translate(120,0);
     ovg_gradient_linear(2,GRADIENT_PAD,50,50,100,100,grad_pts,colors);
     ovg_rect(0,0,100,100);
-    ovg_translate(-140,-300);
-
     //normal radial
-    ovg_translate(260,300);
+    ovg_translate(120,0);
     ovg_gradient_radial(2,GRADIENT_PAD,50,50,50,50,50,grad_pts,colors);
     ovg_rect(0,0,100,100);
-    ovg_translate(-260,-300);
-    ovg_draw();
-
     //off-center focal point
-    ovg_translate(380,300);
+    ovg_translate(120,0);
     ovg_gradient_radial(2,GRADIENT_PAD,50,50,50,7,50,grad_pts,colors);
     ovg_rect(0,0,100,100);
-    ovg_translate(-380,-300);
-    ovg_draw();
 
+
+    //test gradient repeat types
+    float complex_grad_pts[4] = {0,0.33,0.66,1};
+    unsigned char complex_colors[16] = {
+        255,0,0,255,
+        0,255,0,255,
+        0,0,255,255,
+        255,255,255,255
+    };
+    //linear, pad
+    ovg_translate(120,0);
+    ovg_gradient_linear(4,GRADIENT_PAD,20,20,60,60,complex_grad_pts,complex_colors);
+    ovg_rect(0,0,100,100);
+    //linear, repeat
+    ovg_translate(120,0);
+    ovg_gradient_linear(4,GRADIENT_REPEAT,20,20,60,60,complex_grad_pts,complex_colors);
+    ovg_rect(0,0,100,100);
+    //linear, reflect
+    ovg_translate(120,0);
+    ovg_gradient_linear(4,GRADIENT_REFLECT,20,20,60,60,complex_grad_pts,complex_colors);
+    ovg_rect(0,0,100,100);
+    //radial, pad
+    ovg_translate(-240,120);
+    ovg_gradient_radial(4,GRADIENT_PAD,50,50,50,50,50,complex_grad_pts,complex_colors);
+    ovg_rect(0,0,100,100);
+    //radial, repeat
+    ovg_translate(120,0);
+    ovg_gradient_radial(4,GRADIENT_REPEAT,50,50,50,50,50,complex_grad_pts,complex_colors);
+    ovg_rect(0,0,100,100);
+    //radial, reflect
+    ovg_translate(120,0);
+    ovg_gradient_radial(4,GRADIENT_REFLECT,50,50,50,50,50,complex_grad_pts,complex_colors);
+    ovg_rect(0,0,100,100);
+
+
+    ovg_translate(-740,-420);
+    ovg_draw();
     ovg_fill(128,128,255,255);
 
 
