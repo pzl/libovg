@@ -43,6 +43,10 @@ void ovg_clear_rect(int x, int y, int w, int h){
 	vgClear(x,y,w,h);
 }
 
+void ovg_quality(DrawQuality dq){
+	vgSeti(VG_RENDERING_QUALITY, dq);
+}
+
 void ovg_stroke_width(float w) {
 	vgSetf(VG_STROKE_LINE_WIDTH, w);
 }
