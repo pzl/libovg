@@ -69,6 +69,10 @@ int main(int argc, char **argv) {
     ovg_stroke_cap(CAP_BUTT);
 
 
+    //bezier curve tests. Arch and squiggle
+    ovg_bezier_quad(260,200,280,250,300,200);
+    ovg_bezier_cube(260,260,275,300,285,220,300,260);
+    ovg_draw();
 
 
 

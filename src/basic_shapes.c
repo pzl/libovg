@@ -71,6 +71,30 @@ void ovg_arc(int x, int y, int w, int h, int sa, int ea){
 	vgDestroyPath(p);
 }
 
+void ovg_bezier_quad(int sx, int sy, int cx, int cy, int ex, int ey) {
+	VGPath p;
+	VGubyte commands[2] = {VG_MOVE_TO_ABS,VG_QUAD_TO};
+	VGfloat points[6] = {sx,sy,cx,cy,ex,ey};
+
+	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
+	vgAppendPathData(p,2,commands,points);
+	vgDrawPath(p, VG_STROKE_PATH);
+	vgDestroyPath(p);
+}
+
+void ovg_bezier_cube(int sx, int sy,
+                     int c1x, int c1y, int c2x, int c2y,
+                     int ex, int ey) {
+	VGPath p;
+	VGubyte commands[2] = {VG_MOVE_TO_ABS,VG_CUBIC_TO};
+	VGfloat points[8] = {sx,sy,c1x,c1y,c2x,c2y,ex,ey};
+
+	p = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
+	vgAppendPathData(p,2,commands,points);
+	vgDrawPath(p, VG_STROKE_PATH);
+	vgDestroyPath(p);
+}
+
 
 static void _zip(int *x, int *y, int n, VGfloat *result){
 	while (n--){
