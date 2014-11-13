@@ -1,3 +1,4 @@
+#include <stddef.h> /* NULL */
 #include "common.h"
 
 void ovg_fill(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
@@ -22,12 +23,19 @@ void ovg_dash(int *pattern, int n){
 	if (n<=0 || pattern == NULL){
 		vgSetfv(VG_STROKE_DASH_PATTERN, 0, (VGfloat *)0);
 	} else {
-		vgSetfv(VG_STROKE_DASH_PATTERN, n, pattern);
+		VGfloat pat[n];
+		VGfloat *p = pat;
+		while (n--){
+			*p++ = *pattern++;
+		}
+		vgSetfv(VG_STROKE_DASH_PATTERN, n, pat);
 	}
 }
 
 void ovg_clear_rect(int x, int y, int w, int h){
 	VGfloat bg[] = BG_COLOR;
+
+	//vgSeti(VG_SCISSORING, VG_FALSE); //disable scissoring to clear?
 
 	//set clear color and clear the screen
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);
