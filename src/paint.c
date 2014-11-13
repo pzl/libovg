@@ -18,6 +18,14 @@ void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char
 	vgSetPaint(strokePaint, VG_STROKE_PATH);
 }
 
+void ovg_dash(int *pattern, int n){
+	if (n<=0 || pattern == NULL){
+		vgSetfv(VG_STROKE_DASH_PATTERN, 0, (VGfloat *)0);
+	} else {
+		vgSetfv(VG_STROKE_DASH_PATTERN, n, pattern);
+	}
+}
+
 void ovg_clear_rect(int x, int y, int w, int h){
 	VGfloat bg[] = BG_COLOR;
 
@@ -36,4 +44,12 @@ void ovg_stroke_cap(CapStyle c){
 
 void ovg_stroke_join(JoinStyle j){
 	vgSeti(VG_STROKE_JOIN_STYLE,j);
+}
+
+void ovg_stroke_miter(float limit){
+	vgSeti(VG_STROKE_MITER_LIMIT, limit);
+}
+
+void ovg_dash_phase(int phase){
+	vgSetf(VG_STROKE_DASH_PHASE, phase);
 }

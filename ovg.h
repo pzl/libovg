@@ -31,6 +31,9 @@ void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char
 void ovg_stroke_width(float w);
 void ovg_stroke_cap(CapStyle);
 void ovg_stroke_join(JoinStyle);
+void ovg_stroke_miter(float limit);
+void ovg_dash(int *pattern, int n);
+void ovg_dash_phase(int phase);
 
 void ovg_line(int x0,int y0,int x1,int y1);
 void ovg_polyline(int *x, int *y, int n);
