@@ -26,9 +26,8 @@ void ovg_dash(int *pattern, int n){
 		vgSetfv(VG_STROKE_DASH_PATTERN, 0, (VGfloat *)0);
 	} else {
 		VGfloat pat[n];
-		VGfloat *p = pat;
-		while (n--){
-			*p++ = *pattern++;
+		for (int i=0; i<n; i++){
+			pat[i] = *pattern++;
 		}
 		vgSetfv(VG_STROKE_DASH_PATTERN, n, pat);
 	}
