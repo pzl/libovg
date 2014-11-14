@@ -3,7 +3,7 @@
 
 static void _colorstops(VGPaint paint, int nstops, int rule, float *pts, unsigned char *colors);
 static void _paint(int type, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-//static void _getpaint(int type, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a);
+static void _getpaint(int type, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a);
 
 void ovg_fill(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
 	_paint(VG_FILL_PATH, r,g,b,a);
@@ -11,14 +11,14 @@ void ovg_fill(unsigned char r, unsigned char g, unsigned char b, unsigned char a
 void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
 	_paint(VG_STROKE_PATH, r,g,b,a);
 }
-/*
+
 void ovg_fill_current(unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a) {
 	_getpaint(VG_FILL_PATH, r,g,b,a);
 }
 void ovg_stroke_current(unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a) {
 	_getpaint(VG_STROKE_PATH, r,g,b,a);
 }
-*/
+
 
 void ovg_dash(int *pattern, int n){
 	if (n<=0 || pattern == NULL){
@@ -122,7 +122,7 @@ static void _paint(int type, unsigned char r, unsigned char g, unsigned char b, 
 	vgSetParameterfv(fillPaint, VG_PAINT_COLOR, 4, fill);
 	vgSetPaint(fillPaint, type);
 }
-/*
+
 static void _getpaint(int type, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a) {
 	VGfloat fill[4];
 	VGPaintMode mode = (VGPaintMode) type;
@@ -134,4 +134,4 @@ static void _getpaint(int type, unsigned char *r, unsigned char *g, unsigned cha
 	*b = (unsigned char) (fill[2]*255.0f + 0.5f);
 	*a = (unsigned char) (fill[3]*255.0f + 0.5f);
 }
-*/
+

@@ -47,6 +47,21 @@ int main(int argc, char **argv) {
     lines_styles();
     gradients();
 
+    unsigned char r,g,b,a;
+
+    ovg_fill(128,17,233,251);
+    ovg_fill_current(&r,&g,&b,&a);
+
+    if (r == 128 &&
+        g == 17 &&
+        b == 233 &&
+        a == 251) {
+        printf("fetching current fill colors passed\n");
+    } else {
+        fprintf(stderr, "Error fetching fill colors. Gave 128,17,233,251, got: %d,%d,%d,%d\n", r,g,b,a);
+    }
+
+
     //test clearing a section of the arc
     //ovg_clear_rect(600,0,200,50);
 
