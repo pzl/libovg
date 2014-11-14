@@ -60,7 +60,15 @@ void ovg_clear_rect(int x, int y, int w, int h);
 * Fills n Strokes
 *****************************/
 void ovg_fill(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+void ovg_fill_current(unsigned char *r,
+                      unsigned char *g,
+                      unsigned char *b,
+                      unsigned char *a);
 void ovg_stroke(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+void ovg_stroke_current(unsigned char *r,
+                      unsigned char *g,
+                      unsigned char *b,
+                      unsigned char *a);
 
 void ovg_stroke_width(float w);
 void ovg_stroke_cap(CapStyle);
