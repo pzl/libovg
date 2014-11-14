@@ -87,6 +87,12 @@ void ovg_bezier_cube(int sx, int sy,
 void ovg_text(int x, int y, char *s, int pointsize);
 
 
+/*********************
+* Utility Commands
+*********************/
+void ovg_bounds(float *x, float *y, float *w, float *h);
+void ovg_bounds_transformed(float *x, float *y, float *w, float *h);
+
 
 /************************
 * Transformations

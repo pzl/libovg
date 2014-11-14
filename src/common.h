@@ -11,4 +11,6 @@
 
 #include "ovg.h"
 
+VGPath lastPath;
+
 #endif

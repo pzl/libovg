@@ -198,11 +198,25 @@ int main(int argc, char **argv) {
     ovg_scale(0.5,0.5);
     ovg_rect(-50,-50,100,100);
 
-    //undo transforms in reverse order
+
+
+    //bounds checking of transformed box:
+    float x,y,w,h;
+    ovg_bounds(&x,&y,&w,&h);
+
+   //undo transforms in reverse order
     ovg_scale(2.0,2.0);
     ovg_rotate(-45);
     ovg_translate(-500,-200);
 
+
+    ovg_fill(0,0,0,0);
+    ovg_stroke(255,0,0,255);
+    ovg_rect((int)x,(int)y,(int)w,(int)h);
+    ovg_draw();
+
+    ovg_fill(120,255,17,255);
+    ovg_stroke(0,0,0,255);
 
     //check placement accuracy
     axes();
