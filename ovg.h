@@ -101,6 +101,7 @@ void ovg_translate(int x, int y);
 void ovg_rotate(int r);
 void ovg_scale(float x, float y);
 void ovg_shear(int x, int y);
-
+//matrices
+void ovg_mat_identity(void);
 
 #endif
