@@ -56,11 +56,9 @@ static void init_surface(int x, int y, int w, int h){
 	}
 
 	// preserve the buffers on swap
-	/*
 	if (eglSurfaceAttrib(eglDisplay, eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED) == EGL_FALSE){
 		fprintf(stderr, "LibOVG: Error setting EGL Surface attributes\n");
 	}
-	*/
 	if (eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext) == EGL_FALSE){
 		fprintf(stderr, "LibOVG: Error setting current surface\n");
 	}
