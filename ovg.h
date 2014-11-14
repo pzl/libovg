@@ -40,6 +40,7 @@ typedef void * Path;
 void ovg_init(void);
 void ovg_wininfo(int *x, int *y, int *w, int *h);
 void ovg_quality(DrawQuality);
+void ovg_free(Path);
 void ovg_cleanup(void);
 void ovg_draw(void);
 void ovg_clear(void);
@@ -86,7 +87,7 @@ Path ovg_bezier_quad(int sx, int sy, int cx, int cy, int ex, int ey); //start, c
 Path ovg_bezier_cube(int sx, int sy,
                      int c1x, int c1y, int c2x, int c2y,
                      int ex, int ey); //start, control1,2, end
-Path ovg_text(int x, int y, char *s, int pointsize);
+void ovg_text(int x, int y, char *s, int pointsize);
 
 
 /*********************

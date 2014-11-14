@@ -11,6 +11,6 @@
 
 #include "ovg.h"
 
-VGPath lastPath;
+#define Path VGPath
 
 #endif
