@@ -30,7 +30,9 @@ typedef enum {
 	GRADIENT_REFLECT						= 0x1C02
 } GradRule;
 
+#ifndef Path
 typedef void * Path;
+#endif
 
 #define BG_COLOR { 0.94f, 1.0f, 0.92f, 1.0f }
 

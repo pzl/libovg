@@ -9,8 +9,8 @@
 #  include <VG/vgu.h>
 #endif
 
-#include "ovg.h"
-
 #define Path VGPath
+
+#include "ovg.h"
 
 #endif
