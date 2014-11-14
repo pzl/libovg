@@ -24,7 +24,7 @@ void ovg_bounds_transformed(VGPath p, float *x, float *y, float *w, float *h){
 }
 
 
-void ovg_mat_identity(void){
+void ovg_reset(void){
 	vgLoadIdentity();
 }
 

@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
     ovg_free(ovg_rect(0,0,100,100));
 
 
-    ovg_translate(-740,-420);
+    ovg_reset();
     ovg_draw();
     ovg_fill(128,128,255,255);
 
@@ -183,12 +183,12 @@ int main(int argc, char **argv) {
     ovg_fill_rule(FILL_RULE_ALL);
     ovg_translate(670,60);
     ovg_free(ovg_polygon(sketch_star_x,sketch_star_y,5));
-    ovg_translate(-670,-60);
+    ovg_reset();
 
     ovg_fill_rule(FILL_RULE_ALTERNATE);
     ovg_translate(670,10);
     ovg_free(ovg_polygon(sketch_star_x,sketch_star_y,5));
-    ovg_translate(-670,-10);
+    ovg_reset();
 
 
     //transformation tests
@@ -203,10 +203,7 @@ int main(int argc, char **argv) {
     float x,y,w,h;
     ovg_bounds(diamond, &x,&y,&w,&h);
     ovg_free(diamond);
-   //undo transforms in reverse order
-    ovg_scale(2.0,2.0);
-    ovg_rotate(-45);
-    ovg_translate(-500,-200);
+    ovg_reset();
     //draw bounds
     ovg_fill(0,0,0,0);
     ovg_stroke(255,0,0,255);
@@ -237,7 +234,7 @@ int main(int argc, char **argv) {
     }
     ovg_free(star);
     ovg_free(dec);
-    ovg_translate(-380,-410);
+    ovg_reset();
 
     //check placement accuracy
     axes();
