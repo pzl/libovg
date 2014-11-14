@@ -8,6 +8,13 @@ typedef enum {
 } DrawQuality;
 
 typedef enum {
+	MATRIX_PATH								= 0x1400,
+	MATRIX_IMAGE							= 0x1401,
+	MATRIX_FILL								= 0x1402,
+	MATRIX_STROKE							= 0x1403
+} MatrixMode;
+
+typedef enum {
 	CAP_BUTT								= 0x1700,
 	CAP_ROUND								= 0x1701,
 	CAP_SQUARE								= 0x1702
@@ -109,5 +116,6 @@ void ovg_scale(float x, float y);
 void ovg_shear(int x, int y);
 //matrices
 void ovg_reset(void);
+void ovg_mat_mode(MatrixMode);
 
 #endif

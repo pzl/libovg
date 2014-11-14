@@ -28,6 +28,10 @@ void ovg_reset(void){
 	vgLoadIdentity();
 }
 
+void ovg_mat_mode(MatrixMode mode){
+	vgSeti(VG_MATRIX_MODE,mode);
+}
+
 VGPath ovg_interpolate(VGPath start, VGPath end, float amount) {
 	VGPath p = getpath();
 	VGboolean success = vgInterpolatePath(p, start, end, amount);
