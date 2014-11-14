@@ -1,3 +1,4 @@
+#include <stddef.h> /* NULL */
 #include "common.h"
 #include "utility.h"
 
@@ -31,6 +32,77 @@ void ovg_reset(void){
 void ovg_mat_mode(MatrixMode mode){
 	vgSeti(VG_MATRIX_MODE,mode);
 }
+
+void ovg_mat_set(float *matrix){
+	VGMatrixMode curmode = vgGeti(VG_MATRIX_MODE);
+	float mcopy[9];
+
+	//flip matrix
+	mcopy[0] = matrix[0];
+	mcopy[3] = matrix[1];
+	mcopy[6] = matrix[2];
+	mcopy[1] = matrix[3];
+	mcopy[4] = matrix[4];
+	mcopy[7] = matrix[5];
+
+	//only need these elements if current matrix is not affine
+	if (curmode == VG_MATRIX_IMAGE_USER_TO_SURFACE){
+		mcopy[2] = matrix[6];
+		mcopy[5] = matrix[7];
+		mcopy[8] = matrix[8];
+	} else {
+		mcopy[2] = 0;
+		mcopy[5] = 0;
+		mcopy[8] = 1;
+	}
+
+	vgLoadMatrix(mcopy);
+}
+
+void ovg_mat_current(float *matrix){
+	if (matrix == NULL){
+		return;
+	}
+	VGfloat mcopy[9];
+	vgGetMatrix(mcopy);
+	matrix[0] = mcopy[0];
+	matrix[1] = mcopy[3];
+	matrix[2] = mcopy[6];
+	matrix[3] = mcopy[1];
+	matrix[4] = mcopy[4];
+	matrix[5] = mcopy[7];
+	matrix[6] = mcopy[2];
+	matrix[7] = mcopy[5];
+	matrix[8] = mcopy[8];
+
+}
+
+void ovg_mat_multiply(float *matrix){
+	VGMatrixMode curmode = vgGeti(VG_MATRIX_MODE);
+	float mcopy[9];
+
+	//flip matrix
+	mcopy[0] = matrix[0];
+	mcopy[3] = matrix[1];
+	mcopy[6] = matrix[2];
+	mcopy[1] = matrix[3];
+	mcopy[4] = matrix[4];
+	mcopy[7] = matrix[5];
+
+	//only need these elements if current matrix is not affine
+	if (curmode == VG_MATRIX_IMAGE_USER_TO_SURFACE){
+		mcopy[2] = matrix[6];
+		mcopy[5] = matrix[7];
+		mcopy[8] = matrix[8];
+	} else {
+		mcopy[2] = 0;
+		mcopy[5] = 0;
+		mcopy[8] = 1;
+	}
+
+	vgMultMatrix(mcopy);
+}
+
 
 VGPath ovg_interpolate(VGPath start, VGPath end, float amount) {
 	VGPath p = getpath();

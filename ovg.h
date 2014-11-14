@@ -125,5 +125,8 @@ void ovg_shear(int x, int y);
 //matrices
 void ovg_reset(void);
 void ovg_mat_mode(MatrixMode);
+void ovg_mat_set(float *matrix);
+void ovg_mat_current(float *matrix);
+void ovg_mat_multiply(float *matrix); //shortcut for _set(current * new)
 
 #endif
