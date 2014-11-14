@@ -1,4 +1,5 @@
 #include "common.h"
+#include "utility.h"
 
 void ovg_translate(int x, int y){
 	vgTranslate(x,y);
@@ -25,4 +26,17 @@ void ovg_bounds_transformed(VGPath p, float *x, float *y, float *w, float *h){
 
 void ovg_mat_identity(void){
 	vgLoadIdentity();
+}
+
+VGPath ovg_interpolate(VGPath start, VGPath end, float amount) {
+	VGPath p = getpath();
+	VGboolean success = vgInterpolatePath(p, start, end, amount);
+
+
+	if (success == VG_TRUE){
+		vgDrawPath(p, VG_STROKE_PATH | VG_FILL_PATH);
+		return p;
+	} else {
+		return start;
+	}
 }

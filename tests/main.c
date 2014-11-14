@@ -203,20 +203,41 @@ int main(int argc, char **argv) {
     float x,y,w,h;
     ovg_bounds(diamond, &x,&y,&w,&h);
     ovg_free(diamond);
-
    //undo transforms in reverse order
     ovg_scale(2.0,2.0);
     ovg_rotate(-45);
     ovg_translate(-500,-200);
-
-
+    //draw bounds
     ovg_fill(0,0,0,0);
     ovg_stroke(255,0,0,255);
     ovg_rect((int)x,(int)y,(int)w,(int)h);
     ovg_draw();
-
+    //reset to reasonable defaults
     ovg_fill(120,255,17,255);
     ovg_stroke(0,0,0,255);
+
+
+
+    //test path interpolation
+    /*int dec_x[10] = {50,79,98,98,79, 50,21, 2, 2,21},
+        dec_y[10] = {0, 10,34,65,89,100,89,65,34,10};*/
+    int dec_x[10] = { 50,21, 2, 2,21,50,79,98,98,79},
+        dec_y[10] = {100,89,65,34,10, 0,10,34,65,89};
+    int star_x[10] = {50,30,0,25,20,50,80,75,100,70},
+        star_y[10] = {100,65, 65, 40, 0, 25, 0, 40, 65, 65};
+    Path star, dec;
+    ovg_translate(-200,-200); //draw main shapes off screen
+    star = ovg_polygon(star_x,star_y,10);
+    dec = ovg_polygon(dec_x,dec_y,10);
+    ovg_translate(200,200);
+    ovg_translate(-100,410);
+    for (i=1; i<5; i++){
+        ovg_translate(120,0);
+        ovg_free(ovg_interpolate(star,dec,i*0.2));
+    }
+    ovg_free(star);
+    ovg_free(dec);
+    ovg_translate(-380,-410);
 
     //check placement accuracy
     axes();

@@ -95,6 +95,7 @@ void ovg_text(int x, int y, char *s, int pointsize);
 /*********************
 * Utility Commands
 *********************/
+Path ovg_interpolate(Path start, Path end, float amount);
 void ovg_bounds(Path, float *x, float *y, float *w, float *h);
 void ovg_bounds_transformed(Path, float *x, float *y, float *w, float *h);
 
