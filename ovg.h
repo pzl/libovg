@@ -30,6 +30,8 @@ typedef enum {
 	GRADIENT_REFLECT						= 0x1C02
 } GradRule;
 
+typedef void * Path;
+
 #define BG_COLOR { 0.94f, 1.0f, 0.92f, 1.0f }
 
 /*****************************
@@ -72,26 +74,26 @@ void ovg_fill_rule(FillRule);
 /***************************
 * Shapes and Objects
 ****************************/
-void ovg_line(int x0,int y0,int x1,int y1);
-void ovg_polyline(int *x, int *y, int n);
-void ovg_polygon(int *x, int *y, int n);
-void ovg_rect(int x, int y, int w, int h);
-void ovg_round_rect(int x, int y, int w, int h, int r);
-void ovg_circle(int cx, int cy, int r);
-void ovg_ellipse(int cx, int cy, int w, int h);
-void ovg_arc(int x, int y, int w, int h, int start_angle, int angle_travel); //pie slice and chord?
-void ovg_bezier_quad(int sx, int sy, int cx, int cy, int ex, int ey); //start, control, end
-void ovg_bezier_cube(int sx, int sy,
+Path ovg_line(int x0,int y0,int x1,int y1);
+Path ovg_polyline(int *x, int *y, int n);
+Path ovg_polygon(int *x, int *y, int n);
+Path ovg_rect(int x, int y, int w, int h);
+Path ovg_round_rect(int x, int y, int w, int h, int r);
+Path ovg_circle(int cx, int cy, int r);
+Path ovg_ellipse(int cx, int cy, int w, int h);
+Path ovg_arc(int x, int y, int w, int h, int start_angle, int angle_travel); //pie slice and chord?
+Path ovg_bezier_quad(int sx, int sy, int cx, int cy, int ex, int ey); //start, control, end
+Path ovg_bezier_cube(int sx, int sy,
                      int c1x, int c1y, int c2x, int c2y,
                      int ex, int ey); //start, control1,2, end
-void ovg_text(int x, int y, char *s, int pointsize);
+Path ovg_text(int x, int y, char *s, int pointsize);
 
 
 /*********************
 * Utility Commands
 *********************/
-void ovg_bounds(float *x, float *y, float *w, float *h);
-void ovg_bounds_transformed(float *x, float *y, float *w, float *h);
+void ovg_bounds(Path, float *x, float *y, float *w, float *h);
+void ovg_bounds_transformed(Path, float *x, float *y, float *w, float *h);
 
 
 /************************

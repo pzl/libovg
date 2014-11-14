@@ -14,12 +14,12 @@ void ovg_shear(int x, int y){
 }
 
 
-void ovg_bounds(float *x, float *y, float *w, float *h){
-	vgPathTransformedBounds(lastPath,x,y,w,h);
+void ovg_bounds(VGPath p, float *x, float *y, float *w, float *h){
+	vgPathTransformedBounds(p,x,y,w,h);
 }
 
-void ovg_bounds_transformed(float *x, float *y, float *w, float *h){
-	vgPathBounds(lastPath,x,y,w,h);
+void ovg_bounds_transformed(VGPath p, float *x, float *y, float *w, float *h){
+	vgPathBounds(p,x,y,w,h);
 }
 
 
