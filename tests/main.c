@@ -27,8 +27,11 @@ void text(void);
     } while (0)
 int test_case_x=TEST_CASE_PADDING,
     test_case_y=TEST_CASE_PADDING;
+unsigned char save_colors[8];
 void startcase(void);
 void endcase(void);
+void save_fills(void);
+void restore_fills(void);
 void reset_styles(void);
 
 //convenience function to toss paths we don't need
@@ -46,21 +49,6 @@ int main(int argc, char **argv) {
     trans();
     lines_styles();
     gradients();
-
-    unsigned char r,g,b,a;
-
-    ovg_fill(128,17,233,251);
-    ovg_fill_current(&r,&g,&b,&a);
-
-    if (r == 128 &&
-        g == 17 &&
-        b == 233 &&
-        a == 251) {
-        printf("fetching current fill colors passed\n");
-    } else {
-        fprintf(stderr, "Error fetching fill colors. Gave 128,17,233,251, got: %d,%d,%d,%d\n", r,g,b,a);
-    }
-
 
     //test clearing a section of the arc
     //ovg_clear_rect(600,0,200,50);
@@ -82,6 +70,16 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
+void save_fills(void) {
+    ovg_fill_current(&save_colors[0],&save_colors[1],&save_colors[2],&save_colors[3]);
+    ovg_stroke_current(&save_colors[4],&save_colors[5],&save_colors[6],&save_colors[7]);
+}
+
+void restore_fills(void) {
+    ovg_fill(save_colors[0],save_colors[1],save_colors[2],save_colors[3]);
+    ovg_stroke(save_colors[4],save_colors[5],save_colors[6],save_colors[7]);
+}
+
 void reset_styles(void) {
     ovg_fill(0,0,0,0);
     ovg_stroke(0,0,0,255);
@@ -93,14 +91,15 @@ void reset_styles(void) {
 }
 
 void startcase(void) {
+    save_fills();
     reset_styles();
     ovg_translate(test_case_x,test_case_y);
     ovg_free(ovg_rect(0,0,TEST_CASE_SIZE,TEST_CASE_SIZE));
+    restore_fills();
 }
 
 void endcase(void) {
     ovg_reset();
-    reset_styles();
     test_case_x += TEST_CASE_SIZE + TEST_CASE_PADDING;
 
     int win_x,win_y,win_w,win_h;
@@ -115,41 +114,26 @@ void endcase(void) {
 
 void basic_shapes(void) {
     //draw some basic shapes
+    reset_styles();
+    ovg_fill(255,200,128,255); //basic fill color
     TEST(
-        ovg_fill(255,200,128,255); //basic fill color
         _(ovg_rect(5,5,30,30));
         _(ovg_rect(50,5,47,30));
         _(ovg_rect(5,40,90,50));
     );
-    TEST(
-        ovg_fill(255,200,128,255); //basic fill color
-        _(ovg_round_rect(5,5,50,60,15));
-    );
-    TEST(
-        ovg_fill(255,200,128,255);
-        _(ovg_circle(50,50,20));
-    );
-    TEST(
-        ovg_fill(255,200,128,255);
-        _(ovg_ellipse(50,50,80,27));
-    );
-    TEST(
-        ovg_fill(255,200,128,255);
-        _(ovg_line(10,90,85,10));
-    );
-    TEST(
-        ovg_fill(255,200,128,255);
-        _(ovg_arc(50,10,90,90,0,180));
-    );
-    ovg_draw();
+    TEST(_(ovg_round_rect(5,5,50,60,15)););
+    TEST(_(ovg_circle(50,50,20)););
+    TEST(_(ovg_ellipse(50,50,80,27)););
+    TEST(_(ovg_line(10,90,85,10)););
+    TEST(_(ovg_arc(50,10,90,90,0,180)););
 }
 
 void fills(void) {
     int sketch_star_x[6] = {5,25,45,0,50,5},
         sketch_star_y[6] = {0,35,0 ,25,25,0};
 
+    ovg_fill(122,200,174,255);
     TEST(
-         ovg_fill(122,200,174,255);
         ovg_fill_rule(FILL_RULE_ALL);
         _(ovg_polygon(sketch_star_x,sketch_star_y,5));
 
@@ -240,8 +224,8 @@ void trans(void) {
     Path diamond;
     float x,y,w,h;
 
+    ovg_fill(50,128,255,255);
     TEST(
-        ovg_fill(50,128,255,255);
         ovg_translate(40,40);
         ovg_rotate(45);
         ovg_scale(0.5,0.5);
@@ -256,6 +240,7 @@ void trans(void) {
     ovg_rect((int)x,(int)y,(int)w,(int)h);
     ovg_draw();
 
+    ovg_stroke(0,0,0,255); //undo red stroke
 
     //test path interpolation
 
@@ -355,20 +340,15 @@ void polys(void) {
     int pt_x[10] = {50, 30, 0,25,20,50,80,75,100,70},
         pt_y[10] = {100,65,65,40, 0,25, 0,40, 65,65};
 
-    TEST(
-        ovg_fill(255,200,128,255); //basic fill color
-        _(ovg_polygon(pt_x,pt_y,10));
-    );
-    TEST(
-        ovg_fill(255,200,128,255); //basic fill color
-        _(ovg_polyline(pt_x,pt_y,10));
-    );
+    ovg_fill(255,200,128,255); //basic fill color
+    TEST(_(ovg_polygon(pt_x,pt_y,10)););
+    TEST(_(ovg_polyline(pt_x,pt_y,10)););
 }
 
 
 void text(void) {
+    ovg_fill(0,0,0,255);
     TEST(
-        ovg_fill(0,0,0,255);
         ovg_text(4,70,"Demo",24);
         ovg_text(4,40,"Shapes",16);
     );
