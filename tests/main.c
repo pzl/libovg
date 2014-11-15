@@ -14,7 +14,7 @@ void trans(void);
 void gradients(void);
 void polys(void);
 void text(void);
-//void clear(void);
+void clear(void);
 
 //convenience testing functions
 #define TEST_CASE_SIZE 100
@@ -50,18 +50,9 @@ int main(int argc, char **argv) {
     lines_styles();
     gradients();
 
-    //test clearing a section of the arc
-    //ovg_clear_rect(600,0,200,50);
-
-
     //check placement accuracy
     axes();
-
-    getchar(); //quick way to pause and wait for user input. press enter to close
-
-    //test clearing the whole screen
-    ovg_clear();
-    ovg_draw();
+    clear();
 
     //wait to view results of clear, then exit
     getchar(); 
@@ -352,6 +343,21 @@ void text(void) {
         ovg_text(4,70,"Demo",24);
         ovg_text(4,40,"Shapes",16);
     );
+    ovg_draw();
+}
+
+void clear(void) {
+    ovg_fill(220,80,80,255);
+    TEST(
+        _(ovg_rect(10,10,80,80));
+        ovg_clear_rect(70,10,20,20);
+    );
+    ovg_draw();
+
+
+    getchar();
+
+    ovg_clear();
     ovg_draw();
 }
 
