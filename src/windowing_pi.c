@@ -6,9 +6,17 @@
 #include <bcm_host.h>
 #include "ovg.h"
 
+typedef struct ovgWindow {
+	int x;
+	int y;
+	int w;
+	int h;
+} ovgWindow;
+
 static EGLConfig eglConfig;
 static EGLDisplay eglDisplay;
 static EGLSurface eglSurface;
+static ovgWindow win;
 
 void ovg_draw(void){
 	eglSwapBuffers(eglDisplay, eglSurface);
@@ -21,10 +29,10 @@ void ovg_clear(void){
 }
 
 void ovg_wininfo(int *x, int *y, int *w, int *h){
-	*x=0;
-	*y=0;
-	*w=1366;
-	*h=768;
+	*x = win.x;
+	*y = win.y;
+	*w = win.w;
+	*h = win.h;
 }
 
 void ovg_dispinfo(unsigned int *w, unsigned int *h) {
@@ -32,6 +40,13 @@ void ovg_dispinfo(unsigned int *w, unsigned int *h) {
 	if (success < 0){
 		fprintf(stderr, "LibOVG: Error getting display size\n");
 	}
+	/*
+	//alternative?
+	DISPMANX_MODEINFO_T info;
+	vc_dispmanx_display_get_info(eglDisplay, &info);
+	*w = info.width;
+	*h = info.height;
+	*/
 }
 
 void ovg_init(void){
@@ -85,6 +100,12 @@ void ovg_open(int x, int y, int w, int h){
 	VC_RECT_T dest;
 	VC_RECT_T src;
 	EGLContext eglContext = eglGetCurrentContext();
+
+	//save dimensions to look up later
+	win.x = x;
+	win.y = y;
+	win.w = w;
+	win.h = h;
 
 	dest.x = x;
 	dest.y = y;
