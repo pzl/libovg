@@ -57,8 +57,8 @@ int main(int argc, char **argv) {
     basic_shapes();
     fills();
     polys();
-    text();
     trans();
+    text();
     lines_styles();
     gradients();
     advanced_modes();
@@ -133,9 +133,10 @@ void basic_shapes(void) {
 }
 
 void fills(void) {
+
+    //Test fill rules
     int sketch_star_x[6] = {5,25,45,0,50,5},
         sketch_star_y[6] = {0,35,0 ,25,25,0};
-
     ovg_fill(122,200,174,255);
     TEST(
         ovg_fill_rule(FILL_RULE_ALL);
@@ -145,6 +146,16 @@ void fills(void) {
         ovg_fill_rule(FILL_RULE_ALTERNATE);
         _FS(ovg_polygon(sketch_star_x,sketch_star_y,5));
     );
+
+
+    //test alpha
+    TEST (
+        ovg_fill(255,0,0,120);
+        _F(ovg_rect(2,20,60,40));
+        ovg_fill(0,0,255,70);
+        _F(ovg_rect(50,40,45,50));
+    );
+
     ovg_draw();
 }
 
