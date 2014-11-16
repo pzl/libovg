@@ -23,6 +23,7 @@ void ovg_mask(VGPath p, AlphaMask mask) {
 	//only vgMask supported
 	(void) p;
 	(void) mask;
+	fprintf(stderr, "ovg_mask not yet supported(OpenVG 1.0, no vgRenderToMask)\n");
 #endif
 }
 
