@@ -8,7 +8,6 @@
 
 static EGLConfig eglConfig;
 static EGLDisplay eglDisplay;
-static EGLContext eglContext;
 static EGLSurface eglSurface;
 
 void ovg_draw(void){
@@ -37,7 +36,7 @@ void ovg_dispinfo(unsigned int *w, unsigned int *h) {
 
 void ovg_init(void){
 	bcm_host_init();
-	int32_t success = 0;
+	EGLContext eglContext;
 	EGLint num_config;
 
 	static const EGLint attribute_list[] = {
@@ -66,8 +65,10 @@ void ovg_init(void){
 }
 
 void ovg_cleanup(void){
+	EGLContext eglContext = eglGetCurrentContext();
 	eglDestroySurface(eglDisplay, eglSurface);
 	
+
 	//clear screen
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -83,6 +84,7 @@ void ovg_open(int x, int y, int w, int h){
 	DISPMANX_UPDATE_HANDLE_T dispman_update;
 	VC_RECT_T dest;
 	VC_RECT_T src;
+	EGLContext eglContext = eglGetCurrentContext();
 
 	dest.x = x;
 	dest.y = y;
