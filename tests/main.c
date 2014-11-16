@@ -151,19 +151,9 @@ void fills(void) {
     //test alpha
     TEST (
         ovg_fill(255,0,0,120);
-        _F(ovg_rect(2,20,60,40));
-        ovg_fill(0,0,255,70);
-        _F(ovg_rect(50,40,45,50));
-    );
-
-    //test blending
-    TEST (
-        ovg_fill(255,0,0,120);
-        _F(ovg_rect(2,20,60,40));
-        ovg_blend(BLEND_LIGHTEN);
-        ovg_fill(0,0,255,70);
-        _F(ovg_rect(50,40,45,50));
-        ovg_blend(BLEND_SRC_OVER);
+        _F(ovg_rect(2,10,60,60));
+        ovg_fill(0,0,255,100);
+        _F(ovg_rect(30,40,60,50));
     );
 
     ovg_draw();
@@ -385,8 +375,27 @@ void advanced_modes(void) {
         //ovg_free(p);
         _F(ovg_rect(2,2,96,96));
     );
-    ovg_draw();
     ovg_mask_off();
+
+
+    //test blending
+    int blends[] = {
+        BLEND_SRC, BLEND_DST_OVER, BLEND_SRC_IN, BLEND_DST_IN, BLEND_MULTIPLY,
+        BLEND_SCREEN, BLEND_DARKEN, BLEND_LIGHTEN, BLEND_ADDITIVE};
+    int i;
+    for (i=0; i<9; i++){
+        TEST (
+            ovg_fill(255,0,0,120);
+            _F(ovg_rect(2,10,60,60));
+            ovg_blend(blends[i]);
+            ovg_fill(0,0,255,100);
+            _F(ovg_rect(30,40,60,50));
+            ovg_blend(BLEND_SRC_OVER);
+        );
+    }
+
+    
+    ovg_draw();
 }
 
 void clear(void) {
