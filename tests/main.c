@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 
     ovg_init(); //initialize OpenGL contexts, etc
 
-    int w,h;
+    unsigned int w,h;
 
     ovg_dispinfo(&w,&h);
     printf("Display size is %dx%d\n", w,h);

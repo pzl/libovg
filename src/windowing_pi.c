@@ -28,8 +28,8 @@ void ovg_wininfo(int *x, int *y, int *w, int *h){
 	*h=768;
 }
 
-void ovg_dispinfo(int *w, int *h) {
-	int success = graphics_get_display_size(0/*Displau num*/, w, h);
+void ovg_dispinfo(unsigned int *w, unsigned int *h) {
+	int32_t success = graphics_get_display_size(0/*Displau num*/, w, h);
 	if (success < 0){
 		fprintf(stderr, "LibOVG: Error getting display size\n");
 	}

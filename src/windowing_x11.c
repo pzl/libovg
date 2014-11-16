@@ -120,7 +120,7 @@ void ovg_wininfo(int *x, int *y, int *w, int *h){
 	*h = gwa.height;
 }
 
-void ovg_dispinfo(int *w, int *h) {
+void ovg_dispinfo(unsigned int *w, unsigned int *h) {
 	*w = XDisplayWidth(x_display, 0);
 	*h = XDisplayHeight(x_display, 0);
 }
