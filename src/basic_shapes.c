@@ -76,6 +76,12 @@ VGPath ovg_bezier_cube(int sx, int sy,
 }
 
 
+VGPath ovg_path(int n, unsigned char *commands, float *data) {
+	VGPath p = getpath();
+	vgAppendPathData(p,n,commands, data);
+	return p;
+}
+
 static void _zip(int *x, int *y, int n, VGfloat *result){
 	while (n--){
 		*result++ = *x++;

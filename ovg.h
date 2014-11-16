@@ -64,6 +64,56 @@ typedef enum {
 	BLEND_ADDITIVE							= 0x2009
 } BlendMode;
 
+
+typedef enum {
+	C_ABSOLUTE = 0,
+	C_RELATIVE = 1
+} CoordSystem;
+
+typedef enum {
+	CLOSE_PATH								= ( 0 << 1),
+	MOVE_TO									= ( 1 << 1),
+	LINE_TO									= ( 2 << 1),
+	HLINE_TO								= ( 3 << 1),
+	VLINE_TO								= ( 4 << 1),
+	QUAD_TO									= ( 5 << 1),
+	CUBIC_TO								= ( 6 << 1),
+	SQUAD_TO								= ( 7 << 1),
+	SCUBIC_TO								= ( 8 << 1),
+	SCCWARC_TO								= ( 9 << 1),
+	SCWARC_TO								= (10 << 1),
+	LCCWARC_TO								= (11 << 1),
+	LCWARC_TO								= (12 << 1)
+} PathSegment;
+
+typedef enum {
+	MOVE_TO_ABS								= MOVE_TO | C_ABSOLUTE,
+	MOVE_TO_REL								= MOVE_TO | C_RELATIVE,
+	LINE_TO_ABS								= LINE_TO | C_ABSOLUTE,
+	LINE_TO_REL								= LINE_TO | C_RELATIVE,
+	HLINE_TO_ABS							= HLINE_TO | C_ABSOLUTE,
+	HLINE_TO_REL							= HLINE_TO | C_RELATIVE,
+	VLINE_TO_ABS							= VLINE_TO | C_ABSOLUTE,
+	VLINE_TO_REL							= VLINE_TO | C_RELATIVE,
+	QUAD_TO_ABS								= QUAD_TO | C_ABSOLUTE,
+	QUAD_TO_REL								= QUAD_TO | C_RELATIVE,
+	CUBIC_TO_ABS							= CUBIC_TO | C_ABSOLUTE,
+	CUBIC_TO_REL							= CUBIC_TO | C_RELATIVE,
+	SQUAD_TO_ABS							= SQUAD_TO | C_ABSOLUTE,
+	SQUAD_TO_REL							= SQUAD_TO | C_RELATIVE,
+	SCUBIC_TO_ABS							= SCUBIC_TO | C_ABSOLUTE,
+	SCUBIC_TO_REL							= SCUBIC_TO | C_RELATIVE,
+	SCCWARC_TO_ABS							= SCCWARC_TO | C_ABSOLUTE,
+	SCCWARC_TO_REL							= SCCWARC_TO | C_RELATIVE,
+	SCWARC_TO_ABS							= SCWARC_TO | C_ABSOLUTE,
+	SCWARC_TO_REL							= SCWARC_TO | C_RELATIVE,
+	LCCWARC_TO_ABS							= LCCWARC_TO | C_ABSOLUTE,
+	LCCWARC_TO_REL							= LCCWARC_TO | C_RELATIVE,
+	LCWARC_TO_ABS							= LCWARC_TO | C_ABSOLUTE,
+	LCWARC_TO_REL							= LCWARC_TO | C_RELATIVE
+} PathCommand;
+
+
 #ifndef Path
 typedef void * Path;
 #endif
@@ -134,6 +184,7 @@ Path ovg_bezier_quad(int sx, int sy, int cx, int cy, int ex, int ey); //start, c
 Path ovg_bezier_cube(int sx, int sy,
                      int c1x, int c1y, int c2x, int c2y,
                      int ex, int ey); //start, control1,2, end
+Path ovg_path(int n_commands, unsigned char *commands, float *data);
 void ovg_text(int x, int y, char *s, int pointsize);
 
 

@@ -15,6 +15,7 @@ void gradients(void);
 void polys(void);
 void text(void);
 void advanced_modes(void);
+void custom_path(void);
 void clear(void);
 
 //convenience testing functions
@@ -62,6 +63,7 @@ int main(int argc, char **argv) {
     lines_styles();
     gradients();
     advanced_modes();
+    custom_path();
 
     //check placement accuracy
     axes();
@@ -394,8 +396,31 @@ void advanced_modes(void) {
         );
     }
 
-    
     ovg_draw();
+}
+
+void custom_path(void) {
+    unsigned char commands[] = {
+        MOVE_TO_ABS,
+        VLINE_TO_REL,
+        LINE_TO_REL,
+        LINE_TO_REL,
+        VLINE_TO_REL,
+        LINE_TO_REL,
+        CLOSE_PATH
+    };
+    float points[] = {
+        14, 32,
+        36,
+        36, -15,
+        36, 15,
+        -36,
+        -36, 15
+    };
+
+    TEST(
+         _FS(ovg_path(sizeof(commands),commands,points));
+    );
 }
 
 void clear(void) {
