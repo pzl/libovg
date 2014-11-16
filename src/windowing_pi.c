@@ -59,6 +59,7 @@ void ovg_init(void){
 		EGL_BLUE_SIZE, 8,
 		EGL_ALPHA_SIZE, 8,
 		EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+		EGL_ALPHA_MASK_SIZE, 8,
 		EGL_NONE
 	};
 

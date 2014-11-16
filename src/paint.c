@@ -97,6 +97,25 @@ void ovg_gradient_radial(int nstops, GradRule rule,
 	vgSetPaint(grad_paint, VG_FILL_PATH);
 }
 
+
+void ovg_mask(VGPath p, AlphaMask mask) {
+#ifdef OPENVG_VERSION_1_1
+	vgSeti(VG_MASKING, VG_TRUE);
+	vgRenderToMask(p, VG_FILL_PATH, mask);
+#else
+	//only vgMask supported
+	(void) p;
+	(void) mask;
+#endif
+}
+
+void ovg_mask_off(void) {
+#ifdef OPENVG_VERSION_1_1
+	vgRenderToMask(VG_INVALID_HANDLE, VG_FILL_PATH, VG_FILL_MASK);
+#endif
+	vgSeti(VG_MASKING, VG_FALSE);
+}
+
 void _colorstops(VGPaint grad_paint, int nstops, int rule, float *pts, unsigned char *colors){
 
 	int i, j;

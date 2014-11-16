@@ -53,6 +53,14 @@ int main(int argc, char **argv) {
 
     ovg_open(0,0,1366,768);
 
+    Path p = ovg_rect(500,500,100,30);
+    ovg_mask(p,MASK_SET);
+    //ovg_free(p);
+    ovg_fill(255,0,0,255);
+    ovg_free(ovg_draw_path(ovg_rect(400,490,250,250),FILL_PATH));
+    ovg_draw();
+    ovg_mask_off();
+
     basic_shapes();
     fills();
     polys();

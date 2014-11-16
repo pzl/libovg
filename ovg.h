@@ -20,6 +20,15 @@ typedef enum {
 } MatrixMode;
 
 typedef enum {
+	MASK_CLEAR								= 0x1500,
+	MASK_FILL								= 0x1501,
+	MASK_SET								= 0x1502,
+	MASK_UNION								= 0x1503,
+	MASK_INTERSECT							= 0x1504,
+	MASK_SUBTRACT							= 0x1505
+} AlphaMask;
+
+typedef enum {
 	CAP_BUTT								= 0x1700,
 	CAP_ROUND								= 0x1701,
 	CAP_SQUARE								= 0x1702
@@ -121,6 +130,8 @@ void ovg_text(int x, int y, char *s, int pointsize);
 Path ovg_interpolate(Path start, Path end, float amount);
 void ovg_bounds(Path, float *x, float *y, float *w, float *h);
 void ovg_bounds_transformed(Path, float *x, float *y, float *w, float *h);
+void ovg_mask(Path, AlphaMask);
+void ovg_mask_off(void);
 
 
 /************************
