@@ -110,7 +110,6 @@ VGPath ovg_interpolate(VGPath start, VGPath end, float amount) {
 
 
 	if (success == VG_TRUE){
-		vgDrawPath(p, VG_STROKE_PATH | VG_FILL_PATH);
 		return p;
 	} else {
 		return start;

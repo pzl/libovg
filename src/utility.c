@@ -9,3 +9,8 @@ VGPath getpath(void){
 void ovg_free(VGPath p) {
 	vgDestroyPath(p);
 }
+
+VGPath ovg_draw_path(VGPath p, PaintMode pm) {
+	vgDrawPath(p, pm);
+	return p;
+}

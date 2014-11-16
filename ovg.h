@@ -2,6 +2,11 @@
 #define _LOVG_H
 
 typedef enum {
+	STROKE_PATH								= (1 << 0),
+	FILL_PATH								= (1 << 1)
+} PaintMode;
+
+typedef enum {
 	QUALITY_NON_ANTIALIASED					= 0x1200,
 	QUALITY_FAST							= 0x1201,
 	QUALITY_BEST							= 0x1202
@@ -54,6 +59,7 @@ void ovg_quality(DrawQuality);
 void ovg_free(Path);
 void ovg_cleanup(void);
 void ovg_draw(void);
+Path ovg_draw_path(Path p, PaintMode);
 void ovg_clear(void);
 void ovg_clear_rect(int x, int y, int w, int h);
 

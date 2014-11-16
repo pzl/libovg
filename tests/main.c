@@ -34,9 +34,12 @@ void save_fills(void);
 void restore_fills(void);
 void reset_styles(void);
 
-//convenience function to toss paths we don't need
+//convenience functions
 #define _(X) (ovg_free(X))
-
+#define _S(X) (ovg_free(ovg_draw_path(X,STROKE_PATH)))
+#define _F(X) (ovg_free(ovg_draw_path(X,FILL_PATH)))
+#define _FS(X) (ovg_free(ovg_draw_path(X,STROKE_PATH | FILL_PATH)))
+#define _SF _FS
 
 int main(int argc, char **argv) {
 
@@ -93,7 +96,7 @@ void startcase(void) {
     save_fills();
     reset_styles();
     ovg_translate(test_case_x,test_case_y);
-    ovg_free(ovg_rect(0,0,TEST_CASE_SIZE,TEST_CASE_SIZE));
+    _S(ovg_rect(0,0,TEST_CASE_SIZE,TEST_CASE_SIZE));
     restore_fills();
 }
 
@@ -116,15 +119,15 @@ void basic_shapes(void) {
     reset_styles();
     ovg_fill(255,200,128,255); //basic fill color
     TEST(
-        _(ovg_rect(5,5,30,30));
-        _(ovg_rect(50,5,47,30));
-        _(ovg_rect(5,40,90,50));
+        _F(ovg_rect(5,5,30,30));
+        _FS(ovg_rect(50,5,47,30));
+        _F(ovg_rect(5,40,90,50));
     );
-    TEST(_(ovg_round_rect(5,5,50,60,15)););
-    TEST(_(ovg_circle(50,50,20)););
-    TEST(_(ovg_ellipse(50,50,80,27)););
-    TEST(_(ovg_line(10,90,85,10)););
-    TEST(_(ovg_arc(50,10,90,90,0,180)););
+    TEST(_FS(ovg_round_rect(5,5,50,60,15)););
+    TEST(_FS(ovg_circle(50,50,20)););
+    TEST(_FS(ovg_ellipse(50,50,80,27)););
+    TEST(_S(ovg_line(10,90,85,10)););
+    TEST(_FS(ovg_arc(50,10,90,90,0,180)););
 }
 
 void fills(void) {
@@ -134,11 +137,11 @@ void fills(void) {
     ovg_fill(122,200,174,255);
     TEST(
         ovg_fill_rule(FILL_RULE_ALL);
-        _(ovg_polygon(sketch_star_x,sketch_star_y,5));
+        _FS(ovg_polygon(sketch_star_x,sketch_star_y,5));
 
         ovg_translate(0,50);
         ovg_fill_rule(FILL_RULE_ALTERNATE);
-        _(ovg_polygon(sketch_star_x,sketch_star_y,5));
+        _FS(ovg_polygon(sketch_star_x,sketch_star_y,5));
     );
     ovg_draw();
 }
@@ -148,32 +151,32 @@ void lines_styles(void) {
     TEST(
         //test line width
         ovg_stroke_width(1.0);
-        _(ovg_line(2,10,98,10));
+        _S(ovg_line(2,10,98,10));
         ovg_stroke_width(2.0);
-        _(ovg_line(2,18,98,18));
+        _S(ovg_line(2,18,98,18));
         ovg_stroke_width(3.0);
-        _(ovg_line(2,28,98,28));
+        _S(ovg_line(2,28,98,28));
         ovg_stroke_width(4.0);
-        _(ovg_line(2,38,98,38));
+        _S(ovg_line(2,38,98,38));
         ovg_stroke_width(5.0);
-        _(ovg_line(2,50,98,50));
+        _S(ovg_line(2,50,98,50));
         ovg_stroke_width(6);
-        _(ovg_line(2,62,98,62));
+        _S(ovg_line(2,62,98,62));
         ovg_stroke_width(7);
-        _(ovg_line(2,76,98,76));
+        _S(ovg_line(2,76,98,76));
         ovg_stroke_width(8);
-        _(ovg_line(2,90,98,90));
+        _S(ovg_line(2,90,98,90));
     );
 
     TEST(
         //stroke terminations
         ovg_stroke_width(10);
         ovg_stroke_cap(CAP_ROUND);
-        _(ovg_line(10,20,90,20));
+        _S(ovg_line(10,20,90,20));
         ovg_stroke_cap(CAP_BUTT);
-        _(ovg_line(10,50,90,50));
+        _S(ovg_line(10,50,90,50));
         ovg_stroke_cap(CAP_SQUARE);
-        _(ovg_line(10,80,90,80));
+        _S(ovg_line(10,80,90,80));
     );
 
     //stroke join styles
@@ -182,19 +185,19 @@ void lines_styles(void) {
     TEST(
         ovg_stroke_width(10);
         ovg_stroke_join(JOIN_MITER);
-        _(ovg_polyline(px,py,3));
+        _S(ovg_polyline(px,py,3));
         py[0] += 30; py[1] +=30; py[2] += 30;
         ovg_stroke_join(JOIN_ROUND);
-        _(ovg_polyline(px,py,3));
+        _S(ovg_polyline(px,py,3));
         py[0] += 30; py[1] +=30; py[2] += 30;
         ovg_stroke_join(JOIN_BEVEL);
-        _(ovg_polyline(px,py,3));
+        _S(ovg_polyline(px,py,3));
     );
 
     TEST(
         //bezier curve tests. Arch and squiggle
-        _(ovg_bezier_quad(10,10,45,60,80,10));
-        _(ovg_bezier_cube(10,60,25,100,35,20,50,60));
+        _S(ovg_bezier_quad(10,10,45,60,80,10));
+        _S(ovg_bezier_cube(10,60,25,100,35,20,50,60));
     );
 
     //dashed lines
@@ -203,14 +206,14 @@ void lines_styles(void) {
         ovg_stroke_width(3);
         //normal dash, repeated twice
         ovg_dash(dash,4);
-        _(ovg_line(10,10,90,10));
+        _S(ovg_line(10,10,90,10));
         //above that, offset the position
         ovg_dash_phase(10);
-        _(ovg_line(10,25,90,25));
+        _S(ovg_line(10,25,90,25));
 
         //reset phase
         ovg_dash_phase(0);
-        _(ovg_line(10,40,90,40));
+        _S(ovg_line(10,40,90,40));
     );
 
     ovg_dash(NULL,0); //this is how to turn off dashing
@@ -228,15 +231,14 @@ void trans(void) {
         ovg_translate(40,40);
         ovg_rotate(45);
         ovg_scale(0.5,0.5);
-        diamond = ovg_rect(-50,-50,100,100);
+        diamond = ovg_draw_path(ovg_rect(-50,-50,100,100),FILL_PATH | STROKE_PATH);
         //bounds checking of transformed box:
         ovg_bounds(diamond, &x,&y,&w,&h);
         ovg_free(diamond);
     );
     //draw bounds
-    ovg_fill(0,0,0,0);
     ovg_stroke(255,0,0,255);
-    ovg_rect((int)x,(int)y,(int)w,(int)h);
+    _S(ovg_rect((int)x,(int)y,(int)w,(int)h));
     ovg_draw();
 
     ovg_stroke(0,0,0,255); //undo red stroke
@@ -248,15 +250,13 @@ void trans(void) {
     int star_x[10] = {50,30,0,25,20,50,80,75,100,70},
         star_y[10] = {100,65, 65, 40, 0, 25, 0, 40, 65, 65};
     Path star, dec;
-    ovg_translate(-200,-200); //draw main shapes off screen
     star = ovg_polygon(star_x,star_y,10);
     dec = ovg_polygon(dec_x,dec_y,10);
-    ovg_reset();
 
     int i;
     for (i=0; i<6; i++){
         TEST(
-            _(ovg_interpolate(star,dec,i*0.2));
+            _FS(ovg_interpolate(star,dec,i*0.2));
         );
     }
     ovg_free(star);
@@ -273,22 +273,22 @@ void gradients(void) {
     //linear
     TEST(
         ovg_gradient_linear(2,GRADIENT_PAD,0,0,200,200,grad_pts,colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
     //linear, tighter
     TEST(
         ovg_gradient_linear(2,GRADIENT_PAD,50,50,100,100,grad_pts,colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
     //normal radial
     TEST(
         ovg_gradient_radial(2,GRADIENT_PAD,50,50,50,50,50,grad_pts,colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
     //off-center focal point
     TEST(
         ovg_gradient_radial(2,GRADIENT_PAD,50,50,50,7,50,grad_pts,colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
 
 
@@ -303,32 +303,32 @@ void gradients(void) {
     //linear, pad
     TEST(
         ovg_gradient_linear(4,GRADIENT_PAD,20,20,60,60,complex_grad_pts,complex_colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
     //linear, repeat
     TEST(
         ovg_gradient_linear(4,GRADIENT_REPEAT,20,20,60,60,complex_grad_pts,complex_colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
     //linear, reflect
     TEST(
         ovg_gradient_linear(4,GRADIENT_REFLECT,20,20,60,60,complex_grad_pts,complex_colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
     //radial, pad
     TEST(
         ovg_gradient_radial(4,GRADIENT_PAD,50,50,50,50,50,complex_grad_pts,complex_colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
     //radial, repeat
     TEST(
         ovg_gradient_radial(4,GRADIENT_REPEAT,50,50,50,50,50,complex_grad_pts,complex_colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
     //radial, reflect
     TEST(
         ovg_gradient_radial(4,GRADIENT_REFLECT,50,50,50,50,50,complex_grad_pts,complex_colors);
-        _(ovg_rect(0,0,100,100));
+        _F(ovg_rect(0,0,100,100));
     );
 
 
@@ -340,8 +340,8 @@ void polys(void) {
         pt_y[10] = {100,65,65,40, 0,25, 0,40, 65,65};
 
     ovg_fill(255,200,128,255); //basic fill color
-    TEST(_(ovg_polygon(pt_x,pt_y,10)););
-    TEST(_(ovg_polyline(pt_x,pt_y,10)););
+    TEST(_FS(ovg_polygon(pt_x,pt_y,10)););
+    TEST(_S(ovg_polyline(pt_x,pt_y,10)););
 }
 
 
@@ -357,7 +357,7 @@ void text(void) {
 void clear(void) {
     ovg_fill(220,80,80,255);
     TEST(
-        _(ovg_rect(10,10,80,80));
+        _FS(ovg_rect(10,10,80,80));
         ovg_clear_rect(70,10,20,20);
     );
     ovg_draw();
@@ -375,22 +375,22 @@ void axes(void){
     ovg_wininfo(&win_x,&win_y,&win_w,&win_h); //get window size
     printf("window is at %d,%d and is %dx%d\n", win_x,win_y,win_w,win_h);
 
-    ovg_free(ovg_line(AXIS_PADDING,AXIS_PADDING,win_w-AXIS_PADDING,AXIS_PADDING));
-    ovg_free(ovg_line(AXIS_PADDING,AXIS_PADDING,AXIS_PADDING,win_h-AXIS_PADDING));
+    _S(ovg_line(AXIS_PADDING,AXIS_PADDING,win_w-AXIS_PADDING,AXIS_PADDING));
+    _S(ovg_line(AXIS_PADDING,AXIS_PADDING,AXIS_PADDING,win_h-AXIS_PADDING));
 
     for (i=0; i<win_w; i+=AXIS_MAJOR_TICK/AXIS_MINOR_SPACING){
         if (i % AXIS_MAJOR_TICK == 0){
-            ovg_free(ovg_line(i,AXIS_PADDING,i,1));
+            _S(ovg_line(i,AXIS_PADDING,i,1));
         } else {
-            ovg_free(ovg_line(i,AXIS_PADDING,i,4));
+            _S(ovg_line(i,AXIS_PADDING,i,4));
         }  
     }
 
     for (i=0; i<win_h; i+=AXIS_MAJOR_TICK/AXIS_MINOR_SPACING) {
         if (i % AXIS_MAJOR_TICK == 0){
-            ovg_free(ovg_line(AXIS_PADDING,i,1,i));
+            _S(ovg_line(AXIS_PADDING,i,1,i));
         } else {
-            ovg_free(ovg_line(AXIS_PADDING,i,4,i));
+            _S(ovg_line(AXIS_PADDING,i,4,i));
         }
     }
 
