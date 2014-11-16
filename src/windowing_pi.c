@@ -51,7 +51,6 @@ void ovg_dispinfo(unsigned int *w, unsigned int *h) {
 
 void ovg_init(void){
 	bcm_host_init();
-	EGLContext eglContext;
 	EGLint num_config;
 
 	static const EGLint attribute_list[] = {
@@ -73,9 +72,6 @@ void ovg_init(void){
 
 	if (eglChooseConfig(eglDisplay, attribute_list, &eglConfig, 1, &num_config) == EGL_FALSE){
 		fprintf(stderr, "LibOVG: Error setting EGL buffer configuration\n");
-	}
-	if ((eglContext = eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT, NULL)) == EGL_NO_CONTEXT){
-		fprintf(stderr, "LibOVG: Error creating EGL Content\n");
 	}
 }
 
@@ -99,7 +95,7 @@ void ovg_open(int x, int y, int w, int h){
 	DISPMANX_UPDATE_HANDLE_T dispman_update;
 	VC_RECT_T dest;
 	VC_RECT_T src;
-	EGLContext eglContext = eglGetCurrentContext();
+	EGLContext eglContext;
 
 	//save dimensions to look up later
 	win.x = x;
@@ -129,6 +125,9 @@ void ovg_open(int x, int y, int w, int h){
 
 	if ((eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, &window, NULL)) == EGL_NO_SURFACE){
 		fprintf(stderr, "LibOVG: Error Creating EGL window surface\n");
+	}
+	if ((eglContext = eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT, NULL)) == EGL_NO_CONTEXT){
+		fprintf(stderr, "LibOVG: Error creating EGL Content\n");
 	}
 
 	// preserve the buffers on swap
