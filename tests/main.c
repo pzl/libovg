@@ -14,6 +14,7 @@ void trans(void);
 void gradients(void);
 void polys(void);
 void text(void);
+void advanced_modes(void);
 void clear(void);
 
 //convenience testing functions
@@ -53,14 +54,6 @@ int main(int argc, char **argv) {
 
     ovg_open(0,0,1366,768);
 
-    Path p = ovg_rect(500,500,100,30);
-    ovg_mask(p,MASK_SET);
-    //ovg_free(p);
-    ovg_fill(255,0,0,255);
-    ovg_free(ovg_draw_path(ovg_rect(400,490,250,250),FILL_PATH));
-    ovg_draw();
-    ovg_mask_off();
-
     basic_shapes();
     fills();
     polys();
@@ -68,6 +61,7 @@ int main(int argc, char **argv) {
     trans();
     lines_styles();
     gradients();
+    advanced_modes();
 
     //check placement accuracy
     axes();
@@ -360,6 +354,18 @@ void text(void) {
         ovg_text(4,40,"Shapes",16);
     );
     ovg_draw();
+}
+
+void advanced_modes(void) {
+    ovg_fill(255,0,0,255);
+    TEST(
+        Path p = ovg_rect(20,40,100,20);
+        ovg_mask(p,MASK_SET);
+        //ovg_free(p);
+        _F(ovg_rect(2,2,96,96));
+    );
+    ovg_draw();
+    ovg_mask_off();
 }
 
 void clear(void) {
