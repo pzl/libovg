@@ -97,7 +97,7 @@ void ovg_open(int x, int y, int w, int h){
 	src.height = h << 16;
 
 	dispman_display = vc_dispmanx_display_open(0 /* LCD */ );
-	dispman_update = vc_dispmanx_update_start(0);
+	dispman_update = vc_dispmanx_update_start(10);
 
 	window.element = vc_dispmanx_element_add(dispman_update, dispman_display, 0 /*layer */ , &dest, 0 /*src */ ,
 						  &src, DISPMANX_PROTECTION_NONE, 0 /*alpha */ , 0 /*clamp */ ,
