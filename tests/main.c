@@ -42,6 +42,14 @@ int main(int argc, char **argv) {
 
     ovg_init(); //initialize OpenGL contexts, etc
 
+    int w,h;
+
+    ovg_dispinfo(&w,&h);
+    printf("Display size is %dx%d\n", w,h);
+
+
+    ovg_open(0,0,1366,768);
+
     basic_shapes();
     fills();
     polys();

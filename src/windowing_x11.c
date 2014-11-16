@@ -12,8 +12,6 @@
 
 static Display *x_display = NULL;
 Window win;
-int displayW = 1366,
-	displayH = 768;
 
 void ovg_draw(void){
 	glXSwapBuffers(x_display, win);
@@ -29,9 +27,7 @@ void ovg_clear(void){
 	ovg_clear_rect(0,0,w,h);
 }
 
-
-
-void ovg_init(void){
+void ovg_open(int x, int y, int w, int h) {
 	Window root;
 	GLXContext glc;
 	XSetWindowAttributes swa,xattr;
@@ -48,21 +44,23 @@ void ovg_init(void){
 	char instance[] = "blue",
 		 className[] = "red";
 
-	XInitThreads();
 
-	if ((x_display = XOpenDisplay(NULL)) == NULL){
-		fprintf(stderr, "Error opening X Display\n");
-		return;
-	}
 	root = DefaultRootWindow(x_display);
 	if ((vi = glXChooseVisual(x_display, 0, att)) == NULL){
 		fprintf(stderr, "No visual found\n");
 		return;
 	}
 
+	if (y == 0){
+		//for some reason,
+		//y=0 makes the window
+		//default to center of displau, not 0,0
+		y++;
+	}
+
 	swa.event_mask = ExposureMask | KeyPressMask;
 	win = XCreateWindow(x_display,root,
-	                    15,35,displayW,displayH,0,
+	                    x,y,w,h,0,
 	                    CopyFromParent,InputOutput,
 	                    CopyFromParent, CWEventMask,
 	                    &swa);
@@ -70,7 +68,7 @@ void ovg_init(void){
 	xattr.override_redirect=0;
 	XChangeWindowAttributes(x_display, win, CWOverrideRedirect, &xattr);
 
-	XStoreName(x_display, win, "pi-unnamed");
+	XStoreName(x_display, win, "LibOVG");
 
 	classHint = XAllocClassHint();
 	if (classHint){
@@ -88,7 +86,7 @@ void ovg_init(void){
 	// set up screen ratio
 	XGetWindowAttributes(x_display, win, &gwa);
 
- 	if (vgCreateContextSH(displayW, displayH) != VG_TRUE){
+ 	if (vgCreateContextSH(w, h) != VG_TRUE){
     	fprintf(stderr, "Error creating context\n");
     	return;
     }
@@ -97,6 +95,14 @@ void ovg_init(void){
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);
 
     ovg_clear();
+}
+
+void ovg_init(void){
+	XInitThreads();
+	if ((x_display = XOpenDisplay(NULL)) == NULL){
+		fprintf(stderr, "Error opening X Display\n");
+		return;
+	}
 }
 
 void ovg_cleanup(void){
@@ -112,4 +118,9 @@ void ovg_wininfo(int *x, int *y, int *w, int *h){
 	*y = gwa.y;
 	*w = gwa.width;
 	*h = gwa.height;
+}
+
+void ovg_dispinfo(int *w, int *h) {
+	*w = XDisplayWidth(x_display, 0);
+	*h = XDisplayHeight(x_display, 0);
 }

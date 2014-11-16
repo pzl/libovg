@@ -47,7 +47,9 @@ typedef void * Path;
 * Management Commands
 ******************************/
 void ovg_init(void);
+void ovg_open(int x, int y, int w, int h);
 void ovg_wininfo(int *x, int *y, int *w, int *h);
+void ovg_dispinfo(int *w, int *h);
 void ovg_quality(DrawQuality);
 void ovg_free(Path);
 void ovg_cleanup(void);

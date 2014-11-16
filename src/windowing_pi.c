@@ -11,60 +11,29 @@ static EGLDisplay eglDisplay;
 static EGLContext eglContext;
 static EGLSurface eglSurface;
 
-static uint32_t displayH;
-static uint32_t displayW;
-
-
 void ovg_draw(void){
 	eglSwapBuffers(eglDisplay, eglSurface);
 }
 
 void ovg_clear(void){
-	ovg_clear_rect(0,0,displayW,displayH);
+	int x,y,w,h;
+	ovg_wininfo(&x,&y,&w,&h);
+	ovg_clear_rect(0,0,w,h);
 }
 
-
-static void init_surface(int x, int y, int w, int h){
-	static EGL_DISPMANX_WINDOW_T window;
-	DISPMANX_DISPLAY_HANDLE_T dispman_display;
-	DISPMANX_UPDATE_HANDLE_T dispman_update;
-	VC_RECT_T dest;
-	VC_RECT_T src;
-
-	dest.x = x;
-	dest.y = y;
-	dest.width = w;
-	dest.height = h;
-
-	src.x = 0;
-	src.y = 0;
-	src.width = w << 16; //setting these to displayW/H with smaller w/h leads to squishing
-	src.height = h << 16;
-
-	dispman_display = vc_dispmanx_display_open(0 /* LCD */ );
-	dispman_update = vc_dispmanx_update_start(0);
-
-	window.element = vc_dispmanx_element_add(dispman_update, dispman_display, 0 /*layer */ , &dest, 0 /*src */ ,
-						  &src, DISPMANX_PROTECTION_NONE, 0 /*alpha */ , 0 /*clamp */ ,
-						  0 /*transform */ );
-	window.width = displayW;
-	window.height = displayH;
-	vc_dispmanx_update_submit_sync(dispman_update);
-
-	if ((eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, &window, NULL)) == EGL_NO_SURFACE){
-		fprintf(stderr, "LibOVG: Error Creating EGL window surface\n");
-	}
-
-	// preserve the buffers on swap
-	if (eglSurfaceAttrib(eglDisplay, eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED) == EGL_FALSE){
-		fprintf(stderr, "LibOVG: Error setting EGL Surface attributes\n");
-	}
-	if (eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext) == EGL_FALSE){
-		fprintf(stderr, "LibOVG: Error setting current surface\n");
-	}
+void ovg_wininfo(int *x, int *y, int *w, int *h){
+	*x=0;
+	*y=0;
+	*w=1366;
+	*h=768;
 }
 
-
+void ovg_dispinfo(int *w, int *h) {
+	int success = graphics_get_display_size(0/*Displau num*/, w, h);
+	if (success < 0){
+		fprintf(stderr, "LibOVG: Error getting display size\n");
+	}
+}
 
 void ovg_init(void){
 	bcm_host_init();
@@ -94,26 +63,6 @@ void ovg_init(void){
 	if ((eglContext = eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT, NULL)) == EGL_NO_CONTEXT){
 		fprintf(stderr, "LibOVG: Error creating EGL Content\n");
 	}
-
-	// create an EGL window surface
-	success = graphics_get_display_size(0/*LCD*/, &displayW,&displayH);
-	if (success < 0){
-		fprintf(stderr, "LibOVG: Error getting display size\n");
-	}
-
-	init_surface(0,0,displayW,displayH);
-
-	// set up screen ratio
-	glViewport(0, 0, (GLsizei) displayW, (GLsizei) displayH);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	float ratio = (float)displayW / (float)displayH;
-	glFrustumf(-ratio, ratio, -1.0f, 1.0f, 1.0f, 10.0f);
-
-	ovg_clear();
-
 }
 
 void ovg_cleanup(void){
@@ -128,9 +77,54 @@ void ovg_cleanup(void){
 	eglTerminate(eglDisplay);
 }
 
-void ovg_wininfo(int *x, int *y, int *w, int *h){
-	*x=0;
-	*y=0;
-	*w=displayW;
-	*h=displayH;
+void ovg_open(int x, int y, int w, int h){
+	static EGL_DISPMANX_WINDOW_T window;
+	DISPMANX_DISPLAY_HANDLE_T dispman_display;
+	DISPMANX_UPDATE_HANDLE_T dispman_update;
+	VC_RECT_T dest;
+	VC_RECT_T src;
+
+	dest.x = x;
+	dest.y = y;
+	dest.width = w;
+	dest.height = h;
+
+	src.x = x;
+	src.y = y;
+	src.width = w << 16; //setting these to displayW/H with smaller w/h leads to squishing
+	src.height = h << 16;
+
+	dispman_display = vc_dispmanx_display_open(0 /* LCD */ );
+	dispman_update = vc_dispmanx_update_start(0);
+
+	window.element = vc_dispmanx_element_add(dispman_update, dispman_display, 0 /*layer */ , &dest, 0 /*src */ ,
+						  &src, DISPMANX_PROTECTION_NONE, 0 /*alpha */ , 0 /*clamp */ ,
+						  0 /*transform */ );
+	window.width = w;
+	window.height = h;
+	vc_dispmanx_update_submit_sync(dispman_update);
+
+	if ((eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, &window, NULL)) == EGL_NO_SURFACE){
+		fprintf(stderr, "LibOVG: Error Creating EGL window surface\n");
+	}
+
+	// preserve the buffers on swap
+	if (eglSurfaceAttrib(eglDisplay, eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED) == EGL_FALSE){
+		fprintf(stderr, "LibOVG: Error setting EGL Surface attributes\n");
+	}
+	if (eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext) == EGL_FALSE){
+		fprintf(stderr, "LibOVG: Error setting current surface\n");
+	}
+
+	// set up screen ratio
+	glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	float ratio = (float)w / (float)h;
+	glFrustumf(-ratio, ratio, -1.0f, 1.0f, 1.0f, 10.0f);
+
+	ovg_clear();
 }
+
