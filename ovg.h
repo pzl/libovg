@@ -51,6 +51,19 @@ typedef enum {
 	GRADIENT_REFLECT						= 0x1C02
 } GradRule;
 
+typedef enum {
+	BLEND_SRC								= 0x2000,
+	BLEND_SRC_OVER							= 0x2001,
+	BLEND_DST_OVER							= 0x2002,
+	BLEND_SRC_IN							= 0x2003,
+	BLEND_DST_IN							= 0x2004,
+	BLEND_MULTIPLY							= 0x2005,
+	BLEND_SCREEN							= 0x2006,
+	BLEND_DARKEN							= 0x2007,
+	BLEND_LIGHTEN							= 0x2008,
+	BLEND_ADDITIVE							= 0x2009
+} BlendMode;
+
 #ifndef Path
 typedef void * Path;
 #endif
@@ -132,6 +145,7 @@ void ovg_bounds(Path, float *x, float *y, float *w, float *h);
 void ovg_bounds_transformed(Path, float *x, float *y, float *w, float *h);
 void ovg_mask(Path, AlphaMask);
 void ovg_mask_off(void);
+void ovg_blend(BlendMode);
 
 
 /************************

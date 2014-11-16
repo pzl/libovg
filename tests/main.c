@@ -156,6 +156,16 @@ void fills(void) {
         _F(ovg_rect(50,40,45,50));
     );
 
+    //test blending
+    TEST (
+        ovg_fill(255,0,0,120);
+        _F(ovg_rect(2,20,60,40));
+        ovg_blend(BLEND_LIGHTEN);
+        ovg_fill(0,0,255,70);
+        _F(ovg_rect(50,40,45,50));
+        ovg_blend(BLEND_SRC_OVER);
+    );
+
     ovg_draw();
 }
 

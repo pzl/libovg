@@ -32,3 +32,7 @@ void ovg_mask_off(void) {
 #endif
 	vgSeti(VG_MASKING, VG_FALSE);
 }
+
+void ovg_blend(BlendMode bm){
+	vgSeti(VG_BLEND_MODE, bm);
+}
