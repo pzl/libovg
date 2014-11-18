@@ -1,4 +1,5 @@
 #include <stddef.h> /* NULL */
+#include <stdio.h>
 #include "common.h"
 #include "utility.h"
 
@@ -105,6 +106,7 @@ void ovg_mat_multiply(float *matrix){
 
 
 VGPath ovg_interpolate(VGPath start, VGPath end, float amount) {
+	int segstart,segend;
 	VGPath p = getpath();
 	VGboolean success = vgInterpolatePath(p, start, end, amount);
 
@@ -112,6 +114,12 @@ VGPath ovg_interpolate(VGPath start, VGPath end, float amount) {
 	if (success == VG_TRUE){
 		return p;
 	} else {
+		segstart = vgGetParameteri(start, VG_PATH_NUM_SEGMENTS);
+		segend = vgGetParameteri(end, VG_PATH_NUM_SEGMENTS);
+
+		if (segstart != segend) {
+			fprintf(stderr, "Unable to interpolate, number of segments much match between paths\n");
+		}
 		return start;
 	}
 }
