@@ -37,3 +37,7 @@ void ovg_mask_off(void) {
 void ovg_blend(BlendMode bm){
 	vgSeti(VG_BLEND_MODE, bm);
 }
+
+float ovg_length(VGPath p, int start, int n){
+	return vgPathLength(p,start,n);
+}
