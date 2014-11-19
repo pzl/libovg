@@ -17,6 +17,7 @@ void text(void);
 void advanced_modes(void);
 void custom_path(void);
 void clear(void);
+void path_len(void);
 
 //convenience testing functions
 #define TEST_CASE_SIZE 100
@@ -55,6 +56,9 @@ int main(int argc, char **argv) {
 
     ovg_open(0,0,1366,768);
 
+    path_len();
+    return 0;
+
     basic_shapes();
     fills();
     polys();
@@ -74,6 +78,31 @@ int main(int argc, char **argv) {
     ovg_cleanup();
 
 	return 0;
+}
+
+void path_len(void) {
+    Path p = ovg_rect(0,0,100,100);
+    int seg=0,
+        i;
+
+    printf("rect 0,0,100,100\n");
+    for (seg=0; seg<6; seg++){
+        printf("starting at segment %d\n", seg);
+        for (i=-2; i<7; i++){
+            printf("\tPath length %d: %f\n", i,ovg_length(p,seg,i));
+        }
+    }
+
+    ovg_free(p);
+    p = ovg_line(0,0,50,50);
+    printf("\nline 0,0,50,50\n");
+    for (seg=0; seg<3; seg++){
+        printf("starting at segment %d\n", seg);
+        for (i=-2; i<4; i++){
+            printf("\tPath length %d: %f\n", i,ovg_length(p,seg,i));
+        }
+    }
+
 }
 
 void save_fills(void) {
