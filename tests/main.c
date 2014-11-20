@@ -22,6 +22,8 @@ void path_len(void);
 //convenience testing functions
 #define TEST_CASE_SIZE 100
 #define TEST_CASE_PADDING 20
+#define CLOSE_ENOUGH 0.005f
+#define NEAR(X,Y) ( X-Y < CLOSE_ENOUGH || Y-X < CLOSE_ENOUGH )
 #define TEST(FN) \
     do { \
         startcase(); \
@@ -81,15 +83,117 @@ int main(int argc, char **argv) {
 }
 
 void path_len(void) {
-    Path p = ovg_rect(0,0,100,100);
+    float rectvals[6][9],
+          linevals[3][6],
+          bezvals[2][6],
+          val;
     int seg=0,
         i;
 
-    printf("rect 0,0,100,100\n");
+
+    rectvals[0][0]=-1.0f;
+    rectvals[0][1]=-1.0f;
+    rectvals[0][2]=-1.0f;
+    rectvals[0][3]=0.0f;
+    rectvals[0][4]=100.0f;
+    rectvals[0][5]=200.0f;
+    rectvals[0][6]=300.0f;
+    rectvals[0][7]=400.0f;
+    rectvals[0][8]=-1.0f;
+
+    rectvals[1][0]=-1.0f;
+    rectvals[1][1]=-1.0f;
+    rectvals[1][2]=-1.0f;
+    rectvals[1][3]=100.0f;
+    rectvals[1][4]=200.0f;
+    rectvals[1][5]=300.0f;
+    rectvals[1][6]=400.0f;
+    rectvals[1][7]=-1.0f;
+    rectvals[1][8]=-1.0f;
+
+    rectvals[2][0]=-1.0f;
+    rectvals[2][1]=-1.0f;
+    rectvals[2][2]=-1.0f;
+    rectvals[2][3]=100.0f;
+    rectvals[2][4]=200.0f;
+    rectvals[2][5]=300.0f;
+    rectvals[2][6]=-1.0f;
+    rectvals[2][7]=-1.0f;
+    rectvals[2][8]=-1.0f;
+
+    rectvals[3][0]=-1.0f;
+    rectvals[3][1]=-1.0f;
+    rectvals[3][2]=-1.0f;
+    rectvals[3][3]=100.0f;
+    rectvals[3][4]=200.0f;
+    rectvals[3][5]=-1.0f;
+    rectvals[3][6]=-1.0f;
+    rectvals[3][7]=-1.0f;
+    rectvals[3][8]=-1.0f;
+
+    rectvals[4][0]=-1.0f;
+    rectvals[4][1]=-1.0f;
+    rectvals[4][2]=-1.0f;
+    rectvals[4][3]=100.0f;
+    rectvals[4][4]=-1.0f;
+    rectvals[4][5]=-1.0f;
+    rectvals[4][6]=-1.0f;
+    rectvals[4][7]=-1.0f;
+    rectvals[4][8]=-1.0f;
+
+    rectvals[5][0]=-1.0f;
+    rectvals[5][1]=-1.0f;
+    rectvals[5][2]=-1.0f;
+    rectvals[5][3]=-1.0f;
+    rectvals[5][4]=-1.0f;
+    rectvals[5][5]=-1.0f;
+    rectvals[5][6]=-1.0f;
+    rectvals[5][7]=-1.0f;
+    rectvals[5][8]=-1.0f;
+
+    linevals[0][0]=-1.0f;
+    linevals[0][1]=-1.0f;
+    linevals[0][2]=-1.0f;
+    linevals[0][3]=0.0f;
+    linevals[0][4]=70.710678;
+    linevals[0][5]=-1.0f;
+
+    linevals[1][0]=-1.0f;
+    linevals[1][1]=-1.0f;
+    linevals[1][2]=-1.0f;
+    linevals[1][3]=70.710678;
+    linevals[1][4]=-1.0f;
+    linevals[1][5]=-1.0f;
+
+    linevals[2][0]=-1.0f;
+    linevals[2][1]=-1.0f;
+    linevals[2][2]=-1.0f;
+    linevals[2][3]=-1.0f;
+    linevals[2][4]=-1.0f;
+    linevals[2][5]=-1.0f;
+
+    bezvals[0][0]=-1.0f;
+    bezvals[0][1]=-1.0f;
+    bezvals[0][2]=-1.0f;
+    bezvals[0][3]=0.0f;
+    bezvals[0][4]=22.956015f;
+    bezvals[0][5]=-1.0f;
+
+    bezvals[1][0]=-1.0f;
+    bezvals[1][1]=-1.0f;
+    bezvals[1][2]=-1.0f;
+    bezvals[1][3]=22.956015;
+    bezvals[1][4]=-1.0f;
+    bezvals[1][5]=-1.0f;
+
+    Path p = ovg_rect(10,13,100,100);
+    printf("rect 10,13,100,100\n");
     for (seg=0; seg<6; seg++){
-        printf("starting at segment %d\n", seg);
         for (i=-2; i<7; i++){
-            printf("\tPath length %d: %f\n", i,ovg_length(p,seg,i));
+            val = ovg_length(p,seg,i);
+            if (val != rectvals[seg][i+2]){
+                printf("Fail: Rect segment %d, i=%d. Should be %f but got  %f\n",seg, i,rectvals[seg][i+2],val);
+            }
         }
     }
 
@@ -97,9 +201,23 @@ void path_len(void) {
     p = ovg_line(0,0,50,50);
     printf("\nline 0,0,50,50\n");
     for (seg=0; seg<3; seg++){
-        printf("starting at segment %d\n", seg);
         for (i=-2; i<4; i++){
-            printf("\tPath length %d: %f\n", i,ovg_length(p,seg,i));
+            val = ovg_length(p,seg,i);
+            if (val != linevals[seg][i+2]){
+                printf("Fail: Line segment %d, i=%d. Should be %f but got %f\n", seg,i,linevals[seg][i+2],val);
+            }
+        }
+    }
+
+    ovg_free(p);
+    p = ovg_bezier_quad(0,0,10,10,20,0);
+    printf("\nbezier quad 0,0,10,10,20,0\n");
+    for (seg=0; seg<2; seg++){
+        for (i=-2; i<4; i++){
+            val = ovg_length(p,seg,i);
+            if (!NEAR(val,bezvals[seg][i+2])) {
+                printf("Fail: Bezier segment %d, i=%d. Should be %f but got %f\n", seg,i,bezvals[seg][i+2],val);
+            }
         }
     }
 
