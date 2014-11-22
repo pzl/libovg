@@ -221,6 +221,22 @@ void path_len(void) {
         }
     }
 
+    ovg_free(p);
+    p = ovg_bezier_cube(0,5,
+                        5,10,
+                        10,0,
+                        15,5);
+    printf("\nbezier cubic 0,5,5,10,10,0,15,5\n");
+    val = ovg_length(p,1,1);
+    printf("got length %f\n", val);
+
+
+    ovg_free(p);
+    p = ovg_arc(10,0,20,20,0,180);
+    printf("\narc 10,0,20,20,0,180\n");
+    val = ovg_length(p,0,2);
+    printf("got length: %f\n", val);
+
 }
 
 void save_fills(void) {
