@@ -59,7 +59,6 @@ int main(int argc, char **argv) {
     ovg_open(0,0,1366,768);
 
     path_len();
-    return 0;
 
     basic_shapes();
     fills();
