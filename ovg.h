@@ -133,7 +133,7 @@ void ovg_cleanup(void);
 void ovg_draw(void);
 Path ovg_draw_path(Path p, PaintMode);
 void ovg_clear(void);
-void ovg_clear_rect(int x, int y, int w, int h);
+void ovg_clear_rect(int x, int y, int w, int h, CoordSystem);
 
 
 /*****************************

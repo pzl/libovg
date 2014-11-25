@@ -24,7 +24,7 @@ void ovg_clear(void){
 	ovg_wininfo(&x,&y,&w,&h);
 	vgResizeSurfaceSH(w,h); //why am i doing this again?
 
-	ovg_clear_rect(0,0,w,h);
+	ovg_clear_rect(0,0,w,h, C_ABSOLUTE);
 }
 
 void ovg_open(int x, int y, int w, int h) {

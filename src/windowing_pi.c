@@ -25,7 +25,7 @@ void ovg_draw(void){
 void ovg_clear(void){
 	int x,y,w,h;
 	ovg_wininfo(&x,&y,&w,&h);
-	ovg_clear_rect(0,0,w,h);
+	ovg_clear_rect(0,0,w,h, C_ABSOLUTE);
 }
 
 void ovg_wininfo(int *x, int *y, int *w, int *h){

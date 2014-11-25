@@ -589,7 +589,7 @@ void clear(void) {
     ovg_fill(220,80,80,255);
     TEST(
         _FS(ovg_rect(10,10,80,80));
-        ovg_clear_rect(70,10,20,20);
+        ovg_clear_rect(60,20,20,20, C_RELATIVE);
     );
     ovg_draw();
 

@@ -36,14 +36,28 @@ void ovg_fill_rule(FillRule rule){
 	vgSeti(VG_FILL_RULE, rule);
 }
 
-void ovg_clear_rect(int x, int y, int w, int h){
+void ovg_clear_rect(int x, int y, int w, int h, CoordSystem c){
 	VGfloat bg[] = BG_COLOR;
-
 	//vgSeti(VG_SCISSORING, VG_FALSE); //disable scissoring to clear?
-
 	//set clear color and clear the screen
 	vgSetfv(VG_CLEAR_COLOR, 4, bg);
-	vgClear(x,y,w,h);
+
+	if (c == C_ABSOLUTE) {
+		vgClear(x,y,w,h);
+	} else {
+		float mat[9];
+		int tx, ty, tw, th;
+		/* @todo: what if matrix mode is not user to surface */
+		ovg_mat_current(mat);
+
+		
+		tx = x*mat[0] + y*mat[1] + mat[2];
+		ty = x*mat[3] + y*mat[4] + mat[5];
+		tw = w*mat[0] + w*mat[1];
+		th = h*mat[3] + h*mat[4];
+
+		vgClear(tx,ty,tw,th);
+	}
 }
 
 void ovg_quality(DrawQuality dq){
