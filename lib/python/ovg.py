@@ -6,6 +6,7 @@ from ctypes import *
 
 lib = CDLL(find_library("ovg"))
 
+lib.ovg_init()
 
 """
 Python-wrapper-specific helpers
@@ -124,10 +125,13 @@ def rel(command):
 Management Commands
 """
 
+"""
 lib.ovg_init.argtypes = None
 lib.ovg_init.restype = None
 def init():
 	return lib.ovg_init()
+"""
+
 
 lib.ovg_open.argtypes = [c_int, c_int, c_int, c_int]
 lib.ovg_open.restype = None
