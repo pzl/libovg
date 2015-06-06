@@ -3,8 +3,6 @@
 from ctypes.util import find_library
 from ctypes import *
 
-from enum import Enum
-
 
 lib = CDLL(find_library("ovg"))
 
@@ -29,22 +27,22 @@ Mirrors of C Enums
 		
 
 
-class PaintMode(Enum):
+class PaintMode(object):
 	Stroke = (1<<0)
 	Fill   = (1<<1)
 
-class Quality(Enum):
+class Quality(object):
 	Non_AA = 0x1200
 	Fast   = 0x1201
 	Best   = 0x1202
 
-class MatrixMode(Enum):
+class MatrixMode(object):
 	Path   = 0x1400
 	Image  = 0x1401
 	Fill   = 0x1402
 	Stroke = 0x1403
 
-class Alpha(Enum):
+class Alpha(object):
 	Clear     = 0x1500
 	Fill      = 0x1501
 	Set       = 0x1502
@@ -52,27 +50,27 @@ class Alpha(Enum):
 	Intersect = 0x1504
 	Subtract  = 0x1505
 
-class Cap(Enum):
+class Cap(object):
 	Butt   = 0x1700
 	Round  = 0x1701
 	Square = 0x1702
 
-class Join(Enum):
+class Join(object):
 	Miter = 0x1800
 	Round = 0x1801
 	Bevel = 0x1802
 
-class FillRule(Enum):
+class FillRule(object):
 	Alternate = 0x1900
 	All       = 0x1901
 
-class GradientRule(Enum):
+class GradientRule(object):
 	Pad     = 0x1C00
 	Repeat  = 0x1C01
 	Reflect = 0x1C02
 
 
-class Blend(Enum):
+class Blend(object):
 	Src      = 0x2000
 	Src_Over = 0x2001
 	Dst_Over = 0x2002
@@ -85,12 +83,12 @@ class Blend(Enum):
 	Add      = 0x2009
 
 
-class Coord(Enum):
+class Coord(object):
 	ABS = 0
 	REL = 1
 
 
-class PathSegment(Enum):
+class PathSegment(object):
 	Close_Path = ( 0 << 1),
 	Move_To    = ( 1 << 1),
 	Line_To    = ( 2 << 1),
@@ -161,7 +159,7 @@ lib.ovg_quality.argtypes = [c_int]
 lib.ovg_quality.restype = None
 #uses Quality
 def quality(q):
-	return lib.ovg_quality(q.value)
+	return lib.ovg_quality(q)
 
 
 lib.ovg_free.argtypes = [c_void_p]
@@ -184,7 +182,7 @@ def draw():
 lib.ovg_draw_path.argtypes = [c_void_p, c_int]
 lib.ovg_draw_path.restype = c_void_p
 def draw_path(path, mode):
-	return lib.ovg_draw_path(path, mode.value)
+	return lib.ovg_draw_path(path, mode)
 
 
 lib.ovg_clear.argtypes = None
@@ -197,7 +195,7 @@ lib.ovg_clear_rect.argtypes = [c_int, c_int, c_int, c_int, c_int]
 lib.ovg_clear_rect.restype = None
 #uses Coord
 def clear_rect(x,y,w,h,c):
-	return lib.ovg_clear_rect(x,y,w,h,c.value)
+	return lib.ovg_clear_rect(x,y,w,h,c)
 
 
 
@@ -254,13 +252,13 @@ def stroke_width(f):
 lib.ovg_stroke_cap.argtypes = [c_int]
 lib.ovg_stroke_cap.restype = None
 def stroke_cap(c):
-	return lib.ovg_stroke_cap(c.value)
+	return lib.ovg_stroke_cap(ce)
 
 
 lib.ovg_stroke_join.argtypes = [c_int]
 lib.ovg_stroke_join.restype = None
 def stroke_join(j):
-	return lib.ovg_stroke_join(j.value)
+	return lib.ovg_stroke_join(j)
 
 lib.ovg_stroke_miter.argtypes = [c_float]
 lib.ovg_stroke_miter.restype = None
@@ -302,7 +300,7 @@ def linear_gradient(stops, rule, startx, starty, endx, endy, points, colors):
 	c = (c_ubyte * len(points)*4)(*colors)
 
 
-	return lib.ovg_gradient_linear(stops, rule.value, startx, starty, endx, endy, p, c)
+	return lib.ovg_gradient_linear(stops, rule, startx, starty, endx, endy, p, c)
 
 
 lib.ovg_gradient_radial.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, c_int, POINTER(c_float), POINTER(c_ubyte)]
@@ -323,13 +321,13 @@ def radial_gradient(stops, rule, cx, cy, fx, fy, rad, points, colors):
 	c = (c_ubyte * len(points)*4)(*colors)
 
 
-	return lib.ovg_gradient_radial(stops, rule.value, cx, cy, fx, fy, rad, p, c)
+	return lib.ovg_gradient_radial(stops, rule, cx, cy, fx, fy, rad, p, c)
 
 
 lib.ovg_fill_rule.argtypes = [c_int]
 lib.ovg_fill_rule.restype = None
 def fill_rule(r):
-	return lib.ovg_fill_rule(r.value)
+	return lib.ovg_fill_rule(r)
 
 
 
@@ -477,7 +475,7 @@ def length(path, start_segment, nsegments):
 lib.ovg_mask.argtypes = [c_void_p, c_int]
 lib.ovg_mask.restype = None
 def mask(path, msk):
-	return lib.ovg_mask(path, msk.value)
+	return lib.ovg_mask(path, msk)
 
 
 lib.ovg_mask_off.argtypes = None
@@ -490,7 +488,7 @@ def mask_off():
 lib.ovg_blend.argtypes = [c_int]
 lib.ovg_blend.restype = None
 def blend(bld):
-	return lib.ovg_blend(bld.value)
+	return lib.ovg_blend(bld)
 
 
 """
@@ -529,7 +527,7 @@ def reset():
 lib.ovg_mat_mode.argtypes = [c_int]
 lib.ovg_mat_mode.restype = None
 def matrix_mode(m):
-	return lib.ovg_mat_mode(m.value)
+	return lib.ovg_mat_mode(m)
 
 lib.ovg_mat_set.argtypes = [POINTER(c_float)]
 lib.ovg_mat_set.restype = None
