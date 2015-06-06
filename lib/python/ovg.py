@@ -206,18 +206,50 @@ def clear_rect(x,y,w,h,c):
 
 
 """
-Fills n Strokes
+	------------------------------------
+	Fills n Strokes
+	------------------------------------
 """
+
 
 lib.ovg_fill.argtypes = [c_ubyte, c_ubyte, c_ubyte, c_ubyte]
 lib.ovg_fill.restype = None
-#expects Color
-def fill(r,g,b,a):
-	red = c_ubyte(r)
-	green = c_ubyte(g)
-	blue = c_ubyte(b)
-	alpha = c_ubyte(a)
+def fill(*args, **kwargs):
+	"""
+	Set Fill Color, as values between 0-255
+
+	Can accept:
+		- a color object (anything with properties r,g,b,a)
+		- 4 ints as red,green,blue,alpha in order
+		- named arguments (red=255,green=177...)
+
+	Named arguments may also be presented in addition to a Color object
+	or ordered parameters, and take precedence. Can be used as overrides.
+	"""
+	if len(args) == 1:
+		red = c_ubyte(args[0].r)
+		green = c_ubyte(args[0].g)
+		blue = c_ubyte(args[0].b)
+		alpha = c_ubyte(args[0].a)
+	elif len(kwargs.keys()) < 4:
+		red = c_ubyte(args[0])
+		green = c_ubyte(args[1])
+		blue = c_ubyte(args[2])
+		alpha = c_ubyte(args[3])	
+
+	if 'red' in kwargs:
+		red = c_ubyte(kwargs['red'])
+	if 'green' in kwargs:
+		green = c_ubyte(kwargs['green'])
+	if 'blue' in kwargs:
+		blue = c_ubyte(kwargs['blue'])
+	if 'alpha' in kwargs:
+		alpha = c_ubyte(kwargs['alpha'])
+
 	return lib.ovg_fill(red, green, blue, alpha)
+
+
+
 
 lib.ovg_fill_current.argtypes = [POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte)]
 lib.ovg_fill_current.restype = None
