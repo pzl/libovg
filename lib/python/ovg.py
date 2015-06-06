@@ -337,9 +337,14 @@ lib.ovg_dash.argtypes = [POINTER(c_int), c_int]
 lib.ovg_dash.restype = None
 #takes list, tuple, etc
 def dash(d):
-	pattern = (c_int * len(d))(*d)
+	if d and len(d):
+		pattern = (c_int * len(d))(*d)
+		lp = len(d)
+	else:
+		pattern = None
+		lp = 0
 
-	return lib.ovg_dash(pattern, len(d))
+	return lib.ovg_dash(pattern, lp)
 
 lib.ovg_dash_phase.argtypes = [c_int]
 lib.ovg_dash_phase.restype = None
