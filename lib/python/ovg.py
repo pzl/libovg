@@ -153,8 +153,8 @@ def wininfo():
 lib.ovg_dispinfo.argtypes = [POINTER(c_uint), POINTER(c_uint)]
 lib.ovg_dispinfo.restype = None
 def dispinfo():
-	w = c_int()
-	h = c_int()
+	w = c_uint()
+	h = c_uint()
 	lib.ovg_dispinfo(byref(w),byref(h))
 	return (w.value,h.value)
 
