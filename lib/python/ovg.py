@@ -525,7 +525,7 @@ def bounds(path):
 	x, y, w, h = c_float(), c_float(), c_float(), c_float()
 
 	lib.ovg_bounds(path,byref(x),byref(y),byref(w),byref(h))
-	return (x,y,w,h)
+	return (x.value,y.value,w.value,h.value)
 
 lib.ovg_bounds_transformed.argtypes = [c_void_p, POINTER(c_float), POINTER(c_float), POINTER(c_float), POINTER(c_float)]
 lib.ovg_bounds_transformed.restype = None
@@ -533,7 +533,7 @@ def bounds_transformed(path):
 	x, y, w, h = c_float(), c_float(), c_float(), c_float()
 
 	lib.ovg_bounds_transformed(path,byref(x),byref(y),byref(w),byref(h))
-	return (x,y,w,h)
+	return (x.value,y.value,w.value,h.value)
 
 
 
