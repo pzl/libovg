@@ -265,8 +265,39 @@ def fill_current():
 lib.ovg_stroke.argtypes = [c_ubyte, c_ubyte, c_ubyte, c_ubyte]
 lib.ovg_stroke.restype = None
 #expects Color
-def stroke(r,g,b,a):
-	return lib.ovg_stroke(r, g, b, a)
+def stroke(*args, **kwargs):
+	"""
+	Set Stroke Color, as values between 0-255
+
+	Can accept:
+		- a color object (anything with properties r,g,b,a)
+		- 4 ints as red,green,blue,alpha in order
+		- named arguments (red=255,green=177...)
+
+	Named arguments may also be presented in addition to a Color object
+	or ordered parameters, and take precedence. Can be used as overrides.
+	"""
+	if len(args) == 1:
+		red = c_ubyte(args[0].r)
+		green = c_ubyte(args[0].g)
+		blue = c_ubyte(args[0].b)
+		alpha = c_ubyte(args[0].a)
+	elif len(kwargs.keys()) < 4:
+		red = c_ubyte(args[0])
+		green = c_ubyte(args[1])
+		blue = c_ubyte(args[2])
+		alpha = c_ubyte(args[3])
+
+	if 'red' in kwargs:
+		red = c_ubyte(kwargs['red'])
+	if 'green' in kwargs:
+		green = c_ubyte(kwargs['green'])
+	if 'blue' in kwargs:
+		blue = c_ubyte(kwargs['blue'])
+	if 'alpha' in kwargs:
+		alpha = c_ubyte(kwargs['alpha'])
+	return lib.ovg_stroke(red, green, blue, alpha)
+
 
 lib.ovg_stroke_current.argtypes = [POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte)]
 lib.ovg_stroke_current.restype = None
