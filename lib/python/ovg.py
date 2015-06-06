@@ -507,8 +507,9 @@ def path(commands, data):
 
 lib.ovg_text.argtypes = [c_int, c_int, c_char_p, c_int]
 lib.ovg_text.restype = None
-def text(x,y,string,size):
-	return lib.ovg_text(x,y,string,size)
+def text(x,y,txt,size):
+	c_s = c_char_p(txt.encode("ascii"))
+	return lib.ovg_text(x,y,c_s,size)
 
 
 """
