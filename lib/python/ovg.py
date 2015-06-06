@@ -288,7 +288,7 @@ def stroke_width(f):
 lib.ovg_stroke_cap.argtypes = [c_int]
 lib.ovg_stroke_cap.restype = None
 def stroke_cap(c):
-	return lib.ovg_stroke_cap(ce)
+	return lib.ovg_stroke_cap(c)
 
 
 lib.ovg_stroke_join.argtypes = [c_int]
