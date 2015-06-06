@@ -466,13 +466,13 @@ def round_rect(x,y,w,h,r):
 lib.ovg_circle.argtypes = [c_int, c_int, c_int]
 lib.ovg_circle.restype = c_void_p
 def circle(cx,cy,r):
-	return lib.ovg_circle(x,y,w,h)
+	return lib.ovg_circle(cx,cy,r)
 
 
 lib.ovg_ellipse.argtypes = [c_int, c_int, c_int, c_int]
 lib.ovg_ellipse.restype = c_void_p
 def ellipse(cx,cy,w,h):
-	return lib.ovg_ellipse(x,y,w,h)
+	return lib.ovg_ellipse(cx,cy,w,h)
 
 
 lib.ovg_arc.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int]
