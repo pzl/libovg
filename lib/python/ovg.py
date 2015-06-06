@@ -219,7 +219,7 @@ def fill(r,g,b,a):
 	alpha = c_ubyte(a)
 	return lib.ovg_fill(red, green, blue, alpha)
 
-lib.ovg_fill.argtypes = [POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte)]
+lib.ovg_fill_current.argtypes = [POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte)]
 lib.ovg_fill_current.restype = None
 def fill_current():
 	r = c_ubyte()
