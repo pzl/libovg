@@ -77,12 +77,19 @@ install:
 	ln -srf "$(LIBDIR)/$(TARGET)" "$(LIBDIR)/$(TBASE)"
 	ln -srf "$(LIBDIR)/$(TARGET)" "$(LIBDIR)/$(SONAME)"
 
+install-python:
+	$(MAKE) -C lib/python install
+
+install-python2:
+	$(MAKE) -C lib/python py2
+
 uninstall:
 	$(RM) "$(LIBDIR)/$(TARGET)"
 	$(RM) "$(LIBDIR)/$(STARGET)"
 	$(RM) "$(LIBDIR)/$(TBASE)"
 	$(RM) "$(LIBDIR)/$(SONAME)"
 	$(RM) "$(INCDIR)/$(NAME).h"
+	$(MAKE) -C lib/python uninstall
 
 test:
 	$(CC) -o test tests/*.c -lovg
@@ -90,4 +97,4 @@ test:
 clean:
 	$(RM) $(OBJS) $(TARGET) $(STARGET)
 
-.PHONY: all debug clean install uninstall test
+.PHONY: all debug clean install uninstall test install-python install-python2

@@ -1,11 +1,12 @@
 
-all:
-
 install:
+	python setup.py install
+
+py2:
 	python2 setup.py install
 
 uninstall:
-	
-clean:
+	$(RM) /usr/lib/python3.4/site-packages/ovg*
+	$(RM) /usr/lib/python2.7/site-packages/ovg*
 
-.PHONY: all clean install uninstall 
+.PHONY: install py2
