@@ -540,7 +540,7 @@ lib.ovg_length.argtypes = [c_void_p, c_int, c_int]
 lib.ovg_length.restype = c_float
 def length(path, start_segment, nsegments):
 	f = lib.ovg_length(path,start_segment, nsegments)
-	return f.value
+	return f
 
 
 lib.ovg_mask.argtypes = [c_void_p, c_int]
