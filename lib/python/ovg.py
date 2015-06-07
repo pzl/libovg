@@ -357,42 +357,40 @@ def dash_phase(p):
 lib.ovg_gradient_linear.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, POINTER(c_float), POINTER(c_ubyte)]
 lib.ovg_gradient_linear.restype = None
 def linear_gradient(stops, rule, startx, starty, endx, endy, points, colors):
+	lp = len(points)
+	lc = len(colors)
+	lc_total = lp*4
 
-	if len(points) < 1:
+	if lp < 1:
 		print("There definitely can't be a 0-point gradient.")
-
-	if len(points) < 2:
+	elif lp < 2:
 		print("Can there be a 1-point gradient?")
 
-	if len(colors) != len(points)*4:
+	if lc != lc_total:
 		print("There must be 4 colors per gradient point!")
 
-
-	p = (c_float * len(points))(*points)
-	c = (c_ubyte * len(points)*4)(*colors)
-
-
+	p = (c_float * lp)(*points)
+	c = (c_ubyte * lc_total)(*colors)
 	return lib.ovg_gradient_linear(stops, rule, startx, starty, endx, endy, p, c)
 
 
 lib.ovg_gradient_radial.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, c_int, POINTER(c_float), POINTER(c_ubyte)]
 lib.ovg_gradient_radial.restype = None
 def radial_gradient(stops, rule, cx, cy, fx, fy, rad, points, colors):
+	lp = len(points)
+	lc = len(colors)
+	lc_total = lp*4
 
-	if len(points) < 1:
+	if lp < 1:
 		print("There definitely can't be a 0-point gradient.")
-
-	if len(points) < 2:
+	elif lp < 2:
 		print("Can there be a 1-point gradient?")
 
-	if len(colors) != len(points)*4:
+	if lc != lc_total:
 		print("There must be 4 colors per gradient point!")
 
-
-	p = (c_float * len(points))(*points)
-	c = (c_ubyte * len(points)*4)(*colors)
-
-
+	p = (c_float * lp)(*points)
+	c = (c_ubyte * lc_total)(*colors)
 	return lib.ovg_gradient_radial(stops, rule, cx, cy, fx, fy, rad, p, c)
 
 
