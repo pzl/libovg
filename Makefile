@@ -31,6 +31,7 @@ ifeq ($(PLATFORM), armv6l)
 	LIBS += -lbcm_host -lEGL -lGLESv2
 else
 	SRCS += $(wildcard $(SRCDIR)/*_x11.c)
+	LDFLAGS += -LX11 -LGL -LGLU -LOpenVG
 	LIBS += -lX11 -lGL -lGLU -lOpenVG
 endif
 OBJS=$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
