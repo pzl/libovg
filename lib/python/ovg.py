@@ -89,19 +89,19 @@ class Coord(object):
 	REL = 1
 
 
-class PathSegment(object):
-	Close_Path = ( 0 << 1),
-	Move_To    = ( 1 << 1),
-	Line_To    = ( 2 << 1),
-	HLine_To   = ( 3 << 1),
-	VLine_To   = ( 4 << 1),
-	Quad_To    = ( 5 << 1),
-	Cubic_To   = ( 6 << 1),
-	SQuad_To   = ( 7 << 1),
-	SCubic_To  = ( 8 << 1),
-	SCCWArc_To = ( 9 << 1),
-	SCWArc_To  = (10 << 1),
-	LCCWArc_To = (11 << 1),
+class Commands(object):
+	Close_Path = ( 0 << 1)
+	Move_To    = ( 1 << 1)
+	Line_To    = ( 2 << 1)
+	HLine_To   = ( 3 << 1)
+	VLine_To   = ( 4 << 1)
+	Quad_To    = ( 5 << 1)
+	Cubic_To   = ( 6 << 1)
+	SQuad_To   = ( 7 << 1)
+	SCubic_To  = ( 8 << 1)
+	SCCWArc_To = ( 9 << 1)
+	SCWArc_To  = (10 << 1)
+	LCCWArc_To = (11 << 1)
 	LCWArc_To  = (12 << 1)
 
 
