@@ -44,6 +44,10 @@ void ovg_open(int x, int y, int w, int h) {
 	char instance[] = "blue",
 		 className[] = "red";
 
+	if ((x_display = XOpenDisplay(NULL)) == NULL){
+		fprintf(stderr, "Error opening X Display\n");
+		return;
+	}
 
 	root = DefaultRootWindow(x_display);
 	if ((vi = glXChooseVisual(x_display, 0, att)) == NULL){
@@ -99,10 +103,6 @@ void ovg_open(int x, int y, int w, int h) {
 
 void ovg_init(void){
 	XInitThreads();
-	if ((x_display = XOpenDisplay(NULL)) == NULL){
-		fprintf(stderr, "Error opening X Display\n");
-		return;
-	}
 }
 
 void ovg_cleanup(void){
