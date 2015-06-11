@@ -12,6 +12,7 @@
 
 static Display *x_display = NULL;
 Window win;
+GLXContext glc;
 
 void ovg_draw(void){
 	glXSwapBuffers(x_display, win);
@@ -29,7 +30,6 @@ void ovg_clear(void){
 
 void ovg_open(int x, int y, int w, int h) {
 	Window root;
-	GLXContext glc;
 	XSetWindowAttributes swa,xattr;
 	XWindowAttributes gwa;
 	XClassHint *classHint;
@@ -106,7 +106,9 @@ void ovg_init(void){
 }
 
 void ovg_cleanup(void){
-	
+	glXDestroyContext(x_display, glc);
+	XDestroyWindow(x_display, win);
+	XCloseDisplay(x_display);
 }
 
 

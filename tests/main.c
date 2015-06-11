@@ -77,6 +77,9 @@ int main(int argc, char **argv) {
     //wait to view results of clear, then exit
     getchar(); 
     ovg_cleanup();
+    printf("cleaned up\n");
+
+    getchar();
 
 	return 0;
 }
