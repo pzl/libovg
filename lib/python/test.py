@@ -174,21 +174,19 @@ def basic_shapes():
 
 
 def fills():
-	star = [
-		[5,25,45,0,50,5],
-		[0,35,0,25,25,0]
-	]
+	"""[5,0],[25,35],[45,0],[0,25],[50,25],[5,0]"""
+	star = [ 5,0 , 25,35 , 45,0 , 0,25 , 50,25 , 5,0 ]
 
 	ovg.fill(122,200,174,255)
 
 	#test fill rules
 	setUp()
 	ovg.fill_rule(ovg.FillRule.All)
-	strokefill(ovg.polygon(star[0],star[1]))
+	strokefill(ovg.polygon(star))
 
 	ovg.translate(0,50)
 	ovg.fill_rule(ovg.FillRule.Alternate)
-	strokefill(ovg.polygon(star[0],star[1]))
+	strokefill(ovg.polygon(star))
 	tearDown()
 
 	#test alpha
@@ -206,17 +204,16 @@ def fills():
 def polys():
 	#crappy star
 	star = [
-		[50, 30, 0, 25,20,50,80,75,100,70],
-		[100,65,65,40,0,25,0,40,65,65]
+		[50,100],[30,65],[0,65],[25,40],[20,0],[50,25],[80,0],[75,40],[100,65],[70,65]
 	]
 
 	ovg.fill(255,200,128,255)
 	setUp()
-	strokefill(ovg.polygon(star[0],star[1]))
+	strokefill(ovg.polygon(star))
 	tearDown()
 
 	setUp()
-	stroke(ovg.polyline(star[0],star[1]))
+	stroke(ovg.polyline(star))
 	tearDown()
 
 def trans():
@@ -243,16 +240,10 @@ def trans():
 	ovg.stroke(0,0,0,255) #undo red
 
 	#test path interpolation
-	dec = [
-		[50,21,2,2,21,50,79,98,98,79],
-		[100,89,65,34,10,0,10,34,65,89]
-	]
-	star = [
-		[50,30,0,25,20,50,80,75,100,70],
-		[100,65,65,40,0,25,0,40,65,65]
-	]
-	star_p = ovg.polygon(star[0],star[1])
-	dec_p = ovg.polygon(dec[0],dec[1])
+	dec = [(50, 100), (21, 89), (2, 65), (2, 34), (21, 10), (50, 0), (79, 10), (98, 34), (98, 65), (79, 89)]
+	star = [(50, 100), (30, 65), (0, 65), (25, 40), (20, 0), (50, 25), (80, 0), (75, 40), (100, 65), (70, 65)]
+	star_p = ovg.polygon(star)
+	dec_p = ovg.polygon(dec)
 
 	for i in range(0,6):
 		setUp()
@@ -307,24 +298,21 @@ def line_styles():
 	tearDown()
 
 	#joins
-	p = [
-		[40,50,60],
-		[10,30,10]
-	]
+	p = [ ovg.Point(40,10), {'x':50,'y':30}, 60,10  ]
 	setUp()
 	ovg.stroke_width(10)
 	ovg.stroke_join(ovg.Join.Miter)
-	stroke(ovg.polyline(p[0],p[1]))
-	p[1][0] += 30
-	p[1][1] += 30
-	p[1][2] += 30
+	stroke(ovg.polyline(p))
+	p[0].y    += 30
+	p[1]['y'] += 30
+	p[3]      += 30
 	ovg.stroke_join(ovg.Join.Round)
-	stroke(ovg.polyline(p[0],p[1]))
-	p[1][0] += 30
-	p[1][1] += 30
-	p[1][2] += 30
+	stroke(ovg.polyline(p))
+	p[0].y    += 30
+	p[1]['y'] += 30
+	p[3]      += 30
 	ovg.stroke_join(ovg.Join.Bevel)
-	stroke(ovg.polyline(p[0],p[1]))
+	stroke(ovg.polyline(p))
 	tearDown()
 
 	#bezier tests, arch and squiggle

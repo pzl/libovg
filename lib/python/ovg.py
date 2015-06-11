@@ -59,14 +59,14 @@ class Point(object):
 
 	@property
 	def x(self):
-		return self._x
+		return self._x.value
 	@x.setter
 	def x(self, x):
 		self._x = c_int(x)
 	
 	@property
 	def y(self):
-		return self._y
+		return self._y.value
 	@y.setter
 	def y(self, y):
 		self._y = c_int(y)
@@ -87,25 +87,25 @@ class Rect(object):
 
 	@property
 	def x(self):
-		return self._x
+		return self._x.value
 	@x.setter
 	def x(self, x):
 		self._x = c_int(x)
 	@property
 	def y(self):
-		return self._y
+		return self._y.value
 	@y.setter
 	def y(self, y):
 		self._y = c_int(y)
 	@property
 	def w(self):
-		return self._w
+		return self._w.value
 	@w.setter
 	def w(self, w):
 		self._w = c_int(w)
 	@property
 	def h(self):
-		return self._h
+		return self._h.value
 	@h.setter
 	def h(self, h):
 		self._h = c_int(h)
@@ -506,14 +506,21 @@ def line(*args):
 
 lib.ovg_polyline.argtypes = [POINTER(c_int), POINTER(c_int), c_int]
 lib.ovg_polyline.restype = c_void_p
-def polyline(x,y):
+def polyline(geom):
+	"""
+	Accepts a list of points (Point, [x,y], or x,y)
+	"""
+
+	raw_points = parse_args(geom,['x','y'])
+	#now a giant list of points [x,y,x,y,x,y,x,y...]
+
+	x = raw_points[0::2]
+	y = raw_points[1::2]
 	lx = len(x)
 	ly = len(y)
 
-
 	if lx != ly:
 		print("coordinates must match in length")
-
 	if lx < 1 or ly < 1:
 		print("must have at least one coordinate pair")
 
@@ -525,7 +532,17 @@ def polyline(x,y):
 
 lib.ovg_polygon.argtypes = [POINTER(c_int), POINTER(c_int), c_int]
 lib.ovg_polygon.restype = c_void_p
-def polygon(x,y):
+def polygon(geom):
+	"""
+	Accepts a list of points (Point, [x,y], or x,y)
+	"""
+
+	raw_points = parse_args(geom,['x','y'])
+	#now a giant list of points [x,y,x,y,x,y,x,y...]
+
+	x = raw_points[0::2]
+	y = raw_points[1::2]
+
 	lx = len(x)
 	ly = len(y)
 
