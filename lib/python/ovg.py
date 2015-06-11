@@ -11,12 +11,136 @@ lib.ovg_init()
 """
 Python-wrapper-specific helpers
 """
-class Color(Structure):
-	_fields_ = [ ("r",c_ubyte),
-				("g",c_ubyte),
-				("b",c_ubyte),
-				("a",c_ubyte)]
+class Color(object):
+	_r=c_ubyte(255)
+	_g=c_ubyte(255)
+	_b=c_ubyte(255)
+	_a=c_ubyte(255)
 
+	# accepts r,g,b,a -- four ints 0-255
+	def __init__(self,*args):
+		super(Color,self).__init__()
+		self.r, self.g, self.b, self.a = parse_args(args,['r','g','b','a'])
+
+	@property
+	def r(self):
+		return self._r.value
+	@r.setter
+	def r(self, r):
+		self._r = c_ubyte(r)
+	@property
+	def g(self):
+		return self._g.value
+	@g.setter
+	def g(self, g):
+		self._g = c_ubyte(g)
+	@property
+	def b(self):
+		return self._b.value
+	@b.setter
+	def b(self, b):
+		self._b = c_ubyte(b)
+	@property
+	def a(self):
+		return self._a.value
+	@a.setter
+	def a(self, a):
+		self._a = c_ubyte(a)
+	
+
+
+class Point(object):
+	_x=c_int(0)
+	_y=c_int(0)
+
+	def __init__(self,*args):
+		super(Point,self).__init__()
+		self.x, self.y = parse_args(args, ['x','y'])
+
+	@property
+	def x(self):
+		return self._x
+	@x.setter
+	def x(self, x):
+		self._x = c_int(x)
+	
+	@property
+	def y(self):
+		return self._y
+	@y.setter
+	def y(self, y):
+		self._y = c_int(y)
+	
+
+
+class Rect(object):
+	_x=c_int(0)
+	_y=c_int(0)
+	_w=c_int(0)
+	_h=c_int(0)
+
+	
+	#accepts points (for each corner) or x,y,w,h
+	def __init__(self,*args):
+		super(Rect,self).__init__()
+		self.x, self.y, self.w, self.h = parse_args(args, ['x','y','w','h'])
+
+	@property
+	def x(self):
+		return self._x
+	@x.setter
+	def x(self, x):
+		self._x = c_int(x)
+	@property
+	def y(self):
+		return self._y
+	@y.setter
+	def y(self, y):
+		self._y = c_int(y)
+	@property
+	def w(self):
+		return self._w
+	@w.setter
+	def w(self, w):
+		self._w = c_int(w)
+	@property
+	def h(self):
+		return self._h
+	@h.setter
+	def h(self, h):
+		self._h = c_int(h)
+	
+
+"""
+internal helper function for allowing multiple argument types
+@param args list or tuple - the argument list to process
+@param attrs list - strings of what attributes or dict keys to check.
+					Length should match how many raw items match object
+@return list of bare values
+"""
+def parse_args(args,attrs,count=-1):
+	vals=[] #return list to put final values in
+	largs = list(args)
+	while largs and count:
+		count -= 1
+		arg = largs.pop(0)
+		if all([hasattr(arg,prop) for prop in attrs]):
+			#every attribute listed is an attribute of arg
+			vals.extend([getattr(arg,prop) for prop in attrs])
+		elif type(arg) == dict and all([key in arg for key in attrs]):
+			#every attribute listed is a key in arg
+			vals.extend([arg[key] for key in attrs])
+		elif type(arg) in (tuple,list) and len(arg) == len(attrs):
+			#list of same length as desired properties
+			vals.extend(arg)
+		else:
+			#grab that many bare args
+			vals.append(arg)
+			for i in range(len(attrs)-1):
+				vals.append(largs.pop(0))
+	if count == 0:
+		return vals,largs
+	return vals
 
 
 
@@ -135,8 +259,8 @@ def init():
 
 lib.ovg_open.argtypes = [c_int, c_int, c_int, c_int]
 lib.ovg_open.restype = None
-def open(x ,y, w, h):
-	return lib.ovg_open(x,y,w,h)
+def open(*args):
+	return lib.ovg_open( *parse_args(args,['x','y','w','h']) )
 
 
 lib.ovg_wininfo.argtypes = [POINTER(c_int),POINTER(c_int),POINTER(c_int),POINTER(c_int)]
@@ -198,8 +322,13 @@ def clear():
 lib.ovg_clear_rect.argtypes = [c_int, c_int, c_int, c_int, c_int]
 lib.ovg_clear_rect.restype = None
 #uses Coord
-def clear_rect(x,y,w,h,c):
-	return lib.ovg_clear_rect(x,y,w,h,c)
+def clear_rect(*args):
+	"""
+	@param x,y,w,h - define bounding rectangle to clear
+	#param c - Coord type (absolute or relative)
+	"""
+	(x,y,w,h),(coord,) = parse_args(args,['x','y','w','h'],count=1)
+	return lib.ovg_clear_rect( x,y,w,h, coord )
 
 
 
@@ -214,39 +343,11 @@ def clear_rect(x,y,w,h,c):
 
 lib.ovg_fill.argtypes = [c_ubyte, c_ubyte, c_ubyte, c_ubyte]
 lib.ovg_fill.restype = None
-def fill(*args, **kwargs):
+def fill(*args):
 	"""
 	Set Fill Color, as values between 0-255
-
-	Can accept:
-		- a color object (anything with properties r,g,b,a)
-		- 4 ints as red,green,blue,alpha in order
-		- named arguments (red=255,green=177...)
-
-	Named arguments may also be presented in addition to a Color object
-	or ordered parameters, and take precedence. Can be used as overrides.
 	"""
-	if len(args) == 1:
-		red = c_ubyte(args[0].r)
-		green = c_ubyte(args[0].g)
-		blue = c_ubyte(args[0].b)
-		alpha = c_ubyte(args[0].a)
-	elif len(kwargs.keys()) < 4:
-		red = c_ubyte(args[0])
-		green = c_ubyte(args[1])
-		blue = c_ubyte(args[2])
-		alpha = c_ubyte(args[3])	
-
-	if 'red' in kwargs:
-		red = c_ubyte(kwargs['red'])
-	if 'green' in kwargs:
-		green = c_ubyte(kwargs['green'])
-	if 'blue' in kwargs:
-		blue = c_ubyte(kwargs['blue'])
-	if 'alpha' in kwargs:
-		alpha = c_ubyte(kwargs['alpha'])
-
-	return lib.ovg_fill(red, green, blue, alpha)
+	return lib.ovg_fill( *parse_args(args,['r','g','b','a']) )
 
 
 
@@ -259,44 +360,17 @@ def fill_current():
 	b = c_ubyte()
 	a = c_ubyte()
 	lib.ovg_fill_current(byref(r),byref(g),byref(b),byref(a))
-	return Color(r,g,b,a)
+	return Color(r.value,g.value,b.value,a.value)
 
 
 lib.ovg_stroke.argtypes = [c_ubyte, c_ubyte, c_ubyte, c_ubyte]
 lib.ovg_stroke.restype = None
 #expects Color
-def stroke(*args, **kwargs):
+def stroke(*args):
 	"""
 	Set Stroke Color, as values between 0-255
-
-	Can accept:
-		- a color object (anything with properties r,g,b,a)
-		- 4 ints as red,green,blue,alpha in order
-		- named arguments (red=255,green=177...)
-
-	Named arguments may also be presented in addition to a Color object
-	or ordered parameters, and take precedence. Can be used as overrides.
 	"""
-	if len(args) == 1:
-		red = c_ubyte(args[0].r)
-		green = c_ubyte(args[0].g)
-		blue = c_ubyte(args[0].b)
-		alpha = c_ubyte(args[0].a)
-	elif len(kwargs.keys()) < 4:
-		red = c_ubyte(args[0])
-		green = c_ubyte(args[1])
-		blue = c_ubyte(args[2])
-		alpha = c_ubyte(args[3])
-
-	if 'red' in kwargs:
-		red = c_ubyte(kwargs['red'])
-	if 'green' in kwargs:
-		green = c_ubyte(kwargs['green'])
-	if 'blue' in kwargs:
-		blue = c_ubyte(kwargs['blue'])
-	if 'alpha' in kwargs:
-		alpha = c_ubyte(kwargs['alpha'])
-	return lib.ovg_stroke(red, green, blue, alpha)
+	return lib.ovg_stroke( *parse_args(args,['r','g','b','a']) )
 
 
 lib.ovg_stroke_current.argtypes = [POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte), POINTER(c_ubyte)]
@@ -307,7 +381,7 @@ def stroke_current():
 	b = c_ubyte()
 	a = c_ubyte()
 	lib.ovg_stroke_current(byref(r),byref(g),byref(b),byref(a))
-	return Color(r,g,b,a)
+	return Color(r.value,g.value,b.value,a.value)
 
 
 lib.ovg_stroke_width.argtypes = [c_float]
@@ -356,42 +430,57 @@ def dash_phase(p):
 
 lib.ovg_gradient_linear.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, POINTER(c_float), POINTER(c_ubyte)]
 lib.ovg_gradient_linear.restype = None
-def linear_gradient(stops, rule, startx, starty, endx, endy, points, colors):
+def linear_gradient(rule, *args):
+	"""
+	Create a linear gradient and set as active fill
+	@param rule - GradientRule (Pad, Reflect, Repeat)
+	@param startx, starty - ints
+	@param endx, endy - ints
+	@param points - list of floats for color stop locations (0 through 1)
+	@param colors - list of colors (Color, or ints or ints in a list, dicts, etc)
+	"""
+	(startx, starty, endx, endy), (points,colors) = parse_args(args,['x','y'],count=2)
+	colors = parse_args(colors,['r','g','b','a'])
+
 	lp = len(points)
 	lc = len(colors)
-	lc_total = lp*4
+	if lp < 2:
+		raise Exception("Gradients must have at least 2 color stops")
+	if lc != lp*4:
+		raise Exception("Invalid number of colors per point")
 
-	if lp < 1:
-		print("There definitely can't be a 0-point gradient.")
-	elif lp < 2:
-		print("Can there be a 1-point gradient?")
-
-	if lc != lc_total:
-		print("There must be 4 colors per gradient point!")
-
+	#type conversion, and put into lists acceptable for C
+	c = (c_ubyte * lc)(*colors)
 	p = (c_float * lp)(*points)
-	c = (c_ubyte * lc_total)(*colors)
-	return lib.ovg_gradient_linear(stops, rule, startx, starty, endx, endy, p, c)
+	return lib.ovg_gradient_linear(lp, rule, startx, starty, endx, endy, p, c)
 
 
 lib.ovg_gradient_radial.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, c_int, POINTER(c_float), POINTER(c_ubyte)]
 lib.ovg_gradient_radial.restype = None
-def radial_gradient(stops, rule, cx, cy, fx, fy, rad, points, colors):
+def radial_gradient(rule, *args):
+	"""
+	Create a radial gradient and set as active fill
+	@param rule - GradientRule (Pad, Reflect, Repeat)
+	@param cenx, ceny - ints, center
+	@param focx, focy - ints, focal point
+	@param rad - int, radius
+	@param points - list of floats for color stop locations (0 through 1)
+	@param colors - list of colors (Color, or ints or ints in a list, dicts, etc)
+	"""
+	(cenx,ceny,focx,focy),(rad,points,colors) = parse_args(args,['x','y'],count=2)
+	colors = parse_args(colors,['r','g','b','a'])
+
 	lp = len(points)
 	lc = len(colors)
-	lc_total = lp*4
+	if lp < 2:
+		raise Exception("Gradients must have at least 2 color stops")
+	if lc != lp*4:
+		raise Exception("Invalid number of colors per point")
 
-	if lp < 1:
-		print("There definitely can't be a 0-point gradient.")
-	elif lp < 2:
-		print("Can there be a 1-point gradient?")
-
-	if lc != lc_total:
-		print("There must be 4 colors per gradient point!")
-
+	#type conversion, and put into lists acceptable for C
+	c = (c_ubyte * lc)(*colors)
 	p = (c_float * lp)(*points)
-	c = (c_ubyte * lc_total)(*colors)
-	return lib.ovg_gradient_radial(stops, rule, cx, cy, fx, fy, rad, p, c)
+	return lib.ovg_gradient_radial(lp, rule, cenx, ceny, focx, focy, rad, p, c)
 
 
 lib.ovg_fill_rule.argtypes = [c_int]
@@ -407,8 +496,12 @@ Shapes and Objects
 
 lib.ovg_line.argtypes = [c_int, c_int, c_int, c_int]
 lib.ovg_line.restype = c_void_p
-def line(x,y):
-	return lib.ovg_line(x[0], y[0], x[1], y[1])
+def line(*args):
+	"""
+		@param x0,y0 - ints, point at the start of the line
+		@param x1,y1 - ints, point at the end of the line
+	"""
+	return lib.ovg_line( *parse_args(args,['x','y']) )
 
 
 lib.ovg_polyline.argtypes = [POINTER(c_int), POINTER(c_int), c_int]
@@ -451,26 +544,46 @@ def polygon(x,y):
 
 lib.ovg_rect.argtypes = [c_int, c_int, c_int, c_int]
 lib.ovg_rect.restype = c_void_p
-def rect(x,y,w,h):
-	return lib.ovg_rect(x,y,w,h)
+def rect(*args):
+	"""
+	@param x,y,w,h - ints, bounds of rectangle
+	"""
+	return lib.ovg_rect( *parse_args(args,['x','y','w','h']) )
 
 
 lib.ovg_round_rect.argtypes = [c_int, c_int, c_int, c_int, c_int]
 lib.ovg_round_rect.restype = c_void_p
-def round_rect(x,y,w,h,r):
+def round_rect(*args):
+	"""
+	@param x,y,w,h - ints, bounds of rectangle
+	@param r - int, radius of corner
+	"""
+	(x,y,w,h),(r,) = parse_args(args,['x','y','w','h'],count=1)
 	return lib.ovg_round_rect(x,y,w,h,r)
 
 
 lib.ovg_circle.argtypes = [c_int, c_int, c_int]
 lib.ovg_circle.restype = c_void_p
-def circle(cx,cy,r):
+def circle(*args):
+	"""
+	@param cx, cy - ints, center of circle
+	@param r - int, radius
+	"""
+	(cx,cy),(r,) = parse_args(args,['x','y'],count=1)
 	return lib.ovg_circle(cx,cy,r)
 
 
 lib.ovg_ellipse.argtypes = [c_int, c_int, c_int, c_int]
 lib.ovg_ellipse.restype = c_void_p
-def ellipse(cx,cy,w,h):
-	return lib.ovg_ellipse(cx,cy,w,h)
+def ellipse(*args):
+	"""
+	@param cx,cy,w,h - bounding box of ellipse
+	"""
+	if len(args) == 1: #passing something like a rect
+		return lib.ovg_ellipse( *parse_args(args,['x','y','w','h']) )
+	else:
+		(cx,cy),(w,h) = parse_args(args,['x','y'],count=1)
+		return lib.ovg_ellipse(cx,cy,w,h)
 
 
 lib.ovg_arc.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int]
@@ -505,7 +618,13 @@ def path(commands, data):
 
 lib.ovg_text.argtypes = [c_int, c_int, c_char_p, c_int]
 lib.ovg_text.restype = None
-def text(x,y,txt,size):
+def text(*args):
+	"""
+	@param x,y - ints, placement of text anchor
+	@param txt - string, text to display
+	@param size - int, font pointsize
+	"""
+	(x,y),(txt,size) = parse_args(args,['x','y'],count=1)
 	c_s = c_char_p(txt.encode("ascii"))
 	return lib.ovg_text(x,y,c_s,size)
 
@@ -568,24 +687,24 @@ Transformations
 
 lib.ovg_translate.argtypes = [c_int, c_int]
 lib.ovg_translate.restype = None
-def translate(x, y):
-	return lib.ovg_translate(x, y)
+def translate(*args):
+	return lib.ovg_translate( *parse_args(args,['x','y']) )
 
 lib.ovg_rotate.argtypes = [c_int]
 lib.ovg_rotate.restype = None
-def rotate(r):
-	return lib.ovg_rotate(r)
+def rotate(*args):
+	return lib.ovg_rotate( *parse_args(args,['r']) )
 
 lib.ovg_scale.argtypes = [c_float, c_float]
 lib.ovg_scale.restype = None
-def scale(x, y):
-	return lib.ovg_scale(x, y)
+def scale(*args):
+	return lib.ovg_scale( *parse_args(args,['x','y']) )
 
 
 lib.ovg_shear.argtypes = [c_int, c_int]
 lib.ovg_shear.restype = None
-def shear(x, y):
-	return lib.ovg_shear(x, y)
+def shear(*args):
+	return lib.ovg_shear( *parse_args(args,['x','y']) )
 
 
 #matrices

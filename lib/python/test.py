@@ -21,8 +21,8 @@ helper functions
 class current(object):
 	x = TEST_CASE_PADDING
 	y = TEST_CASE_PADDING
-	fill = ovg.Color()
-	stroke = ovg.Color()
+	fill = ovg.Color(0,0,0,0)
+	stroke = ovg.Color(0,0,0,0)
 
 
 def stroke(x):
@@ -109,7 +109,7 @@ def path_len():
 				print("Fail: Rect segment %d, i=%d. Should be %f but got %f" % (segment, i, rect[segment][i+2],val))
 	ovg.free(p)
 
-	p = ovg.line([0,50],[0,50])
+	p = ovg.line([0,0],[50,50])
 	print("\nline 0,0,50,50")
 	for segment in range(0,3):
 		for i in range(-2,4):
@@ -164,7 +164,7 @@ def basic_shapes():
 	tearDown()
 
 	setUp()
-	stroke(ovg.line([10,85],[90,10]))
+	stroke(ovg.line([10,90],[85,10]))
 	tearDown()
 
 	setUp()
@@ -274,37 +274,36 @@ def text():
 
 
 def line_styles():
-	h = [2,98]
 
 	#line width
 	setUp()
 	ovg.stroke_width(1)
-	stroke(ovg.line(h,[10,10]))
+	stroke(ovg.line([2,10],[98,10]))
 	ovg.stroke_width(2)
-	stroke(ovg.line(h,[18,18]))
+	stroke(ovg.line([2,18],[98,18]))
 	ovg.stroke_width(3)
-	stroke(ovg.line(h,[28,28]))
+	stroke(ovg.line([2,28],[98,28]))
 	ovg.stroke_width(4)
-	stroke(ovg.line(h,[38,38]))
+	stroke(ovg.line([2,38],[98,38]))
 	ovg.stroke_width(5)
-	stroke(ovg.line(h,[50,50]))
+	stroke(ovg.line([2,50],[98,50]))
 	ovg.stroke_width(6)
-	stroke(ovg.line(h,[62,62]))
+	stroke(ovg.line([2,62],[98,62]))
 	ovg.stroke_width(7)
-	stroke(ovg.line(h,[76,76]))
+	stroke(ovg.line([2,76],[98,76]))
 	ovg.stroke_width(8)
-	stroke(ovg.line(h,[90,90]))
+	stroke(ovg.line([2,90],[98,90]))
 	tearDown()
 
 	#terminations
 	setUp()
 	ovg.stroke_width(10)
 	ovg.stroke_cap(ovg.Cap.Round)
-	stroke(ovg.line([10,90],[20,20]))
+	stroke(ovg.line([10,20],[90,20]))
 	ovg.stroke_cap(ovg.Cap.Butt)
-	stroke(ovg.line([10,90],[50,50]))
+	stroke(ovg.line([10,50],[90,50]))
 	ovg.stroke_cap(ovg.Cap.Square)
-	stroke(ovg.line([10,90],[80,80]))
+	stroke(ovg.line([10,80],[90,80]))
 	tearDown()
 
 	#joins
@@ -340,14 +339,14 @@ def line_styles():
 	ovg.stroke_width(3)
 	#normal dash, repeated twice
 	ovg.dash(dash)
-	stroke(ovg.line([10,90],[10,10]))
+	stroke(ovg.line([10,10],[90,10]))
 	#above that, offset the position
 	ovg.dash_phase(10)
-	stroke(ovg.line([10,90],[25,25]))
+	stroke(ovg.line([10,25],[90,25]))
 
 	#reset phase
 	ovg.dash_phase(0)
-	stroke(ovg.line([10,90],[40,40]))
+	stroke(ovg.line([10,40],[90,40]))
 	tearDown()
 
 	#turn off dashing
@@ -364,22 +363,22 @@ def gradients():
 
 	#linear
 	setUp()
-	ovg.linear_gradient(2,ovg.GradientRule.Pad,0,0,200,200,grad_pts,colors)
+	ovg.linear_gradient(ovg.GradientRule.Pad,0,0,200,200,grad_pts,colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 	#linear, tighter
 	setUp()
-	ovg.linear_gradient(2,ovg.GradientRule.Pad,50,50,100,100,grad_pts,colors)
+	ovg.linear_gradient(ovg.GradientRule.Pad,50,50,100,100,grad_pts,colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 	#normal radial
 	setUp()
-	ovg.radial_gradient(2,ovg.GradientRule.Pad,50,50,50,50,50,grad_pts,colors)
+	ovg.radial_gradient(ovg.GradientRule.Pad,50,50,50,50,50,grad_pts,colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 	#off-center focal point
 	setUp()
-	ovg.radial_gradient(2,ovg.GradientRule.Pad,50,50,50,7,50,grad_pts,colors)
+	ovg.radial_gradient(ovg.GradientRule.Pad,50,50,50,7,50,grad_pts,colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 
@@ -396,32 +395,32 @@ def gradients():
 	]
 	#linear, pad
 	setUp()
-	ovg.linear_gradient(4,ovg.GradientRule.Pad,20,20,60,60,complex_grad_pts,complex_colors)
+	ovg.linear_gradient(ovg.GradientRule.Pad,20,20,60,60,complex_grad_pts,complex_colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 	#linear, repeat
 	setUp()
-	ovg.linear_gradient(4,ovg.GradientRule.Repeat,20,20,60,60,complex_grad_pts,complex_colors)
+	ovg.linear_gradient(ovg.GradientRule.Repeat,20,20,60,60,complex_grad_pts,complex_colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 	#linear, reflect
 	setUp()
-	ovg.linear_gradient(4,ovg.GradientRule.Reflect,20,20,60,60,complex_grad_pts,complex_colors)
+	ovg.linear_gradient(ovg.GradientRule.Reflect,20,20,60,60,complex_grad_pts,complex_colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 	#radial, pad
 	setUp()
-	ovg.radial_gradient(4,ovg.GradientRule.Pad,50,50,50,50,50,complex_grad_pts,complex_colors)
+	ovg.radial_gradient(ovg.GradientRule.Pad,50,50,50,50,50,complex_grad_pts,complex_colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 	#radial, repeat
 	setUp()
-	ovg.radial_gradient(4,ovg.GradientRule.Repeat,50,50,50,50,50,complex_grad_pts,complex_colors)
+	ovg.radial_gradient(ovg.GradientRule.Repeat,50,50,50,50,50,complex_grad_pts,complex_colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 	#radial, reflect
 	setUp()
-	ovg.radial_gradient(4,ovg.GradientRule.Reflect,50,50,50,50,50,complex_grad_pts,complex_colors)
+	ovg.radial_gradient(ovg.GradientRule.Reflect,50,50,50,50,50,complex_grad_pts,complex_colors)
 	fill(ovg.rect(0,0,100,100))
 	tearDown()
 
@@ -482,21 +481,21 @@ def axes():
 	x,y,w,h = ovg.wininfo()
 	print("window is at %d,%d and is %dx%d" % (x,y,w,h))
 
-	stroke(ovg.line([AXIS_PADDING,w - AXIS_PADDING],[AXIS_PADDING, AXIS_PADDING]))
-	stroke(ovg.line([AXIS_PADDING,AXIS_PADDING],[AXIS_PADDING, h - AXIS_PADDING]))
+	stroke(ovg.line([AXIS_PADDING,AXIS_PADDING],[w - AXIS_PADDING, AXIS_PADDING]))
+	stroke(ovg.line([AXIS_PADDING,h - AXIS_PADDING],[AXIS_PADDING, AXIS_PADDING]))
 
 	for i in range(0,w, int(AXIS_MAJOR_TICK/AXIS_MINOR_SPACING)):
 		if i % AXIS_MAJOR_TICK == 0:
-			stroke(ovg.line([i,i],[AXIS_PADDING,1]))
+			stroke(ovg.line([i,AXIS_PADDING],[i,1]))
 		else:
-			stroke(ovg.line([i,i],[AXIS_PADDING,4]))
+			stroke(ovg.line([i,AXIS_PADDING],[i,4]))
 
 
 	for i in range(0, h, int(AXIS_MAJOR_TICK/AXIS_MINOR_SPACING)):
 		if i % AXIS_MAJOR_TICK == 0:
-			stroke(ovg.line([AXIS_PADDING,1],[i,i]))
+			stroke(ovg.line([AXIS_PADDING,i],[1,i]))
 		else:
-			stroke(ovg.line([AXIS_PADDING,4],[i,i]))
+			stroke(ovg.line([AXIS_PADDING,i],[4,i]))
 
 	ovg.draw()
 
