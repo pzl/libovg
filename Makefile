@@ -93,7 +93,8 @@ uninstall:
 	$(MAKE) -C lib/python uninstall
 
 test:
-	$(CC) -o test tests/*.c -lovg
+	$(CC) -o test tests/main.c -lovg
+	$(CC) -o reopen tests/reopen.c -lovg
 
 clean:
 	$(RM) $(OBJS) $(TARGET) $(STARGET)
