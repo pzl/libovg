@@ -117,6 +117,14 @@ typedef enum {
 #ifndef Path
 typedef void * Path;
 #endif
+//from ajstarks/openvg
+typedef struct {
+	const short *CharacterMap;
+	const int *GlyphAdvances;
+	int Count;
+	Path Glyphs[256];
+} OVGFont;
+
 
 #define DEFAULT_BG_COLOR { 0.94f, 1.0f, 0.92f, 1.0f }
 
@@ -186,7 +194,10 @@ Path ovg_bezier_cube(int sx, int sy,
                      int c1x, int c1y, int c2x, int c2y,
                      int ex, int ey); //start, control1,2, end
 Path ovg_path(int n_commands, unsigned char *commands, float *data);
-void ovg_text(int x, int y, char *s, int pointsize);
+void ovg_text(int x, int y, OVGFont, char *s, int pointsize);
+int ovg_text_width(OVGFont, char *, int pointsize);
+OVGFont ovg_create_font(void);
+void ovg_destroy_font(OVGFont);
 
 
 /*********************

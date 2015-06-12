@@ -24,12 +24,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 // loadfont loads font path data
 // derived from http://web.archive.org/web/20070808195131/http://developer.hybrid.fi/font2openvg/renderFont.cpp.txt
-Fontinfo loadfont(const int *Points,
+OVGFont loadfont(const int *Points,
 		  const int *PointIndices,
 		  const unsigned char *Instructions,
 		  const int *InstructionIndices, const int *InstructionCounts, const int *adv, const short *cmap, int ng) {
 
-	Fontinfo f;
+	OVGFont f;
 	int i;
 
 	memset(f.Glyphs, 0, MAXFONTPATH * sizeof(VGPath));
@@ -62,22 +62,30 @@ void unloadfont(VGPath * glyphs, int n) {
 	}
 }
 
-// Text renders a string of text at a specified location, size, using the specified font glyphs
-// derived from http://web.archive.org/web/20070808195131/http://developer.hybrid.fi/font2openvg/renderFont.cpp.txt
-/*void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {*/
-void ovg_text(int x, int y, char *s, int pointsize){
-	VGfloat size = (VGfloat) pointsize,
-			xx = (VGfloat) x,
-			yy = (VGfloat) y,
-			mm[9];
-	int i;
-
-	Fontinfo f = loadfont(LiberationMono_glyphPoints,
+OVGFont ovg_create_font(void) {
+	OVGFont f = loadfont(LiberationMono_glyphPoints,
 				LiberationMono_glyphPointIndices,
 				LiberationMono_glyphInstructions,
 				LiberationMono_glyphInstructionIndices,
 				LiberationMono_glyphInstructionCounts,
 				LiberationMono_glyphAdvances, LiberationMono_characterMap, LiberationMono_glyphCount);
+	return f;
+}
+
+void ovg_destroy_font(OVGFont f){
+	unloadfont(f.Glyphs, f.Count);
+}
+
+
+// Text renders a string of text at a specified location, size, using the specified font glyphs
+// derived from http://web.archive.org/web/20070808195131/http://developer.hybrid.fi/font2openvg/renderFont.cpp.txt
+/*void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {*/
+void ovg_text(int x, int y, OVGFont f, char *s, int pointsize){
+	VGfloat size = (VGfloat) pointsize,
+			xx = (VGfloat) x,
+			yy = (VGfloat) y,
+			mm[9];
+	int i;
 
 	vgGetMatrix(mm);
 	for (i = 0; i < (int)strlen(s); i++) {
@@ -97,6 +105,19 @@ void ovg_text(int x, int y, char *s, int pointsize){
 		xx += size * f.GlyphAdvances[glyph] / 65536.0f;
 	}
 	vgLoadMatrix(mm);
+}
 
-	unloadfont(f.Glyphs, f.Count);
+int ovg_text_width(OVGFont f, char *s, int pointsize) {
+	int i;
+	VGfloat tw = 0.0;
+	VGfloat size = (VGfloat) pointsize;
+	for (i = 0; i < (int)strlen(s); i++) {
+		unsigned int character = (unsigned int)s[i];
+		int glyph = f.CharacterMap[character];
+		if (glyph == -1) {
+			continue;			   //glyph is undefined
+		}
+		tw += size * f.GlyphAdvances[glyph] / 65536.0f;
+	}
+	return (int) tw;
 }
