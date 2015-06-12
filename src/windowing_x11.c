@@ -102,15 +102,21 @@ void ovg_open(int x, int y, int w, int h) {
 }
 
 void ovg_init(void){
-	XInitThreads();
+	//XInitThreads();
+}
+void ovg_cleanup(void){
+	if (x_display) {
+		ovg_close();
+	}
+
+	return;
 }
 
-void ovg_cleanup(void){
+void ovg_close(void) {
 	glXDestroyContext(x_display, glc);
 	XDestroyWindow(x_display, win);
 	XCloseDisplay(x_display);
 }
-
 
 void ovg_wininfo(int *x, int *y, int *w, int *h){
 	XWindowAttributes gwa;

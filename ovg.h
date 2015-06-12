@@ -125,6 +125,7 @@ typedef void * Path;
 ******************************/
 void ovg_init(void);
 void ovg_open(int x, int y, int w, int h);
+void ovg_close(void);
 void ovg_wininfo(int *x, int *y, int *w, int *h);
 void ovg_dispinfo(unsigned int *w, unsigned int *h);
 void ovg_quality(DrawQuality);

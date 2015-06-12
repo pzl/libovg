@@ -80,26 +80,12 @@ void ovg_init(void){
 }
 
 void ovg_cleanup(void){
-	EGLContext eglContext = eglGetCurrentContext();
-	eglDestroySurface(eglDisplay, eglSurface);
-	
 
-	//clear screen
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	//release resources
-	eglMakeCurrent(eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-	eglDestroyContext(eglDisplay, eglContext);
-	//eglTerminate(eglDisplay);
-
-	//dispman cleanup
-	if (vc_dispmanx_element_remove(dispman_update,window.element)) {
-		fprintf(stderr, "LibOVG: error closing dispman window\n");
-	}
-	if (vc_dispmanx_display_close(dispman_display)){
-		fprintf(stderr, "LibOVG: error closing dispman display\n");
+	if (eglSurface){
+		ovg_close();
 	}
 
+	eglTerminate(eglDisplay);
 }
 
 void ovg_open(int x, int y, int w, int h){
@@ -160,3 +146,22 @@ void ovg_open(int x, int y, int w, int h){
 	ovg_clear();
 }
 
+void ovg_close(void) {
+	EGLContext eglContext = eglGetCurrentContext();
+	eglDestroySurface(eglDisplay, eglSurface);
+	
+	//clear screen
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	//release resources
+	eglMakeCurrent(eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+	eglDestroyContext(eglDisplay, eglContext);
+
+	//dispman cleanup
+	if (vc_dispmanx_element_remove(dispman_update,window.element)) {
+		fprintf(stderr, "LibOVG: error closing dispman window\n");
+	}
+	if (vc_dispmanx_display_close(dispman_display)){
+		fprintf(stderr, "LibOVG: error closing dispman display\n");
+	}
+}

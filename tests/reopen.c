@@ -10,7 +10,7 @@ int main(int argc, char **argv){
 
 	getchar();
 
-	ovg_cleanup();
+	ovg_close();
 
 	getchar();
 
@@ -21,6 +21,9 @@ int main(int argc, char **argv){
 	ovg_draw();
 
 	getchar();
+
+	ovg_close();
+	ovg_cleanup();
 
 	return 0;
 
