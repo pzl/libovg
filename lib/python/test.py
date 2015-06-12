@@ -257,8 +257,10 @@ def trans():
 def text():
 	ovg.fill(0,0,0,255)
 	setUp()
-	ovg.text(4,70,"Demo",24)
-	ovg.text(4,40,"Shapes",16)
+	f = ovg.create_font()
+	ovg.text(4,70,f,"Demo",24)
+	ovg.text(4,40,f,"Shapes",16)
+	ovg.destroy_font(f)
 	tearDown()
 
 	ovg.draw()
@@ -499,6 +501,7 @@ def clear():
 
 	sys.stdin.read(1)
 
+	ovg.clear_color(255,0,0,255)
 	ovg.clear()
 	ovg.draw()
 
