@@ -16,6 +16,9 @@ typedef struct ovgWindow {
 static EGLConfig eglConfig;
 static EGLDisplay eglDisplay;
 static EGLSurface eglSurface;
+DISPMANX_DISPLAY_HANDLE_T dispman_display;
+DISPMANX_UPDATE_HANDLE_T dispman_update;
+static EGL_DISPMANX_WINDOW_T window;
 static ovgWindow win;
 
 void ovg_draw(void){
@@ -87,13 +90,19 @@ void ovg_cleanup(void){
 	//release resources
 	eglMakeCurrent(eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 	eglDestroyContext(eglDisplay, eglContext);
-	eglTerminate(eglDisplay);
+	//eglTerminate(eglDisplay);
+
+	//dispman cleanup
+	if (vc_dispmanx_element_remove(dispman_update,window.element)) {
+		fprintf(stderr, "LibOVG: error closing dispman window\n");
+	}
+	if (vc_dispmanx_display_close(dispman_display)){
+		fprintf(stderr, "LibOVG: error closing dispman display\n");
+	}
+
 }
 
 void ovg_open(int x, int y, int w, int h){
-	static EGL_DISPMANX_WINDOW_T window;
-	DISPMANX_DISPLAY_HANDLE_T dispman_display;
-	DISPMANX_UPDATE_HANDLE_T dispman_update;
 	VC_RECT_T dest;
 	VC_RECT_T src;
 	EGLContext eglContext;
