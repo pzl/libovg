@@ -258,10 +258,19 @@ def text():
 	ovg.fill(0,0,0,255)
 	setUp()
 	f = ovg.create_font()
+	w = ovg.text_width(f,"Shapes",16)
 	ovg.text(4,70,f,"Demo",24)
 	ovg.text(4,40,f,"Shapes",16)
+
+	ovg.fill(0,0,255,255)
+	ovg.stroke(255,0,0,255)
+
+	stroke(ovg.rect(4,40,w,16))
+	fill(ovg.circle(4,40,2))
+
 	ovg.destroy_font(f)
 	tearDown()
+	ovg.stroke(0,0,0,255)
 
 	ovg.draw()
 

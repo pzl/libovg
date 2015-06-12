@@ -527,13 +527,24 @@ void polys(void) {
 
 void text(void) {
     ovg_fill(0,0,0,255);
-    OVGFont f = ovg_create_font();
     TEST(
+        OVGFont f = ovg_create_font();
+
+        int width = ovg_text_width(f,"Shapes",16);
+
         ovg_text(4,70,f,"Demo",24);
         ovg_text(4,40,f,"Shapes",16);
+
+        ovg_fill(0,0,255,255);
+        ovg_stroke(255,0,0,255);
+        _S(ovg_rect(4,40,width,16));
+        _F(ovg_circle(4,40,2));
+
+        ovg_destroy_font(f);
+
     );
+    ovg_stroke(0,0,0,255);
     ovg_draw();
-    ovg_destroy_font(f);
 }
 
 void advanced_modes(void) {
