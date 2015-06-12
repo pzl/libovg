@@ -97,6 +97,6 @@ test:
 	$(CC) -o reopen tests/reopen.c -lovg
 
 clean:
-	$(RM) $(OBJS) $(TARGET) $(STARGET)
+	$(RM) $(OBJS) $(TARGET) $(STARGET) test reopen
 
 .PHONY: all debug clean install uninstall test install-python install-python2
