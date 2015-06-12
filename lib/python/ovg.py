@@ -263,6 +263,11 @@ def open(*args):
 	return lib.ovg_open( *parse_args(args,['x','y','w','h']) )
 
 
+lib.ovg_close.argtypes = None
+lib.ovg_close.restype = None
+def close():
+	return lib.ovg_close()
+
 lib.ovg_wininfo.argtypes = [POINTER(c_int),POINTER(c_int),POINTER(c_int),POINTER(c_int)]
 lib.ovg_wininfo.restype = None
 def wininfo():
