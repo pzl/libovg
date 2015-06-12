@@ -57,6 +57,8 @@ int main(int argc, char **argv) {
 
 
     ovg_open(0,0,1366,768);
+    ovg_clear_color(255,255,255,255);
+    ovg_clear();
 
     path_len();
 

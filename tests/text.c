@@ -6,7 +6,9 @@ int main(int argc, char **argv){
 	ovg_init();
 
 	ovg_open(0,0,500,750);
-	
+	ovg_clear_color(255,255,255,255);
+	ovg_clear();
+
 	OVGFont f = ovg_create_font();
 	int l = ovg_text_width(f,"Hello World",12);
 
