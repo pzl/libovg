@@ -93,10 +93,11 @@ uninstall:
 	$(MAKE) -C lib/python uninstall
 
 test:
-	$(CC) -o test tests/main.c -lovg
-	$(CC) -o reopen tests/reopen.c -lovg
+	$(CC) -o tests/test.t tests/main.c -lovg
+	$(CC) -o tests/reopen.t tests/reopen.c -lovg
+	$(CC) -o tests/text.t tests/text.c -lovg
 
 clean:
-	$(RM) $(OBJS) $(TARGET) $(STARGET) test reopen
+	$(RM) $(OBJS) $(TARGET) $(STARGET) tests/*.t
 
 .PHONY: all debug clean install uninstall test install-python install-python2

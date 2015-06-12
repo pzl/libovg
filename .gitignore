@@ -12,5 +12,4 @@ __pycache__
 
 
 build
-test
-reopen
+tests/*.t
