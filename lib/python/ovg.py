@@ -11,6 +11,15 @@ lib.ovg_init()
 """
 Python-wrapper-specific helpers
 """
+
+class Font(Structure):
+	_fields_ = [
+		('CharacterMap',POINTER(c_short)),
+		('GlyphAdvances',POINTER(c_int)),
+		('Count',c_int),
+		('Glyphs', c_void_p * 256)
+	]
+
 class Color(object):
 	_r=c_ubyte(255)
 	_g=c_ubyte(255)
@@ -646,17 +655,36 @@ def path(commands, data):
 	return lib.ovg_path(lc, c, d)
 
 
-lib.ovg_text.argtypes = [c_int, c_int, c_char_p, c_int]
+lib.ovg_text.argtypes = [c_int, c_int, Font, c_char_p, c_int]
 lib.ovg_text.restype = None
 def text(*args):
 	"""
 	@param x,y - ints, placement of text anchor
+	@param font - Font as returned from create_font
 	@param txt - string, text to display
 	@param size - int, font pointsize
 	"""
-	(x,y),(txt,size) = parse_args(args,['x','y'],count=1)
+	(x,y),(font,txt,size) = parse_args(args,['x','y'],count=1)
 	c_s = c_char_p(txt.encode("ascii"))
-	return lib.ovg_text(x,y,c_s,size)
+	return lib.ovg_text(x,y,font,c_s,size)
+
+lib.ovg_text_width.argtypes = [Font, c_char_p, c_int]
+lib.ovg_text_width.restype = c_int
+def text_width(f, txt, size):
+	c_s = c_char_p(txt.encode("ascii"))
+	return lib.ovg_text_width(f,c_s,size)
+
+lib.ovg_create_font.argtypes = None
+lib.ovg_create_font.restype = Font
+def create_font():
+	return lib.ovg_create_font()
+
+
+lib.ovg_destroy_font.argtypes = [Font]
+lib.ovg_destroy_font.restype = None
+def destroy_font(f):
+	return lib.ovg_destroy_font(f)
+
 
 
 """
