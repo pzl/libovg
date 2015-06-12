@@ -44,9 +44,12 @@ void ovg_open(int x, int y, int w, int h) {
 	char instance[] = "blue",
 		 className[] = "red";
 
-	if ((x_display = XOpenDisplay(NULL)) == NULL){
-		fprintf(stderr, "Error opening X Display\n");
-		return;
+	if (x_display == NULL){
+		//in the case of closing a previous window
+		if ((x_display = XOpenDisplay(NULL)) == NULL){
+			fprintf(stderr, "Error opening X Display\n");
+			return;
+		}
 	}
 
 	root = DefaultRootWindow(x_display);
@@ -103,6 +106,10 @@ void ovg_open(int x, int y, int w, int h) {
 
 void ovg_init(void){
 	//XInitThreads();
+	if ((x_display = XOpenDisplay(NULL)) == NULL){
+		fprintf(stderr, "Error opening X Display\n");
+		return;
+	}
 }
 void ovg_cleanup(void){
 	if (x_display) {
