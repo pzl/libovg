@@ -52,8 +52,8 @@ int main(int argc, char **argv) {
 
     unsigned int w,h;
 
-    //ovg_dispinfo(&w,&h);
-    //printf("Display size is %dx%d\n", w,h);
+    ovg_dispinfo(&w,&h);
+    printf("Display size is %dx%d\n", w,h);
 
 
     ovg_open(0,0,1366,768);
