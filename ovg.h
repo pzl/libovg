@@ -118,7 +118,7 @@ typedef enum {
 typedef void * Path;
 #endif
 
-#define BG_COLOR { 0.94f, 1.0f, 0.92f, 1.0f }
+#define DEFAULT_BG_COLOR { 0.94f, 1.0f, 0.92f, 1.0f }
 
 /*****************************
 * Management Commands
@@ -150,7 +150,7 @@ void ovg_stroke_current(unsigned char *r,
                       unsigned char *g,
                       unsigned char *b,
                       unsigned char *a);
-
+void ovg_clear_color(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 void ovg_stroke_width(float w);
 void ovg_stroke_cap(CapStyle);
 void ovg_stroke_join(JoinStyle);

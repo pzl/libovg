@@ -494,6 +494,14 @@ def fill_rule(r):
 	return lib.ovg_fill_rule(r)
 
 
+lib.ovg_clear_color.argtypes = [c_ubyte, c_ubyte, c_ubyte, c_ubyte]
+lib.ovg_clear_color.restype = None
+def clear_color(*args):
+		return lib.ovg_clear_color( *parse_args(args,['r','g','b','a']) )
+
+
+
+
 
 """
 Shapes and Objects

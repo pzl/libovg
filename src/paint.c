@@ -37,10 +37,7 @@ void ovg_fill_rule(FillRule rule){
 }
 
 void ovg_clear_rect(int x, int y, int w, int h, CoordSystem c){
-	VGfloat bg[] = BG_COLOR;
 	//vgSeti(VG_SCISSORING, VG_FALSE); //disable scissoring to clear?
-	//set clear color and clear the screen
-	vgSetfv(VG_CLEAR_COLOR, 4, bg);
 
 	if (c == C_ABSOLUTE) {
 		vgClear(x,y,w,h);
@@ -58,6 +55,11 @@ void ovg_clear_rect(int x, int y, int w, int h, CoordSystem c){
 
 		vgClear(tx,ty,tw,th);
 	}
+}
+
+void ovg_clear_color(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+	VGfloat fill[4] = {r/255.0f, g/255.0f, b/255.0f, a/255.0f};
+	vgSetfv(VG_CLEAR_COLOR, 4, fill);
 }
 
 void ovg_quality(DrawQuality dq){

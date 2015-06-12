@@ -39,7 +39,7 @@ void ovg_open(int x, int y, int w, int h) {
 		GLX_DEPTH_SIZE, 24,
 		GLX_DOUBLEBUFFER, None 
 	};
-	VGfloat bg[] = BG_COLOR;
+	VGfloat bg[] = DEFAULT_BG_COLOR;
 
 	char instance[] = "blue",
 		 className[] = "red";
