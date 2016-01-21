@@ -655,6 +655,14 @@ def path(commands, data):
 	return lib.ovg_path(lc, c, d)
 
 
+lib.ovg_path_modify_coords.argtypes = [c_void_p,c_int, c_int, POINTER(c_float)]
+lib.ovg_path_modify_coords.restype = c_void_p
+def path_modify_coords(path, start, n_segments, data):
+	ld = len(data)
+	d = (c_float * ld)(*data)
+
+	return lib.ovg_path_modify_coords(path, start, n_segments, d)
+
 lib.ovg_text.argtypes = [c_int, c_int, Font, c_char_p, c_int]
 lib.ovg_text.restype = None
 def text(*args):

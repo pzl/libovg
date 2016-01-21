@@ -192,6 +192,7 @@ Path ovg_bezier_cube(int sx, int sy,
                      int c1x, int c1y, int c2x, int c2y,
                      int ex, int ey); //start, control1,2, end
 Path ovg_path(int n_commands, unsigned char *commands, float *data);
+Path ovg_path_modify_coords(Path, int start, int n_segments, float *data);
 void ovg_text(int x, int y, OVGFont, char *s, int pointsize);
 int ovg_text_width(OVGFont, char *, int pointsize);
 OVGFont ovg_create_font(void);

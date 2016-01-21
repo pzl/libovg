@@ -82,6 +82,12 @@ VGPath ovg_path(int n, unsigned char *commands, float *data) {
 	return p;
 }
 
+VGPath ovg_path_modify_coords(Path p, int start, int n_segments, float *data) {
+	vgModifyPathCoords(p, start, n_segments, data);
+	return p;
+}
+
+
 static void _zip(int *x, int *y, int n, VGfloat *result){
 	while (n--){
 		*result++ = *x++;
