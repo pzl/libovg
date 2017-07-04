@@ -522,6 +522,8 @@ if __name__ == '__main__':
 
 
 	ovg.open(0,0,1366,768)
+	ovg.clear_color(200,200,200,255) # grey bg
+	ovg.clear()
 
 	path_len()
 	basic_shapes()
