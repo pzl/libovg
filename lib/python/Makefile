@@ -6,8 +6,8 @@ py2:
 	python2 setup.py install
 
 uninstall:
-	$(RM) /usr/lib/python3.4/site-packages/ovg*
-	$(RM) /usr/lib/python3.4/site-packages/__pycache__/ovg*
+	$(RM) /usr/lib/python3.6/site-packages/ovg*
+	$(RM) /usr/lib/python3.6/site-packages/__pycache__/ovg*
 	$(RM) /usr/lib/python2.7/site-packages/ovg*
 
 .PHONY: install py2
