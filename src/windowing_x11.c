@@ -40,8 +40,8 @@ void ovg_open(int x, int y, int w, int h) {
 		GLX_DOUBLEBUFFER, None 
 	};
 
-	char instance[] = "blue",
-		 className[] = "red";
+	char instance[] = "libovg",
+		 className[] = "libovg";
 
 	if (x_display == NULL){
 		//in the case of closing a previous window
